@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="此代码内容为超萌的猫头鹰登录界面" />
+    <title>健身直播注册</title>
+    <link rel="stylesheet" href="../static/css/jq22.css" th:href="@{/css/jq22.css}"  />
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css"
+          th:href="@{/css/font-awesome.min.css}"/>
+    <script src="../static/js/jquery-1.10.2.min.js"
+            th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script src="../static/js/bootstrap.min.js"
+            th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../static/js/jquery.messager.js"
+            th:src="@{/js/jquery.messager.js}"></script>
+    <script type="text/javascript">
+
+        <!--   发送验证信息-->
+        var veriaccount=false;
+        var veripassword=false;
+        var veriemail=false;
+        var veriidcard=false;
+        var veriphonenum=false;
+        var verivalidation=false;
+
+        function sendMesssage() {
+            verimessage=false;
+            var phonenum=document.getElementById("phonenum");
+            if (phonenum.value.length!=11)
+            {
+                $.messager.alert("号码输入有误！");
+                return;
+            }
+            $.ajax({
+                type : "POST",
+                url : "/manager/register/sendMessage?time="+new Date().getTime(),
+                data : {
+                    "phonenum" : $("#phonenum").val()
+                },
+                dataType : "json",
+                success : function (data) {
+                    if (data.result!=1) {
+                        $.messager.alert("系统繁忙...")
+                    }
+                }
+            });
+        };
+         <!--验证账户是否已经存在使用ajax异步进行提交验证-->
+        $(this).ready(function () {
+            $("#account").keyup(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/register/checkAccount?time=" + new Date().getTime(),
+                    data: {
+                        "account": $("#account").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result != 1) {
+                            $.messager.alert("该用户已经存在！");
+                        }
+                        veriaccount=true;
+                    }
+                });
+            });
+
+            <!--  验证密码输入是否一致-->
+
+            $("#verifypassword").keyup(function () {
+                var password = $("#password").val();
+                if (password.length == 0)
+                    return;
+                if ($("#verifypassword").val() != password) {
+                    $("#verifypwd").removeClass().addClass("fa fa-question-circle");
+                } else {
+                    veripassword=true;
+                    $("#verifypwd").removeClass().addClass("fa fa-key");
+                }
+            });
+            <!--  验证验证信息输入是否一致-->
+            $("#validation").keyup(function () {
+                var validation = $("#validation").val();
+                if (validation.length != 4)
+                    return;
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/register/checkValidation?time=" + new Date().getTime(),
+                    data: {
+                        "validation": $("#validation").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {      //1成功 ,0不正确
+                        if (data.result != 1) {
+                            verivalidation=true;
+                            $("#checkValidation").removeClass().addClass("fa fa-question-circle");
+                        }else {
+                            $("#checkValidation").removeClass().addClass("fa fa-key");
+                        }
+                    }
+                });
+
+            });
+            <!--  验证邮箱-->
+            $("#email").keyup(function () {
+                if($("#email").val().indexOf('@')==1)
+                {
+                    $("#checkValidation").removeClass().addClass("fa fa-question-circle");
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/register/checkEmail?time=" + new Date().getTime(),
+                    data: {
+                        "email": $("#email").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {      //1可以注册 ,2不合格 ,3已经存在
+                        if (data.result == 2) {
+                            $.messager.alert("请输入正确邮箱号！");
+                        } else if (data.result == 3) {
+                            $.messager.alert("该账号已经被注册！");
+                        }else {
+                            veriemail=true;
+                        }
+                    }
+                });
+            });
+            <!--  验证身份证-->
+            $("#idcard").keyup(function () {
+                if($("#idcard").val().length!=18)
+                    return;
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/register/checkIdcard?time=" + new Date().getTime(),
+                    data: {
+                        "idcard": $("#idcard").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {      //1可以注册 ,2不合格 ,3已经存在
+                        if (data.result == 2) {
+                            $.messager.alert("请输入正确身份证号！");
+                        } else if (data.result == 3) {
+                            $.messager.alert("该用户已经被注册！");
+                        }else {
+                            veriidcard=true;
+                        }
+                    }
+                });
+            });
+            <!--  验证手机号码-->
+            $("#phonenum").keyup(function () {
+                if ($("#phonenum").val().length != 11)
+                    return;
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/register/checkPhonenum?time=" + new Date().getTime(),
+                    data: {
+                        "phonenum": $("#phonenum").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {      //1可以注册 ,2不合格 ,3已经存在
+                        if (data.result == 2) {
+                            $.messager.alert("该号码不正确！");
+                        } else if (data.result == 3) {
+                            $.messager.alert("该号码已经被注册！");
+                        }else {
+                            veriphonenum=true;
+                        }
+                    }
+                });
+            });
+        });
+        function toRegister() {
+            if (veriaccount==false){
+                    $.messager.alert("账户输入有误！");
+                    return;
+            }
+            if (veripassword==false){
+                $.messager.alert("密码输入有误！");
+                return;
+            }
+            if (veriemail==false){
+                $.messager.alert("邮箱输入有误！");
+                return;
+            }
+            if (veriidcard==false){
+                $.messager.alert("身份证输入有误！");
+                return;
+            }
+            if (veriphonenum==false){
+                $.messager.alert("手机号输入有误！");
+                return;
+            }
+            if (verivalidation==false){
+                $.messager.alert("验证信息输入有误！");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "manager/register/doRegister",
+                data:  {
+                    "account":$("#account").val(),
+                    "password":$("#password").val(),
+                    "nickname":$("#nickname").val(),
+                    "sex":$("input[name=sex]:checked").attr("value"),
+                    "email":$("#email").val(),
+                    "idcard":$("#idcard").val(),
+                    "phonenum":$("#phonenum").val(),
+                    "phonenum":$("#phonenum").val(),
+                    <!--"age":$("#age").val(),-->
+                    "validation":$("#validation").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {      //1可以注册 ,2不合格 ,3已经存在
+                        if (data.result == 2) {
+                            $.messager.alert("系统繁忙...");
+                        } else if (data.result == 3) {
+                            $.messager.alert("注册成功！");
+                        }
+                    }
+            });
+        };
+    </script>
+</head>
+<body>
+<!-- begin -->
+<div id="login">
+    <!--<div class="wrapper">-->
+        <div class="login">
+            <form action="#" method="post" id="registerform" class="container offset1 loginform">
+                <div id="owl-register"></div>
+                <div class="pad">
+                    <input type="hidden" name="_csrf" value="9IAtUxV2CatyxHiK2LxzOsT6wtBE6h8BpzOmk="/>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="account" class="control-label"><i class="fa fa-user" aria-hidden="true"></i></label>
+                            <input id="account" type="text" name="account" placeholder="账号" tabindex="1"
+                                   autofocus="autofocus" class="form-control input-medium" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="password" class="control-label"><i class="fa fa-key" aria-hidden="true"></i></label>
+                            <input id="password" type="password" name="password" placeholder="密码" tabindex="2"
+                                   class="form-control input-medium" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="password" class="control-label"><i id="verifypwd" class="fa fa-key" aria-hidden="true"></i></label>
+                            <input id="verifypassword" type="password" name="verifypassword"
+                                   placeholder="确认密码" tabindex="3"
+                                   class="form-control input-medium" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="nickName" class="control-label"><i class="fa fa-user-secret" aria-hidden="true"></i></label>
+                            <input id="nickname" type="text" name="nickname" placeholder="昵称" tabindex="4"
+                                   class="form-control input-medium" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <!--<label for="userName" class="control-label"><i class="fa fa-male" aria-hidden="true"></i></label>-->
+                            &nbsp;&nbsp;&nbsp;男&nbsp;&nbsp;&nbsp;
+                            <input id="sex" type="radio" name="sex"  tabindex="5" value="man" checked="checked"
+                                   class="glyphicon-check "/>&nbsp;&nbsp;&nbsp;女&nbsp;&nbsp;
+                            <input  type="radio" name="sex"  tabindex="5"
+                                  value="woman" class="glyphicon-check"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="email" class="control-label"><i class="fa fa-mail-forward" aria-hidden="true"></i></label>
+                            <input id="email" type="email" name="email" placeholder="邮箱" tabindex="1"
+                                   class="form-control input-medium" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="idcard" class="control-label"><i class="fa fa-info-circle" aria-hidden="true"></i></label>
+                            <input id="idcard" type="text" name="idcard" placeholder="身份证" tabindex="1"
+                                  class="form-control input-medium" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="phonenum" class="control-label"><i class="fa-phone-square" aria-hidden="true"></i></label>
+                            <input id="phonenum" type="text" name="phonenum" placeholder="手机号" tabindex="1"
+                                   class="form-control input-medium" />
+                        </div>
+                    </div>
+                <!--    <div class="control-group">
+                        <div class="controls">
+                            <label for="age" class="control-label"><i class="fa fa-send" aria-hidden="true"></i></label>
+                            <input id="age" type="text" name="age" placeholder="年龄" tabindex="1"
+                                   class="form-control input-medium" />
+                        </div>
+                    </div>-->
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="validation" class="control-label"><i id="checkValidation" class="fa fa-question-circle" aria-hidden="true"></i></label>
+                            <input id="validation" type="text" name="validation" placeholder="验证码" tabindex="3"
+                                   class="checkbox-inline input-medium" />
+                            <a onclick="sendMesssage();"  tabindex="6" class="btn btn-link text-muted">Send Message</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="reset"  tabindex="4" class="btn btn-primary"> Reset </button>
+                    <button type="button" id="doRegister" onclick="toRegister();" tabindex="4" class="btn btn-primary">Register</button>
+                </div>
+
+            </form>
+
+        </div>
+   <!-- </div>-->
+</div>
+<!-- end -->
+</body>
+</html>

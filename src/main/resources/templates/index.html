@@ -1,0 +1,658 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui-1.10.3.full.min.css" th:href="@{/css/jquery-ui-1.10.3.full.min.css}"/>
+    <link rel="stylesheet" href="../static/css/datepicker.css" th:href="@{/css/datepicker.css}"/>
+    <link rel="stylesheet" href="../static/css/googleFamily.css" th:href="@{/css/googleFamily.css}"/>
+    <link rel="stylesheet" href="../static/css/ui.jqgrid.css" th:href="@{/css/ui.jqgrid.css}"/>
+    <link rel="stylesheet" href="../static/css/chosen.css" th:href="@{/css/chosen.css}"/>
+    <link rel="stylesheet" href="../static/css/custom.css" th:href="@{/css/custom.css}"/>
+    <link rel="stylesheet" href="../static/css/ace.min.css" th:href="@{/css/ace.min.css}"/>
+    <link rel="stylesheet" href="../static/css/ace-rtl.min.css" th:href="@{/css/ace-rtl.min.css}"/>
+    <link rel="stylesheet" href="../static/css/ace-skins.min.css" th:href="@{/css/ace-skins.min.css}"/>
+    <!--[if !IE]> -->
+    <script src="../static/js/jquery-2.0.3.min.js" th:src="@{/js/jquery-2.0.3.min.js}"></script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="../static/js/jquery-1.10.2.min.js" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <![endif]-->
+    <title>Spring Boot后台管理</title>
+    <style>
+        .logo{
+            width: 30px;
+            height:30px;
+            padding: 0px;
+            margin-top: -4px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function() {
+            //初始化查询菜单
+//        initData();
+            $("#menus").on("click", ".changeUrl", function() {
+                var id = $(this).attr("id");
+                var url = $(this).attr("value");
+                /*<![CDATA[*/
+                if(id && url){
+                    $("#personUserInfoModal").modal("hide");
+                    addTabs({
+                        id:id,
+                        title:$(this).text(),
+                        url:url,
+                        close:true
+                    });
+                }
+                /*]]>*/
+            });
+            $(".nav-tabs").on("click", ".close-tab", function() {
+                id = $(this).prev("a").attr("aria-controls");
+                closeTab(id);
+            });
+
+            $("#mainIframe").load(function(){
+                var mainheight =$(this).contents().find("body").height();
+                /*<![CDATA[*/
+                if(mainheight<400){
+                    mainheight = 400;
+                }
+                /*]]>*/
+                $(this).height(mainheight);
+            });
+            //退出操作
+            $("#outLogin").click(function(){
+                $.messager.confirm("提示","你要推出系统吗？",function (result) {
+                    if (result){
+                   }else {
+                        $.ajax({
+                            url:"/manager/login/quitLogin",
+                            cache:false,
+                            dataType:'json',
+                            type:'get',
+                            success:function (json) {
+                                try{
+                                    window.location.href = "/";
+                                }catch (e){
+                                    window.location.href = "/";
+                                }
+                            },error:function (result) {
+                                window.location.href = "/";
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        //打开菜单
+        function changeUrl(url) {
+            clearFlash();
+            $("#mainFrame").attr("src","/" + url);
+        }
+        //清除iframe
+        function clearFlash() {
+            try {
+                //在iframe销毁前清理掉iframe中的内容（特别是flash）
+                $("#mainFrame").contents().find("body").empty();
+            } catch (e) {
+            }
+        }
+    </script>
+    <script th:inline="javascript">
+        function showUserProfile() {
+            /*<![CDATA[*/
+            var user = /*[[${session.loginUser}]]*/ null;
+            /*]]>*/
+            if (user.amatar.length>0){
+                $("#avatar").attr('src',user.amatar);
+            }
+            $("#fansnum").text(user.fansnum);
+            $("#attentionsnum").text(user.attentionnum);
+            $("#showaccount").text(user.account);
+            $("#showname").text(user.name);
+            $("#shownickname").text(user.nickname);
+            $("#showborndata").text(user.borndata);
+            $("#showsex").text(user.gender);
+            $("#showemail").text(user.email);
+            $("#showidcard").text(user.idcard);
+            $("#showmobilenum").text(user.phonenum);
+            $("#showpersonalsign").text(user.personalsign);
+            $("#showgrade").text(user.grade);
+            $("#showcreatetime").text(user.createtime);
+            $("#showarole").text(user.role);
+            $("#personUserInfoModal").modal({
+                keyboard : false,
+                show : true,
+                backdrop : "static"
+            }).css({
+                'width': '80%',
+                'margin-left': '10.5%',
+                'margin-top': '4.8%',
+                'padding-right': '17px'
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="navbar navbar-default" id="navbar">
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand" style="height: 45px;">
+                <small>
+                    <img class="logo"  th:src="@{/images/logo.png}" /> Fitnesslive健身直播后台
+                </small>
+            </a>
+        </div>
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+
+                <li class="grey">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="icon-tasks"></i>
+                        <span class="badge badge-grey">4</span>
+                    </a>
+
+                    <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="icon-ok"></i>
+                            还有4个任务完成
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left">软件更新</span>
+                                    <span class="pull-right">65%</span>
+                                </div>
+
+                                <div class="progress progress-mini ">
+                                    <div style="width:65%" class="progress-bar "></div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left">硬件更新</span>
+                                    <span class="pull-right">35%</span>
+                                </div>
+
+                                <div class="progress progress-mini ">
+                                    <div style="width:35%" class="progress-bar progress-bar-danger"></div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left">单元测试</span>
+                                    <span class="pull-right">15%</span>
+                                </div>
+                                <div class="progress progress-mini ">
+                                    <div style="width:15%" class="progress-bar progress-bar-warning"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left">错误修复</span>
+                                    <span class="pull-right">90%</span>
+                                </div>
+                                <div class="progress progress-mini progress-striped active">
+                                    <div style="width:90%" class="progress-bar progress-bar-success"></div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                查看任务详情
+                                <i class="icon-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="purple"><a data-toggle="dropdown" class="dropdown-toggle" href="#"> <i class="icon-bell-alt icon-animated-bell"></i> <span class="badge badge-important">8</span>
+                </a>
+
+                    <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header"><i class="icon-warning-sign"></i>8条通知</li>
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left"> <i class="btn btn-xs no-hover btn-pink icon-comment"></i> 新闻评论 </span> <span class="pull-right badge badge-info">+12</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li><a href="#"> <i class="btn btn-xs btn-primary icon-user"></i> 切换为编辑登录..</a></li>
+
+                        <li><a href="#">
+                            <div class="clearfix">
+                                <span class="pull-left"> <i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>新订单</span> <span class="pull-right badge badge-success">+8</span>
+                            </div>
+                        </a></li>
+
+                        <li><a href="#">
+                            <div class="clearfix">
+                                <span class="pull-left"> <i class="btn btn-xs no-hover btn-info icon-twitter"></i> 粉丝 </span> <span class="pull-right badge badge-info">+11</span>
+                            </div>
+                        </a></li>
+
+                        <li><a href="#"> 查看所有通知 <i class="icon-arrow-right"></i>
+                        </a></li>
+                    </ul></li>
+
+                <li class="green">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="icon-envelope icon-animated-vertical"></i>
+                        <span class="badge badge-success">5</span>
+                    </a>
+
+                    <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="icon-envelope-alt"></i>
+                            5条消息
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <img src="/images/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+                                <span class="msg-body">
+                                    <span class="msg-title">
+                                        <span class="blue">Alex:</span>
+                                        不知道写啥 ...
+                                    </span>
+
+                                    <span class="msg-time">
+                                        <i class="icon-time"></i>
+                                        <span>1分钟以前</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <img th:src="@{/images/avatars/avatar3.png}"  class="msg-photo" alt="Susan's Avatar" />
+                                <span class="msg-body">
+                                    <span class="msg-title">
+                                        <span class="blue">Susan:</span>
+                                        不知道翻译...
+                                    </span>
+
+                                    <span class="msg-time">
+                                        <i class="icon-time"></i>
+                                        <span>20分钟以前</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <img th:src="@{/images/avatars/avatar4.png}"  class="msg-photo" alt="Bob's Avatar" />
+                                <span class="msg-body">
+                                    <span class="msg-title">
+                                        <span class="blue">Bob:</span>
+                                        到底是不是英文 ...
+                                    </span>
+
+                                    <span class="msg-time">
+                                        <i class="icon-time"></i>
+                                        <span>下午3:15</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="inbox.html">
+                                查看所有消息
+                                <i class="icon-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="@{/images/dudu.jpg}" />
+                        <span class="user-info">
+                            <small>欢迎光临,</small>
+                            <span th:text="${session.loginUser.account}">大神</span>
+						</span>
+                        <i class="icon-caret-down"></i>
+                    </a>
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li><a href="#"> <i class="icon-cog"></i> 设置</a></li>
+                        <li><a onclick="showUserProfile()"><i class="icon-user"></i> 个人资料</a></li>
+                        <li class="divider"></li>
+                        <li><a id="outLogin" href="#"> <i class="icon-off"></i>退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- /.ace-nav -->
+        </div>
+        <!-- /.navbar-header -->
+    </div>
+    <!-- /.container -->
+</div>
+
+<div class="main-container" id="main-container">
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#"> <span class="menu-text"></span></a>
+        <div class="sidebar" id="sidebar">
+            <ul id="menus" class="nav nav-list">
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-desktop"></i>
+                        <span class="menu-text">直播管理</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a id="liveuser" value="/manager/livemanager/liveuser" class="changeUrl">
+                                <i class="icon-double-angle-right"></i>直播用户
+                            </a>
+                        </li>
+                        <li>
+                            <a id="attentionmanager" value="/manager/livemanager/attentionmanager" class="changeUrl">
+                                <i class="icon-double-angle-right"></i>用户关注
+                            </a>
+                        </li>
+                        <li>
+                            <a id="fansmanager" value="/manager/livemanager/fansmanager"
+                               class="changeUrl"><i class="icon-double-angle-right"></i>用户粉丝
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-cogs"></i>
+                        <span class="menu-text">系统管理</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a id="usermanager" value="/manager/usermanager" class="changeUrl">
+                                <i class="icon-double-angle-right"></i>
+                                全部用户
+                            </a>
+                        </li>
+                        <li>
+                            <a id="sysmessage" value="/mamager/sysmessage" class="changeUrl">
+                                <i class="icon-double-angle-right"></i>
+                                系统消息
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                 <li>
+                     <a href="#" class="dropdown-toggle">
+                         <i class="icon-list"></i>
+                         <span class="menu-text">视频管理</span>
+                         <b class="arrow icon-angle-down"></b>
+                     </a>
+                     <ul class="submenu">
+                         <li>
+                             <a id="sysvideo" value="/manager/videomanager/sysvideo" class="changeUrl">
+                                 <i class="icon-double-angle-right"></i>
+                                 视频管理
+                             </a>
+                         </li>
+                     </ul>
+                 </li>
+                <!--
+                 <li>
+                     <a href="#" class="dropdown-toggle">
+                         <i class="icon-cloud"></i>
+                         <span class="menu-text">资源管理</span>
+
+                         <b class="arrow icon-angle-down"></b>
+                     </a>
+                     <ul class="submenu">
+                         <li>
+                             <a href="tables.html">
+                                 <i class="icon-double-angle-right"></i>
+                                 课程资源管理
+                             </a>
+                         </li>
+                     </ul>
+                 </li>
+                 -->
+            </ul>
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="icon-double-angle-left"
+                   data-icon1="icon-double-angle-left"
+                   data-icon2="icon-double-angle-right"></i>
+            </div>
+        </div>
+        <div class="main-content">
+            <ul class="nav nav-tabs" role="tablist" style="height:34px">
+                <li role="presentation" class="active" style="margin-right: 4px;">
+                    <a href="#home" aria-controls="home" role="tab" data-toggle="tab"><i class="icon-home home-icon"></i>首页</a>
+                </li>
+            </ul>
+            <div class="tab-content page-content" style="margin-right: 5px;">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <iframe id="mainIframe" th:src="@{/manager/home}" scrolling="no" frameborder="0" width="100%" style="border: 0;height: 200px;"></iframe>
+                </div>
+            </div>
+        </div>
+        <!-- /.main-content -->
+        <div class="ace-settings-container" id="ace-settings-container">
+            <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                <i class="icon-cog bigger-150"></i>
+            </div>
+            <div class="ace-settings-box" id="ace-settings-box">
+                <div>
+                    <div class="pull-left">
+                        <select id="skin-colorpicker" class="hide">
+                            <option data-skin="default" value="#438EB9">#438EB9</option>
+                            <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                            <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                            <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                        </select>
+                    </div>
+                    <span>&nbsp; 选择皮肤</span>
+                </div>
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" /> <label class="lbl" for="ace-settings-navbar"> 固定导航条</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar"/> <label class="lbl" for="ace-settings-sidebar"> 固定滑动条</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" /> <label class="lbl" for="ace-settings-breadcrumbs">固定面包屑</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" /> <label class="lbl" for="ace-settings-rtl">切换到左边</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" /> <label class="lbl" for="ace-settings-add-container">切换窄屏<b></b></label>
+                </div>
+            </div>
+        </div>
+        <!-- /#ace-settings-container -->
+    </div>
+</div>
+
+<!--新增窗口,用户信息显示-->
+<div id="personUserInfoModal" class="bootbox modal fade" aria-hidden="true"
+      style="width:0;display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width:70%">
+        <div>
+            <div class="page-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">User Profile Page</h4>
+                </div>
+                <div class="row">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <div class="btn-toolbar inline middle no-margin">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr dotted"></div>
+                    <div>
+                        <div id="user-profile-1" class="user-profile row">
+                            <div class="col-xs-12 col-sm-3 center">
+                                <div>
+                                    <!--用户头像-->
+                                    <span class="profile-picture">
+                                        <img id="avatar" class="editable img-responsive" alt="Alex's Avatar"
+                                             th:src="@{/images/avatars/profile-pic.jpg}" style="height: 70px;width: 70px"
+                                             src="../static/images/avatars/profile-pic.jpg"/>
+                                    </span>
+                                    <div class="space-4"></div>
+                                    <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                                        <div class="inline position-relative">
+                                            <i class="icon-circle light-green middle"></i>
+                                            &nbsp;
+                                            <span class="white">Alex M. Doe</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-12"></div>
+                                <!--发送通知-->
+                                <div class="profile-contact-info">
+                                    <div class="profile-contact-links align-left">
+                                        <a class="btn btn-link" href="#">
+                                            <i class="icon-envelope bigger-120 pink"></i>
+                                            发送通知
+                                        </a>
+                                    </div>
+                                    <div class="space-12"></div>
+                                </div>
+                                <div class="hr hr12 dotted"></div>
+                                <!--粉丝和关注数量-->
+                                <div class="clearfix">
+                                    <div class="grid2">
+                                        <span class="bigger-175 blue" id="fansnum">0</span>
+                                        <br/>
+                                        粉丝数
+                                    </div>
+                                    <div class="grid2">
+                                        <span class="bigger-175 blue" id="attentionsnum">0</span>
+                                        <br/>
+                                        关注数
+                                    </div>
+                                </div>
+                                <div class="hr hr16 dotted"></div>
+                            </div>
+
+                            <!--用户信息显示表格-->
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="profile-user-info profile-user-info-striped">
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 账户</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showaccount">xxxxxx</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 姓名</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showname">Netherlands</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 昵称</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="shownickname">Tom</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 出生日期</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showborndata"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 性别</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showsex">男</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 邮箱</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showemail">wotrd_work@aliyun.com</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 身份证</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showidcard">371324199501216815</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 手机号</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showmobilenum">17862901468</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 个性签名</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showpersonalsign">too young too simple!</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name"> 积分</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showgrade">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name" >加入时间</div>
+
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showcreatetime">2017-10-10</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row" style="height: 30px;">
+                                        <div class="profile-info-name">身份</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="showrole">管理员</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div><!-- /.main-content -->
+    </div>
+</div>
+
+<!-- /.main-container -->
+<script src="../static/js/ace-extra.min.js" th:src="@{/js/ace-extra.min.js}"></script>
+<!--[if lt IE 9]>
+<script src="../static/js/html5shiv.js" th:src="@{/js/html5shiv.js}"></script>
+<script src="../static/js/respond.min.js" th:src="@{/js/respond.min.js}"></script>
+<![endif]-->
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery-ui-1.10.3.custom.min.js" th:src="@{/js/jquery-ui-1.10.3.custom.min.js}"></script>
+<script src="../static/js/jquery.slimscroll.min.js" th:src="@{/js/jquery.slimscroll.min.js}"></script>
+<script src="../static/js/chosen.jquery.min.js" th:src="@{/js/chosen.jquery.min.js}"></script>
+<script src="../static/js/ace-elements.min.js" th:src="@{/js/ace-elements.min.js}"></script>
+<script src="../static/js/ace.min.js" th:src="@{/js/ace.min.js}"></script>
+<script src="../static/js/md5.js" th:src="@{/js/md5.js}"></script>
+<script src="../static/js/custom.js" th:src="@{/js/custom.js}"></script>
+<script src="../static/js/jquery.messager.js" th:src="@{/js/jquery.messager.js}"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="此代码内容为超萌的猫头鹰登录界面"/>
+    <title>健身直播登录</title>
+    <link rel="stylesheet" href="../static/css/jq22.css" th:href="@{/css/jq22.css}"/>
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}"/>
+    <script src="../static/js/jquery-1.10.2.min.js" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../static/js/jquery.messager.js" th:src="@{/js/jquery.messager.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#login #password').focus(function () {
+                $('#owl-login').addClass('password');
+            }).blur(function () {
+                $('#owl-login').removeClass('password');
+            });
+            //验证验证码是否正确
+            $("#validation").keyup(function () {
+                if ($("#validation").val().length == 4) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/manager/login/toVerifyCode?time=" + new Date().getTime(),
+                        data: {
+                            verifyCode: $("#validation").val()
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.result == "1") {
+                                $("#checkValidation").removeClass().addClass("fa fa-check");
+                            }
+                        }
+                    });
+                } else {
+                    $("#checkValidation").removeClass().addClass("fa fa-question-circle");
+                }
+            });
+            //简单登录操作
+            $("#doLogin").click(function () {
+                login();
+            });
+        });
+
+        function login() {
+            if ($("#userName").val().length == 0) {
+                $.messager.alert("提示", "账户不能为空！");
+            } else if ($("#password").val() == 0) {
+                $.messager.alert("提示", "密码不能为空！");
+            } else if ($("#checkValidation").attr("class") == "fa fa-question-circle") {
+                $.messager.alert("提示", "验证码输入错误！");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/login/doLogin",
+                    data: {
+                        "userName": $("#userName").val(),
+                        "password": $("#password").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+
+                        if (data.result == "1") {
+                            window.location.href = "/manager/";
+                        } else {
+                            $.messager.alert("请输入正确的用户名和密码！");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                login();
+            }
+        });
+    </script>
+</head>
+<body>
+<!-- begin -->
+<div id="login">
+    <div class="wrapper">
+        <div class="login">
+            <form action="#" method="post" class="container offset1 loginform">
+                <div id="owl-login">
+                    <div class="hand"></div>
+                    <div class="hand hand-r"></div>
+                    <div class="arms">
+                        <div class="arm"></div>
+                        <div class="arm arm-r"></div>
+                    </div>
+                </div>
+                <div class="pad">
+                    <input type="hidden" name="_csrf" value="9IAtUxV2CatyxHiK2LxzOsT6wtBE6h8BpzOmk="/>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="userName" class="control-label"><i class="fa fa-user"
+                                                                           aria-hidden="true"></i></label>
+                            <input id="userName" type="text" name="account" placeholder="账号" tabindex="1"
+                                   autofocus="autofocus" class="form-control input-medium"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="password" class="control-label"><i class="fa fa-key"
+                                                                           aria-hidden="true"></i></label>
+                            <input id="password" type="password" name="password" placeholder="密码" tabindex="2"
+                                   class="form-control input-medium"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="validation" class="control-label"><i id="checkValidation"
+                                                                             class="fa fa-question-circle"
+                                                                             aria-hidden="true"></i></label>
+                            <input id="validation" type="text" name="validation" placeholder="验证码" tabindex="3"
+                                   autofocus="autofocus" class="checkbox-inline input-medium"/>
+                            <img id="img" name="validation" tabindex="3"
+                                 onclick="this.src='/manager/login/getVerifyCode?time='+new Date().getTime()"
+                                 src="/manager/login/getVerifyCode"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions"><a href="#" tabindex="5" class="btn pull-left btn-link text-muted">Forgot
+                    password?</a>
+                    <a href="/manager/register/toRegister" tabindex="6" class="btn btn-link text-muted">Sign Up</a>
+                    <button type="button" id="doLogin" tabindex="4" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- end -->
+</body>
+</html>
