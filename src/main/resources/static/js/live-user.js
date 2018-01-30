@@ -11,22 +11,49 @@ $(function(){
         $(grid_selector).setGridWidth($(window).width()*0.95);
     });
     $(grid_selector).jqGrid({
-        url:"/manager/livemanager/queryFansList",
+        url:"/manager/livemanager/getLiveUsers",
         datatype: "json",
         mtype: 'POST',
         height:window.screen.height-550,
         colModel: [
-            { label: 'uid', name: 'uid', width: 75},
-            { label: '用户账户', name: 'account', width: 200 },
-            { label: '粉丝账户', name: 'fs_account', width: 200 },
-            { label: '粉丝昵称', name: 'fs_nickname', width: 200},
-            { name: 'dsource_alarm', index: 'dsource_alarm', width: 30,
-                align: "center", sortable: false, editable: false, formatter: alarmFormatter },
-            { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
-                return '<a class="btn btn-purple btn-sm" onclick="cancelFans(this);"' +
-                    'target="_blank">' + '<i class="fa fa-cog  fa-spin" aria-hidden="true"></i>取关</a>';
-            }},
-            { label: '', name: '', width: 0.1},
+            { label: 'id', name: 'uid', width: 75,hidden:true},
+            { label: 'amatar', name: 'amatar', width: 75,hidden:true},
+            { label: 'password', name: 'password', width: 75,hidden:true},
+            { label: 'borndata', name: 'borndata', width: 75,hidden:true},
+            { label: 'fansnum', name: 'fansnum', width: 75,hidden:true},
+            { label: 'attentionnum', name: 'attentionnum', width: 75,hidden:true},
+            { label: 'borndata', name: 'borandata', width: 75,hidden:true},
+            { label: 'personalsign', name: 'personalsign', width: 75,hidden:true},
+            { label: 'grade', name: 'grade', width: 75,hidden:true},
+            { label: 'createtime', name: 'createtime', width: 75,hidden:true},
+            { label: 'id', name: 'uid', width: 75,hidden:true},
+            { label: '账户', name: 'account', width: 100 },
+            { label: '姓名', name: 'name', width: 100 },
+            { label: '性别', name: 'gender', width: 100 },
+            { label: '昵称', name: 'nickname', width: 120 },
+            { label: '邮箱', name: 'email', width: 130 },
+            { label: '身份证', name: 'idcard', width: 150 },
+            { label: '手机号', name: 'phonenum', width: 120 },
+            { label: '角色', name: 'role', width: 100,formatter:function (cellvalue,options,cell) {
+                    if (cellvalue==1){
+                        return '<p>管理员</p>';
+                    }else{
+                        return '<p>用户</p>';
+                    }
+                }},
+            { label: '正在直播', name: 'islive', width: 100 ,formatter:function (cellvalue,options,cell) {
+                    if (cellvalue==1){
+                        return '<p>是</p>';
+                    }else{
+                        return '<p>否</p>';
+                    }
+                }},
+            { label: '加入时间', name: 'createtime', width: 100 },
+            { label: '查看', name: 'watch', width: 100,
+                formatter: function(cellvalue, options, cell){
+                    return '<a class="btn btn-purple btn-sm " target="_blank" onclick="showUserProfile(this);"><i class="fa fa-cog  fa-spin" aria-hidden="true"></i>点我</a>';
+                }},
+            { label: '', name: '', width: 0.01}
         ],
         pager: pager_selector,
         rowNum:rowNum,
@@ -87,33 +114,16 @@ $(function(){
         }
     );
     //查询点击事件
-    $("#queryFansBtn").click(function(){
+    $("#queryLiveUserBtn").click(function(){
         var qryAccount=$("#qryAccount").val();
-        var qryId=$("#qryId").val();
+        var qryNickname=$("#qryNickname").val();
         $(grid_selector).jqGrid('setGridParam',{
-            postData:{account:qryAccount,uid:qryId},
+            postData:{account:qryAccount,nickname:qryNickname},
             //search: true,
             page:1
         }).trigger("reloadGrid");
     });
-    //新增粉丝，弹出新增窗口
-    $("#addFansBtn").click(function () {
-        initData();
-        $("#addFansModal").modal({
-            keyboard : false,
-            show : true,
-            backdrop : "static"
-        });
 
-    });
-    //编辑对话框取消点击事件
-    $('#candelSaveFansBtn').click(function(){
-        $("#addFansModal").modal('hide');
-    });
-    //保存教程
-    $('#saveFansBtn').click(function(){
-        saveFans();
-    });
 });
 //自定义报警列格式
 function alarmFormatter(cellvalue, options, rowdata)
@@ -199,7 +209,7 @@ function saveFans(){
 }
 function refreshData(){
     $(grid_selector).jqGrid('setGridParam',{
-        postData:{account:null,uid:null},
+        postData:{account:null,nickname:null},
         page:1
     }).trigger("reloadGrid");
 }

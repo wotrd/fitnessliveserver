@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="playercontainer"></div>
+<div onclick="closeVideo();">ggggg</div>
+<div onclick="playVideo();">play</div>
+<script type="text/javascript" src="../static/js/player/cyberplayer.js"></script>
+<script type="text/javascript">
+    var player;
+    function playVideo() {
+            player = cyberplayer("playercontainer").setup({
+            width: 680,
+            height: 448,
+            file: "rtmp://live.hkstv.hk.lxdns.com/live/hks", // <—rtmp直播地址
+            autostart: true,
+            stretching: "uniform",
+            volume: 100,
+            controls: true,
+            rtmp: {
+                reconnecttime: 5, // rtmp直播的重连次数
+                bufferlength: 1 // 缓冲多少秒之后开始播放 默认1秒
+            },
+            ak: "e98411fba665450d8ce194dae1d4d733" // 公有云平台注册即可获得accessKey
+        });
+    };
+    function closeVideo() {
+        player.pause();
+    }
+
+
+</script>
+</body>
+</html>

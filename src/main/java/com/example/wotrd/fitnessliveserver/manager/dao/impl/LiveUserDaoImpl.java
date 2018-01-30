@@ -52,14 +52,14 @@ public class LiveUserDaoImpl implements LiveUserDao {
     }
 
     @Override
-    public Page queryLearnResouceList(Map<String,Object> params) {
+    public Page queryLiveUserList(Map<String,Object> params) {
         StringBuffer sql =new StringBuffer();
-        sql.append("select * from learn_resource where 1=1");
-        if(!StringUtil.isNull((String)params.get("author"))){
-            sql.append(" and author like '%").append((String)params.get("author")).append("%'");
+        sql.append("select * from users where islive=0");
+        if(!StringUtil.isNull((String)params.get("account"))){
+            sql.append(" and account like '%").append((String)params.get("account")).append("%'");
         }
-        if(!StringUtil.isNull((String)params.get("title"))){
-            sql.append(" and title like '%").append((String)params.get("title")).append("%'");
+        if(!StringUtil.isNull((String)params.get("nickname"))){
+            sql.append(" and nickname like '%").append((String)params.get("nickname")).append("%'");
         }
         Page page = new Page(sql.toString(), Integer.parseInt(params.get("page").toString()), Integer.parseInt(params.get("rows").toString()), jdbcTemplate);
         return page;

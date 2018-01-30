@@ -14,5 +14,5 @@ public interface LiveUserDao {
     int update(LearnResource learnResouce);
     int deleteByIds(String ids);
     LearnResource queryLearnResouceById(Long id);
-    Page queryLearnResouceList(Map<String, Object> params);
+    Page queryLiveUserList(Map<String, Object> params);
 }

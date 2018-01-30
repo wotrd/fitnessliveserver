@@ -34,17 +34,17 @@
                                             <form class="form-horizontal" role="form" onsubmit="return false;">
 
                                                 <div class="form-group" style="margin-bottom: 0;">
-                                                    <label class="col-sm-1 control-label">作者：</label>
+                                                    <label class="col-sm-1 control-label">账户：</label>
                                                     <div class="col-sm-3" style="width: 200px;">
-                                                        <input id="qryAuthor"  data-original-title="Tooltip for name" class="form-control radius" placeholder="关键字" type="text" />
+                                                        <input id="qryAccount"  data-original-title="Tooltip for name" class="form-control radius" placeholder="关键字" type="text" />
                                                     </div>
-                                                    <label class="col-sm-1 control-label">教程名称：</label>
+                                                    <label class="col-sm-1 control-label">昵称：</label>
                                                     <div class="col-sm-3" style="width: 200px;">
-                                                        <input id="qryTitle" data-original-title="Tooltip for name" class="form-control radius" placeholder="关键字" type="text"  />
+                                                        <input id="qryNickname" data-original-title="Tooltip for name" class="form-control radius" placeholder="关键字" type="text"  />
                                                     </div>
 
                                                     <div class="col-sm-1">
-                                                        <button id="queryBtn" class="btn btn-info btn-sm btn-label-left radius">
+                                                        <button id="queryLiveUserBtn" class="btn btn-info btn-sm btn-label-left radius">
                                                             <i class="fa fa-search"></i>查询
                                                         </button>
                                                     </div>
@@ -55,15 +55,15 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div style="margin-bottom: 10px;">
-                                        <button  class="btn btn-success btn-sm radius" id="addLearnBtn">
+                                        <!--<button  class="btn btn-success btn-sm radius" id="addLearnBtn">
                                             <i class="fa  fa-plus"></i> 新增
-                                        </button>
-                                        <button  class="btn btn-primary btn-sm radius" id="modifyLearnBtn">
+                                        </button>-->
+                                       <!-- <button  class="btn btn-primary btn-sm radius" id="modifyLearnBtn">
                                             <i class="fa fa-pencil-square-o"></i> 修改
-                                        </button>
-                                        <button  class="btn btn-danger btn-sm radius" id="deleteLearnBtn">
+                                        </button>-->
+                                       <!-- <button  class="btn btn-danger btn-sm radius" id="deleteLearnBtn">
                                             <i class="fa fa-trash-o fa-lg"></i> 删除
-                                        </button>
+                                        </button>-->
                                     </div>
                                     <table id="jqGrid"></table>
                                     <div id="jqGridPager"></div>
@@ -77,13 +77,13 @@
     </div>
 </div>
 
-<!--新增窗口-->
+<!--观看直播modal-->
 <div id="addModal" class="bootbox modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">新增教程</h4>
+                <h4 class="modal-title" id="myModalLabel">用户直播</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form" onsubmit="return false;">
@@ -143,7 +143,7 @@
 <script src="../static/js/jquery.messager.js" th:src="@{/js/jquery.messager.js}"></script>
 <script src="../static/js/layer/layer.js" th:src="@{/js/layer/layer.js}"></script>
 <script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
-<script th:src="@{/js/learn-resource.js}"></script>
+<script th:src="@{/js/live-user.js}"></script>
 
 </body>
 </html>

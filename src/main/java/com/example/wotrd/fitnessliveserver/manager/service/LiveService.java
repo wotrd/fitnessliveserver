@@ -38,7 +38,7 @@ public class LiveService {
     }
 
 
-    public Page queryLearnResouceList(Map<String,Object> params) {
-        return this.learnDao.queryLearnResouceList(params);
+    public Page queryLiveUserList(Map<String,Object> params) {
+        return this.learnDao.queryLiveUserList(params);
     }
 }
