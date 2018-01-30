@@ -1,6 +1,10 @@
 # FitnessLive
-a very simple android live appliation
-mvn package -DskipTests=true
+document:
+    a very simple android live appliation
+package:
+    mvn package -DskipTests=true
+
+
 后台制作
 
 -----------------------------------------------
