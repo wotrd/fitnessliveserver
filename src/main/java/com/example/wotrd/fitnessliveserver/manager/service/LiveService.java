@@ -16,29 +16,9 @@ import java.util.Map;
 public class LiveService {
 
     @Autowired
-    LiveUserDao learnDao;
-
-    public int add(LearnResource learnResouce) {
-        return this.learnDao.add(learnResouce);
-    }
-
-
-    public int update(LearnResource learnResouce) {
-        return this.learnDao.update(learnResouce);
-    }
-
-
-    public int deleteByIds(String ids) {
-        return this.learnDao.deleteByIds(ids);
-    }
-
-
-    public LearnResource queryLearnResouceById(Long id) {
-        return this.learnDao.queryLearnResouceById(id);
-    }
-
+    LiveUserDao liveUserDao;
 
     public Page queryLiveUserList(Map<String,Object> params) {
-        return this.learnDao.queryLiveUserList(params);
+        return this.liveUserDao.queryLiveUserList(params);
     }
 }

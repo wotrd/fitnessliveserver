@@ -22,36 +22,6 @@ public class LiveUserDaoImpl implements LiveUserDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public int add(LearnResource learnResouce) {
-        return jdbcTemplate.update("insert into learn_resource(author, title,url) values(?, ?, ?)",learnResouce.getAuthor(),learnResouce.getTitle(),learnResouce.getUrl());
-    }
-
-    @Override
-    public int update(LearnResource learnResouce) {
-        return jdbcTemplate.update("UPDATE learn_resource SET author=?,title=?,url=? ," +
-                "WHERE id=?",new Object[]{learnResouce.getAuthor(),learnResouce.getTitle(),
-                learnResouce.getUrl(),learnResouce.getId()});
-    }
-
-    @Override
-    public int deleteByIds(String ids){
-        return jdbcTemplate.update("delete from learn_resource where id in("+ids+")");
-    }
-
-    @Override
-    public LearnResource queryLearnResouceById(Long id) {
-        List<LearnResource> list = jdbcTemplate.query
-                ("select * from learn_resource where id = ?",
-                        new Object[]{id}, new BeanPropertyRowMapper(LearnResource.class));
-        if(null != list && list.size()>0){
-            LearnResource learnResouce = list.get(0);
-            return learnResouce;
-        }else{
-            return null;
-        }
-    }
-
-    @Override
     public Page queryLiveUserList(Map<String,Object> params) {
         StringBuffer sql =new StringBuffer();
         sql.append("select * from users where islive=0");

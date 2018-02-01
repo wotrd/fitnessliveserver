@@ -3,7 +3,8 @@ document:
     a very simple android live appliation
 package:
     mvn package -DskipTests=true
-
+    应为使用了javacv在centos上需要配置javac：
+    http://blog.csdn.net/jalon2015/article/details/75174989
 
 后台制作
  

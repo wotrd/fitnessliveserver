@@ -368,10 +368,12 @@ function saveAddUser(){
                 $.messager.alert('温馨提示',result.message);
                 refreshData();
                 $('#updateUserSaveBtn').removeAttr("disabled");
-                $("#updateUserModal").modal('hide');
+                $("#addUserModal").modal('hide');
             }else{
                 $.messager.alert('温馨提示',result.message);
             }
+
+
         },
         complete: function () {
              $('#updateUserSaveBtn').removeAttr("disabled");

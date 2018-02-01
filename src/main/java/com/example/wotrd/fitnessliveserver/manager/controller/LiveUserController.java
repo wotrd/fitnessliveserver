@@ -1,11 +1,9 @@
 package com.example.wotrd.fitnessliveserver.manager.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.wotrd.fitnessliveserver.manager.domain.LearnResource;
 import com.example.wotrd.fitnessliveserver.manager.service.LiveService;
 import com.example.wotrd.fitnessliveserver.tools.Page;
 import com.example.wotrd.fitnessliveserver.tools.ServletUtil;
-import com.example.wotrd.fitnessliveserver.tools.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,115 +54,5 @@ public class LiveUserController {
         jo.put("records", pageObj.getTotalRows());
         ServletUtil.createSuccessResponse(200, jo, response);
     }
-    /**
-     * 新添教程
-     * @param request
-     * @param response
-     */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public void addLearn(HttpServletRequest request , HttpServletResponse response){
-        JSONObject result=new JSONObject();
-        String author = request.getParameter("author");
-        String title = request.getParameter("title");
-        String url = request.getParameter("url");
-        if(StringUtil.isNull(author)){
-            result.put("message","作者不能为空!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        if(StringUtil.isNull(title)){
-            result.put("message","教程名称不能为空!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        if(StringUtil.isNull(url)){
-            result.put("message","地址不能为空!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        LearnResource learnResouce = new LearnResource();
-        learnResouce.setAuthor(author);
-        learnResouce.setTitle(title);
-        learnResouce.setUrl(url);
-        int index=liveService.add(learnResouce);
-        System.out.println("结果="+index);
-        if(index>0){
-            result.put("message","教程信息添加成功!");
-            result.put("flag",true);
-        }else{
-            result.put("message","教程信息添加失败!");
-            result.put("flag",false);
-        }
-        ServletUtil.createSuccessResponse(200, result, response);
-    }
-    /**
-     * 修改教程
-     * @param request
-     * @param response
-     */
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public void updateLearn(HttpServletRequest request , HttpServletResponse response){
-        JSONObject result=new JSONObject();
-        String id = request.getParameter("id");
-        LearnResource learnResouce=liveService.queryLearnResouceById(Long.valueOf(id));
-        String author = request.getParameter("author");
-        String title = request.getParameter("title");
-        String url = request.getParameter("url");
-        if(StringUtil.isNull(author)){
-            result.put("message","作者不能为空!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        if(StringUtil.isNull(title)){
-            result.put("message","教程名称不能为空!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        if(StringUtil.isNull(url)){
-            result.put("message","地址不能为空!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        learnResouce.setAuthor(author);
-        learnResouce.setTitle(title);
-        learnResouce.setUrl(url);
-        int index=liveService.update(learnResouce);
-        System.out.println("修改结果="+index);
-        if(index>0){
-            result.put("message","教程信息修改成功!");
-            result.put("flag",true);
-        }else{
-            result.put("message","教程信息修改失败!");
-            result.put("flag",false);
-        }
-        ServletUtil.createSuccessResponse(200, result, response);
-    }
-    /**
-     * 删除教程
-     * @param request
-     * @param response
-     */
-    @RequestMapping(value="/delete",method = RequestMethod.POST)
-    @ResponseBody
-    public void deleteUser(HttpServletRequest request ,HttpServletResponse response){
-        String ids = request.getParameter("ids");
-        System.out.println("ids==="+ids);
-        JSONObject result = new JSONObject();
-        //删除操作
-        int index = liveService.deleteByIds(ids);
-        if(index>0){
-            result.put("message","教程信息删除成功!");
-            result.put("flag",true);
-        }else{
-            result.put("message","教程信息删除失败!");
-            result.put("flag",false);
-        }
-        ServletUtil.createSuccessResponse(200, result, response);
-    }
+
 }
