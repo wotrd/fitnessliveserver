@@ -1,15 +1,11 @@
 package com.example.wotrd.fitnessliveserver.tools;
 
-import org.bytedeco.javacpp.opencv_core;
-import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.Frame;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 public class VideoThumbnailsTools {
     /**
-     * 使用javacv截取视频的缩略图
+     * 使用ffmpeg截取视频的缩略图
      */
   /*  public static void main(String []args){
         try {
@@ -20,47 +16,33 @@ public class VideoThumbnailsTools {
     }*/
     /**
      * 获取指定视频的帧并保存为图片至指定目录
-     * @param videofile  源视频文件路径
-     * @param framefile  截取帧的图片存放路径
+     * java调用cmd使用ffmpeg命令处理ffmpeg
+     * @param videoPath  源视频文件路径
+     * @param imagePath  截取帧的图片存放路径
      * @throws Exception
      */
-    public static boolean fetchFrame(String videofile, String framefile)
-            throws Exception {
-        FFmpegFrameGrabber ff=null;
-        try{
-            long start = System.currentTimeMillis();
-            File targetFile = new File(framefile);
-                ff = new FFmpegFrameGrabber(videofile);
-            ff.start();
-            int lenght = ff.getLengthInFrames();
-            int i = 0;
-            Frame f = null;
-            while (i < lenght) {
-                // 过滤前5帧，避免出现全黑的图片，依自己情况而定
-                f = ff.grabFrame();
-                if ((i > 5) && (f.image != null)) {
-                    break;
-                }
-                i++;
+    public static boolean fetchFrame(String videoPath, String imagePath) {
+            //ffmpeg -i xxx.mp4 -y -f image2 -t 0.001 -s 125x125 xxx.jpg
+            List cmd = new java.util.ArrayList();
+            cmd.add("ffmpeg");// 视频提取工具的位置
+            cmd.add("-i");
+            cmd.add(videoPath);
+            cmd.add("-y");
+            cmd.add("-f");
+            cmd.add("image2");
+            cmd.add("-t");
+            cmd.add("0.001");
+            cmd.add("-s");
+            cmd.add("500x500");
+            cmd.add(imagePath);
+            ProcessBuilder builder = new ProcessBuilder();
+            builder.command(cmd);
+            try {
+                builder.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
-            opencv_core.IplImage img = f.image;
-            int owidth = img.width();
-            int oheight = img.height();
-            // 对截取的帧进行等比例缩放
-            int width = 800;
-            int height = (int) (((double) width / owidth) * oheight);
-            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-            bi.getGraphics().drawImage(f.image.getBufferedImage().getScaledInstance(width, height, Image.SCALE_SMOOTH),
-                    0, 0, null);
-            ImageIO.write(bi, "jpg", targetFile);
-        //ff.flush();
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }finally {
-            if (null!=ff) ff.stop();
-        }
-        //System.out.println(System.currentTimeMillis() - start);
-        return true;
+            return true;
     }
 }

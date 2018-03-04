@@ -6,7 +6,7 @@ import com.example.wotrd.fitnessliveserver.manager.domain.UploadVideo;
 import com.example.wotrd.fitnessliveserver.tools.DateUtil;
 import com.example.wotrd.fitnessliveserver.tools.Page;
 import com.example.wotrd.fitnessliveserver.tools.ServletUtil;
-import com.example.wotrd.fitnessliveserver.tools.VideoThumbnailsTools;
+import com.example.wotrd.fitnessliveserver.tools.VideoThumbnailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -113,7 +113,9 @@ public class VideoService {
      * 获取上传视频的进度值
      */
     public void getUploadVideoProgress(HttpServletRequest request,HttpServletResponse response){
+        System.out.println("---start get upload progress");
         String progress = (String) request.getSession().getAttribute("upload-sys-video-progress");
+        if(null==progress||"".equals(progress)) return;
         JSONObject result=new JSONObject();
         result.put("progress",(null!=progress)?progress:0);
         result.put("flag",true);
@@ -126,6 +128,7 @@ public class VideoService {
     public void uploadSysVideo(HttpServletRequest request, HttpServletResponse response) {
         String title = request.getParameter("title");
         JSONObject result=new JSONObject();
+        System.out.println("--------upload video start");
         /** 设置本地存储地址和名字*/
         String baseUrl = env.getProperty("fitnesslive_file_save_url");
         String baseRemoteUrl=env.getProperty("get_file_url");
@@ -133,15 +136,21 @@ public class VideoService {
         String thumbnailName="/img/media/pic/"+uuid.toString()+".jpg";
         String videoName="/img/media/video/"+uuid.toString()+".mp4";
          /** 视频上传 */
-        if (!saveVideoTodisk("upload_file",baseUrl+videoName,result,request,response)){
+        System.out.println("----------video start upload");
+        long time=System.currentTimeMillis();
+
+         if (!saveVideoTodisk("upload_file",baseUrl+videoName,result,request,response)){
+             System.out.println("--------video upload to disk");
             result.put("message","服务器繁忙，请稍后...");
             result.put("flag",false);
             ServletUtil.createSuccessResponse(200, result, response);
             return;
          }
+        System.out.println("-----------video upload success time "+(System.currentTimeMillis()-time));
         /** 用户缩略图上传*/
         try {
-            if (!VideoThumbnailsTools.fetchFrame(baseUrl+videoName,baseUrl+thumbnailName)){
+            System.out.println("----------video img start upload");
+            if (!VideoThumbnailUtils.fetchFrame(baseUrl+videoName,baseUrl+thumbnailName)){
                 result.put("message","服务器繁忙，请稍后...");
                 result.put("flag",false);
                 ServletUtil.createSuccessResponse(200, result, response);
@@ -149,13 +158,14 @@ public class VideoService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("---------video img save failed");
             result.put("message","服务器繁忙，请稍后...");
             result.put("flag",false);
             ServletUtil.createSuccessResponse(200, result, response);
             return;
         }
         /** 将上传的记录添加到数据库中 */
-
+        System.out.println("------------upload video img time"+(System.currentTimeMillis()-time));
         if (!videoDao.uploadSysVideo(title, baseRemoteUrl+videoName,
                 baseRemoteUrl+thumbnailName, DateUtil.formatNormalDateString(new Date()),0,1)){
             /**删除上传的视频缩略图*/
@@ -168,6 +178,7 @@ public class VideoService {
             if (videoFile.exists()){
                 videoFile.delete();
             }
+            System.out.println("---------save data failed");
             result.put("message","服务器繁忙，请稍后...");
             result.put("flag",false);
             ServletUtil.createSuccessResponse(200, result, response);
@@ -191,7 +202,7 @@ public class VideoService {
             size = part.getSize();
             int len=0;
             inputStream = part.getInputStream();
-            byte[] buff=new byte[1024];
+            byte[] buff=new byte[2048];
             ostream = new FileOutputStream(file);
             while ((len= inputStream.read(buff))!=-1){
                 ostream.write(buff,0,len);

@@ -126,7 +126,6 @@ function cancelFans(base){
     $.messager.confirm("温馨提示", "是否确定取消关注？", function() {
         $.ajax({
             url:"/manager/livemanager/delete",
-        /manager/livemanager/queryFansList
             cache: false,
             type:"post",
             data:{

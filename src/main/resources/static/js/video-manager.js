@@ -198,7 +198,7 @@ function uploadSysVideo(){
                 }
             }
         }).fail(function(res) {});
-    },0,300);
+    },300,2000);
     /!*上传视频*!/
     $.ajax({
         url: '/manager/videomanager/uploadSysVideo',

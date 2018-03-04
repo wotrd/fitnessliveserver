@@ -90,19 +90,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.bytedeco</groupId>
 			<artifactId>javacv</artifactId>
 			<version>0.8</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.intel.analytics.bigdl.core.native.opencv/opencv-java-x86_64-linux -->
-		<!-- https://mvnrepository.com/artifact/com.intel.analytics.bigdl.core.native.opencv/opencv-java-x86_64-linux -->
-		<dependency>
-			<groupId>com.intel.analytics.bigdl.core.native.opencv</groupId>
-			<artifactId>opencv-java-x86_64-linux</artifactId>
-			<version>0.4.0</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
