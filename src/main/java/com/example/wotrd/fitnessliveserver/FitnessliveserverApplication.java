@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.web.socket.WebSocketSession;
 import java.util.HashMap;
 import java.util.Map;
+
 @ServletComponentScan
 @SpringBootApplication
 public class FitnessliveserverApplication {
