@@ -40,7 +40,7 @@ public class CustomerDaoImp implements ICustomerDao {
     @Override
     public List<UploadVideo> getSysVideos() {
         String getVideoSql="SELECT uv_id,uv_thumbnailurl,uv_title,uv_type,uv_uploadtime," +
-                "uv_videourl FROM sysvideos WHERE uv_type=1;";
+                "uv_videourl FROM sysvideos WHERE uv_type=0;";
         List query = template.query(getVideoSql, uploadVideoMapper);
         return (null!=query)?query:null;
     }
@@ -183,16 +183,17 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public List<UploadVideo> getUserUploadVideoByUid(int uid) {
-        String sql="select uv_id,uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uv_type,uid from sysvideos where uid=?";
+        String sql="select uv_id,uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uv_type,uid from sysvideos " +
+                "where uid=?";
         List <UploadVideo>query = template.query(sql,new Integer[]{uid} , uploadVideoMapper);
         return (query.size()>0)?query:null;
     }
 
     @Override
     public boolean uploadUserVideo(String title, String videourl, String thumbnail, int uid) {
-        String sql="insert into uploadvideos(uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uid) " +
-                "values(?,?,?,?,?)";
-        int update = template.update(sql, title, videourl, thumbnail, setDbTime(), uid);
+        String sql="insert into sysvideos(uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uv_type,uid) " +
+                "values(?,?,?,?,?,?)";
+        int update = template.update(sql, title, videourl, thumbnail, setDbTime(),1 ,uid);
         return (update>0)?true:false;
     }
     @Override

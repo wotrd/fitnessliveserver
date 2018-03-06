@@ -1,15 +1,14 @@
 package com.example.wotrd.fitnessliveserver.tools;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
 
 /**
  * Created by wkj on 2017/9/12.
+ * 用户本地文件存储
  */
 
-/** 用户本地文件存储 */
 public class FileSaveTools {
 
     /** 设置本地图片存储 */

@@ -27,6 +27,7 @@ import java.util.UUID;
  */
 @Service
 public class CustomerLoginService {
+
     @Autowired
     private ICustomerDao customerDao;
     @Autowired
@@ -117,7 +118,11 @@ public class CustomerLoginService {
     public String updateUserPersonalSignByAccount(String account, String content) {
         return (customerDao.updateUserPersonalSignByAccount(account,content))?"true:":"failed";
     }
-
+    /**
+     *  更新用户直播大图
+     * @param content
+     * @param account
+     */
     public String updateUserLiveBigPicByAccount(String account, String content) {
         UUID uuid=UUID.randomUUID();
         String bigPicUrl=env.getProperty("fitnesslive_img_save_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
@@ -127,12 +132,17 @@ public class CustomerLoginService {
         boolean b = customerDao.updateUserLiveBigPicByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
     }
+    /**
+     * 更新用户头像
+     * @param account
+     * @param content
+     */
     public String updateUserAmatar(String account,String content) {
         UUID uuid = UUID.randomUUID();
-        String amatarUrl=env.getProperty("fitnesslive_img_save_url")+"/img/amatar/"+account+uuid.toString()+".jpg";
+        String amatarUrl=env.getProperty("fitnesslive_file_save_url")+"/img/amatar/"+account+uuid.toString()+".jpg";
         if (!FileSaveTools.setLocalPicSave( content,amatarUrl))
             return "updatefailed";
-        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+account+uuid.toString()+".jpg";
+        String getImageUrl=env.getProperty("fitnesslive_get_file_url")+"/img/amatar/"+account+uuid.toString()+".jpg";
         boolean b = customerDao.updateUserAmatarByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
     }
@@ -187,7 +197,6 @@ public class CustomerLoginService {
             return "Should review the error, and fix the request";
         }
     }
-
     /**
      * 生成系统的推送信息
      * @param content

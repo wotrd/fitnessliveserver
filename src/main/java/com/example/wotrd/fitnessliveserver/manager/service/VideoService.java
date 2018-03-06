@@ -7,6 +7,7 @@ import com.example.wotrd.fitnessliveserver.tools.DateUtil;
 import com.example.wotrd.fitnessliveserver.tools.Page;
 import com.example.wotrd.fitnessliveserver.tools.ServletUtil;
 import com.example.wotrd.fitnessliveserver.tools.VideoThumbnailUtils;
+import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -93,12 +94,14 @@ public class VideoService {
         params.put("rows", rows);
         params.put("title", title);
         if(null!=type){
-            if (type.equals("系")||type.equals("统")||type.equals("系统")){
+            if (TextUtils.isEmpty(type)){
+                params.put("type", "");
+            }else if (type.equals("系")||type.equals("统")||type.equals("系统")){
                 params.put("type", "0");
             }else if (type.equals("用")||type.equals("户")||type.equals("用户")){
                 params.put("type", "1");
             }else {
-                params.put("type", " ");
+                params.put("type", "2");    //type==2代表让搜索不到
             }
         }
         Page pageObj= videoDao.querySysVideoList(params);
@@ -131,7 +134,7 @@ public class VideoService {
         System.out.println("--------upload video start");
         /** 设置本地存储地址和名字*/
         String baseUrl = env.getProperty("fitnesslive_file_save_url");
-        String baseRemoteUrl=env.getProperty("get_file_url");
+        String baseRemoteUrl=env.getProperty("fitnesslive_get_file_url");
         UUID uuid = UUID.randomUUID();
         String thumbnailName="/img/media/pic/"+uuid.toString()+".jpg";
         String videoName="/img/media/video/"+uuid.toString()+".mp4";

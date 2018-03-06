@@ -25,9 +25,12 @@ public class CustomerLiveChattingService {
 
     @Autowired
     ICustomerDao customerDao;
+
     @Autowired
     private  Environment env;
+
     private String userLiveTag;
+
     /** 获取直播用户的粉丝数 */
     public int wsGetFansNumberByAccount(String account) {
         return wsCustomerDao.getFansNumberByAccount(account);
@@ -58,8 +61,8 @@ public class CustomerLiveChattingService {
 
         /** 修改数据库 */
         return (customerDao.uploadUserVideo(title,
-                env.getProperty("get_file_url")+"/img/media/video/"+uid+uuid.toString()+".mp4",
-                env.getProperty("get_file_url")+"/img/media/pic/"+uid+uuid.toString()+".jpg",
+                env.getProperty("fitnesslive_get_file_url")+"/img/media/video/"+uid+uuid.toString()+".mp4",
+                env.getProperty("fitnesslive_get_file_url")+"/img/media/pic/"+uid+uuid.toString()+".jpg",
                 uid))?"true":"failed";
     }
     /** 获取用纸上传的视频通过用户id*/
