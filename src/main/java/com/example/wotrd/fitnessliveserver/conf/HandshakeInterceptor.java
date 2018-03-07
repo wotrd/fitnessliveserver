@@ -1,15 +1,10 @@
 package com.example.wotrd.fitnessliveserver.conf;
 
-/**
- * Created by wkj_pc on 2017/8/3.
- */
-
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 import java.util.Map;
-
 /**
  * websocket消息拦截处理类
  * @author  wkj_pc 2017/3/2 10:36.

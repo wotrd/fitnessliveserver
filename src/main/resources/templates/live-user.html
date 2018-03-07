@@ -55,15 +55,6 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div style="margin-bottom: 10px;">
-                                        <!--<button  class="btn btn-success btn-sm radius" id="addLearnBtn">
-                                            <i class="fa  fa-plus"></i> 新增
-                                        </button>-->
-                                       <!-- <button  class="btn btn-primary btn-sm radius" id="modifyLearnBtn">
-                                            <i class="fa fa-pencil-square-o"></i> 修改
-                                        </button>-->
-                                       <!-- <button  class="btn btn-danger btn-sm radius" id="deleteLearnBtn">
-                                            <i class="fa fa-trash-o fa-lg"></i> 删除
-                                        </button>-->
                                     </div>
                                     <table id="jqGrid"></table>
                                     <div id="jqGridPager"></div>
@@ -76,57 +67,27 @@
         </div>
     </div>
 </div>
-
 <!--观看直播modal-->
-<div id="addModal" class="bootbox modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog ">
-        <div class="modal-content">
+<div id="watchLiveModal" class="bootbox modal fade" tabindex="-1" style="display: none;" role="dialog">
+    <div class="modal-dialog" style="width: 50%;margin-left: 10%">
+        <div class="modal-content" >
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">用户直播</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form" onsubmit="return false;">
-
-                    <div class="form-group" style="display: none;">
-                        <label class="col-sm-2 control-label">id</label>
-                        <div class="col-sm-8">
-                            <input id="id" type="text" class="form-control" placeholder="" />
-                        </div>
+                <div>
+                    <div style="display:inline-block">
+                        <div id="playercontainer"></div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">作者</label>
-                        <div class="col-sm-8">
-                            <input id="author" type="text" class="form-control" placeholder="输入作者" />
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label class="col-sm-2 control-label">教程名称</label>
-                        <div class="col-sm-8">
-                            <input id="title" type="text" class="form-control" placeholder="输入教程名称" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">教程地址</label>
-                        <div class="col-sm-8">
-                            <input id="url" type="text" class="form-control" placeholder="输入教程地址" />
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button data-bb-handler="confirm" type="button" id="saveLearnBtn" class="btn btn-success radius">
-                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
-                </button>
-                <button data-bb-handler="cancel" type="button" id="cancelSave" class="btn btn-danger radius">取消</button>
+                    <div style="display:inline-block">ddddddd</div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script src="../static/js/ace-extra.min.js" th:src="@{/js/ace-extra.min.js}"></script>
 <!--[if lt IE 9]>
-
 <script src="../static/js/html5shiv.js" th:src="@{/js/html5shiv.js}"></script>
 <script src="../static/js/respond.min.js" th:src="@{/js/respond.min.js}"></script>
 <![endif]-->
@@ -143,7 +104,8 @@
 <script src="../static/js/jquery.messager.js" th:src="@{/js/jquery.messager.js}"></script>
 <script src="../static/js/layer/layer.js" th:src="@{/js/layer/layer.js}"></script>
 <script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
-<script th:src="@{/js/live-user.js}"></script>
+<script src="../static/js/player/cyberplayer.js" th:src="@{/js/player/cyberplayer.js}"></script>
+<script src="../static/js/live-user.js" th:src="@{/js/live-user.js}"></script>
 
 </body>
 </html>

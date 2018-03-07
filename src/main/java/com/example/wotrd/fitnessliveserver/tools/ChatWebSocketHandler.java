@@ -2,7 +2,7 @@ package com.example.wotrd.fitnessliveserver.tools;
 
 import com.alibaba.fastjson.JSON;
 import com.example.wotrd.fitnessliveserver.FitnessliveserverApplication;
-import com.example.wotrd.fitnessliveserver.conf.LiveChattingMessage;
+import com.example.wotrd.fitnessliveserver.manager.domain.LiveChattingMessage;
 import com.example.wotrd.fitnessliveserver.customer.service.CustomerLiveChattingService;
 import com.example.wotrd.fitnessliveserver.manager.domain.User;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.*;
  * 该websocket主要是用来控制直播消息的连接，进行直播用户管理
  */
 @Component
-public class CountWebSocketHandler extends TextWebSocketHandler {
+public class ChatWebSocketHandler extends TextWebSocketHandler {
     //存放当前全部在线人数
     private static long count = 0;
     //存放直播用户和观众会话

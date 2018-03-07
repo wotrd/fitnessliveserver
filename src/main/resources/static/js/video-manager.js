@@ -68,20 +68,8 @@ $(function(){
     $(grid_selector).jqGrid('navGrid',pager_selector,
         {
             edit: false,
-            // edittitle:'修改',
-            // edittext:'修改',
-            // editicon : 'icon-pencil blue',
-            // editfunc :editUser,
             add: false,
-            // addtitle:'新增',
-            // addtext:'新增',
-            // addicon : 'icon-plus-sign purple',
-            // addfunc :addUser,
             del: false,
-            // deltitle:'删除',
-            // deltext:'删除',
-            // delicon : 'icon-trash red',
-            // delfunc:delUser,
             refresh: true,
             refreshicon : 'icon-refresh green',
             beforeRefresh:refreshData,
@@ -97,7 +85,6 @@ $(function(){
         var qryType=$("#qryType").val();
         $(grid_selector).jqGrid('setGridParam',{
             postData:{title:qryTitle,type:qryType},
-            //search: true,
             page:1
         }).trigger("reloadGrid");
     });

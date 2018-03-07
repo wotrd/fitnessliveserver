@@ -25,10 +25,8 @@ public class CustomerLiveChattingService {
 
     @Autowired
     ICustomerDao customerDao;
-
     @Autowired
     private  Environment env;
-
     private String userLiveTag;
 
     /** 获取直播用户的粉丝数 */
@@ -65,7 +63,7 @@ public class CustomerLiveChattingService {
                 env.getProperty("fitnesslive_get_file_url")+"/img/media/pic/"+uid+uuid.toString()+".jpg",
                 uid))?"true":"failed";
     }
-    /** 获取用纸上传的视频通过用户id*/
+    /** 获取用户上传的视频通过用户id*/
     public String getUserUploadVideoByUid(int uid) {
         List<UploadVideo> userUploadVideoByUid = customerDao.getUserUploadVideoByUid(uid);
         return JSON.toJSONString(userUploadVideoByUid);

@@ -234,7 +234,7 @@ $(function(){
             // $.messager.alert("温馨提示","至少选择一行记录！");
             layer.msg('至少选中一行记录！', {icon: 7,time: 2000}); //2秒关闭（如果不配置，默认是3秒）
         }
-    })
+    });
     $('.date-picker').datepicker({autoclose: true}).next().on(ace.click_event, function () {
         $(this).prev().focus();
     });

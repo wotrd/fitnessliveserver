@@ -1,6 +1,6 @@
 package com.example.wotrd.fitnessliveserver.conf;
 
-import com.example.wotrd.fitnessliveserver.tools.CountWebSocketHandler;
+import com.example.wotrd.fitnessliveserver.tools.ChatWebSocketHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new CountWebSocketHandler(), "/websocket/*/*/*")    //直播account/watchaccount/aim
+        registry.addHandler(new ChatWebSocketHandler(), "/websocket/*/*/*")    //直播account/watchaccount/aim
                 .addInterceptors(new HandshakeInterceptor());
     }
 }

@@ -1,11 +1,54 @@
 /**
- * Created by tengj on 2017/4/10.
+ * Created by wotrd on 2017/4/10.
  */
 var grid_selector = "#jqGrid";
 var pager_selector = "#jqGridPager";
 var rowNum = 10; 			//每页显示记录数
-var task = null;			//任务（新增或编辑）
 var loading;
+var player;
+function playVideo(url) {
+    player = cyberplayer("playercontainer").setup({
+        width: 400,
+        height: 550,
+        file: url, // <—rtmp直播地址
+        autostart: true,
+        stretching: "uniform",
+        volume: 100,
+        controls: true,
+        rtmp: {
+            reconnecttime: 5, // rtmp直播的重连次数
+            bufferlength: 1 // 缓冲多少秒之后开始播放 默认1秒
+        },
+        ak: "e98411fba665450d8ce194dae1d4d733" // 公有云平台注册即可获得accessKey
+    });
+};
+
+function wbConnect(url) {
+    var ws = new WebSocket(url);
+    ws.onopen = function(evt) {
+        console.log("Connection open ...");
+        ws.send("Hello WebSockets!");
+    };
+    ws.onmessage = function(evt) {
+        console.log( "Received Message: " + evt.data);
+        ws.close();
+    };
+    ws.onclose = function(evt) {
+        console.log("Connection closed.");
+    };
+}
+//显示直播，弹出展示窗口
+function showLiveVideo(base) {
+    var rowData = $(grid_selector).jqGrid('getRowData',$(base).parent().parent().attr("id"));
+    var url="rtmp://119.29.154.229:1935/live/"+rowData.account;
+    playVideo(url);
+    wbConnect("ws://192.168.191.1/websocket/"+rowData.account+"/admin/watchlive");
+    $("#watchLiveModal").modal({
+        keyboard : false,
+        show : true,
+        backdrop : "static"
+    });
+}
 $(function(){
     $(window).resize(function(){
         $(grid_selector).setGridWidth($(window).width()*0.95);
@@ -51,7 +94,7 @@ $(function(){
             { label: '加入时间', name: 'createtime', width: 100 },
             { label: '查看', name: 'watch', width: 100,
                 formatter: function(cellvalue, options, cell){
-                    return '<a class="btn btn-purple btn-sm " target="_blank" onclick="showUserProfile(this);"><i class="fa fa-cog  fa-spin" aria-hidden="true"></i>点我</a>';
+                    return '<a class="btn btn-purple btn-sm " target="_blank" onclick="showLiveVideo(this);"><i class="fa fa-cog  fa-spin" aria-hidden="true"></i>点我</a>';
                 }},
             { label: '', name: '', width: 0.01}
         ],
@@ -90,20 +133,8 @@ $(function(){
     $(grid_selector).jqGrid('navGrid',pager_selector,
         {
             edit: false,
-            // edittitle:'修改',
-            // edittext:'修改',
-            // editicon : 'icon-pencil blue',
-            // editfunc :editUser,
             add: false,
-            // addtitle:'新增',
-            // addtext:'新增',
-            // addicon : 'icon-plus-sign purple',
-            // addfunc :addUser,
             del: false,
-            // deltitle:'删除',
-            // deltext:'删除',
-            // delicon : 'icon-trash red',
-            // delfunc:delUser,
             refresh: true,
             refreshicon : 'icon-refresh green',
             beforeRefresh:refreshData,
@@ -119,94 +150,16 @@ $(function(){
         var qryNickname=$("#qryNickname").val();
         $(grid_selector).jqGrid('setGridParam',{
             postData:{account:qryAccount,nickname:qryNickname},
-            //search: true,
             page:1
         }).trigger("reloadGrid");
     });
-
 });
-//自定义报警列格式
-function alarmFormatter(cellvalue, options, rowdata)
-{
-    if (cellvalue != "0")
-        return '<img class="alarmimg" src="http://127.0.0.1:8080/fitnesslive/img/amatar/100000d84f5cb1-db9c-4ff1-b49b-607772e84409.jpg" alt="' + cellvalue + '" />';
-    else
-        return '<img class="alarmimg" src="http://127.0.0.1:8080/fitnesslive/img/amatar/100000d84f5cb1-db9c-4ff1-b49b-607772e84409.jpg" alt="' + cellvalue + '" />';
-}
-/**
- *取消关注
- */
-function cancelFans(base){
-    var rowData = $(grid_selector).jqGrid('getRowData',$(base).parent().parent().attr("id"));
-    $.messager.confirm("温馨提示", "是否确定取消关注？", function() {
-        $.ajax({
-            url:"/manager/livemanager/delete",
-            cache: false,
-            type:"post",
-            data:{
-                "useraccount":rowData.account,
-                "fansaccount":rowData.fs_account,
-            },
-            beforeSend : function(){
-                loading=layer.load("取消关注中...");
-            },
-            success:function(result){
-                $.messager.alert(result.message);
-                refreshData();
-            },error:function(){
-                $.messager.alert("温馨提示","请求错误!");
-            },
-            complete : function(){
-                layer.close(loading);
-            }
-        });
-    });
-}
+
 function removeHorizontalScrollBar() {
     $("div.ui-state-default.ui-jqgrid-hdiv.ui-corner-top").css("width", parseInt($("div.ui-state-default.ui-jqgrid-hdiv.ui-corner-top").css("width")) + 1 + "px");
     $(grid_selector).closest(".ui-jqgrid-bdiv").css("width", parseInt($(grid_selector).closest(".ui-jqgrid-bdiv").css("width")) + 1 + "px");
 }
-//初始化数据
-function initData(){
-    $('#useraccount').val("");
-    $('#fansaccount').val("");
-}
-/**
- * 保存粉丝
- */
-function saveFans(){
-    var useraccount = $('#useraccount').val();
-    var fansaccount = $('#fansaccount').val();
-    $.ajax({
-        url: "/manager/livemanager/add",
-        cache: false,
-        dataType:'json',
-        data : {
-            "useraccount":useraccount,
-            "fansaccount": fansaccount,
-        },
-        type : 'post',
-        beforeSend: function () {
-            // 禁用按钮防止重复提交
-            $('#saveFansBtn').attr({ disabled: "disabled"});
-        },
-        success: function(result){
-            if(result.flag == true){
-                $.messager.alert('温馨提示',result.message);
-                $("#addFansModal").modal('hide');
-                refreshData();
-            }else{
-                $.messager.alert('温馨提示',result.message);
-            }
-        },
-        complete: function () {
-            $('#saveFansBtn').removeAttr("disabled");
-        },
-        error: function (data) {
-            console.info("error: " + data.responseText);
-        }
-    });
-}
+
 function refreshData(){
     $(grid_selector).jqGrid('setGridParam',{
         postData:{account:null,nickname:null},

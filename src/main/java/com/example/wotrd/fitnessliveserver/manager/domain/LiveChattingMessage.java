@@ -1,4 +1,4 @@
-package com.example.wotrd.fitnessliveserver.conf;
+package com.example.wotrd.fitnessliveserver.manager.domain;
 
 
 /**
