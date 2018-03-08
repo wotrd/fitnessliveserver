@@ -28,28 +28,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private CustomerLiveChattingService customerLiveChattingService=new CustomerLiveChattingService();
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String str = message.getPayload();
-        System.out.println("------"+str);
-        if (null!=str || ""!=str){
-            String[] split = session.getUri().getPath().split("/");
-            if (split[4].contentEquals("live")){    //该会话是直播员会话，将信息分发给直播间
-                //获取该直播间的用户
-//                LiveChattingMessage liveChattingMessage = JSON.parseObject(str, LiveChattingMessage.class);
-//                liveChattingMessage.setIntent(1);
-                transSendMessage(str, split[2]);
-                //解析获取到的直播信息
-                // LiveChattingMessage chattingMessage = JSON.parseObject(str,LiveChattingMessage.class);
-            }else{  //该用户为观看者,将收到的信息转发到直播间
-                transSendMessage(str, split[2]);
-            }
-        }
-    }
-    @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
         //获取连接用户名和连接目的（直播或观看直播）
-        ///websocket/liveaccount/watchaccount/live|watchlive
+        // livewebsocketurl=ws://192.168.191.1/websocket/100003/100003/live
+        //websocket/liveaccount/watchaccount/live|watchlive
         System.out.println("连接已经建立");
         String [] livePersonInfo=session.getUri().getPath().split("/");
         if (livePersonInfo[4].contentEquals("live")){   //直播
@@ -83,33 +66,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 Map<String,User> users = watchUserinfo.get(livePersonInfo[2]);
                 users.put(livePersonInfo[3],watchUser);
                 watchUserinfo.put(livePersonInfo[2],users);
+                if (null!=users.get("admin"))
+                    users.remove("admin");
                 transSendMessage(JSON.toJSONString(users.values()),livePersonInfo[2]);
             }
         }
     }
-    /** 创建要发送的信息*/
-    public String createSenderMessage(String content ,int intent, int fansnumber ){
-        LiveChattingMessage fansNumMsg=new LiveChattingMessage();
-        fansNumMsg.setFrom("server");
-        fansNumMsg.setMid(0);
-        fansNumMsg.setTo("terminal");
-        fansNumMsg.setIntent(intent);
-        fansNumMsg.setContent(content);
-        fansNumMsg.setFansnumber(fansnumber);
-        return JSON.toJSONString( fansNumMsg );
-    }
-    /** 当观众加入后，发送粉丝观众的数量 */
-    public void sendLiveInfo(String account) throws IOException {
-        String senderMessage = createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account));
-        transSendMessage(senderMessage,account);
-       /* senderMessage = createSenderMessage("", 3,sessionMap.get(account).size());
-        transSendMessage(senderMessage,account);*/
-        /** 设置用户头像*/
-        senderMessage = createSenderMessage(customerLiveChattingService.wsGetLiveUserAmatarByAccount(account), 3,
-                sessionMap.get(account).size());
-        transSendMessage(senderMessage,account);
-    }
-
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         String[] dirs = session.getUri().getPath().split("/");
@@ -139,12 +101,58 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
         System.out.println("-------连接关闭"+sessionMap.size());
     }
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String str = message.getPayload();
+        System.out.println("------"+str);
+        if (null!=str && ""!=str){
+            String[] split = session.getUri().getPath().split("/");
+            if (split[4].contentEquals("live")){    //该会话是直播员会话，将信息分发给直播间
+                //获取该直播间的用户
+//                LiveChattingMessage liveChattingMessage = JSON.parseObject(str, LiveChattingMessage.class);
+//                liveChattingMessage.setIntent(1);
+                transSendMessage(str, split[2]);
+                //解析获取到的直播信息
+                // LiveChattingMessage chattingMessage = JSON.parseObject(str,LiveChattingMessage.class);
+            }else{  //该用户为观看者,将收到的信息转发到直播间
+                transSendMessage(str, split[2]);
+            }
+        }
+    }
+    /** 当观众加入后，发送粉丝观众的数量 */
+    public void sendLiveInfo(String account) throws IOException {
+        //判断有没有admin加入到直播间
+        Map<String, User> stringUserMap = watchUserinfo.get(account);
+        User adminUser = stringUserMap.get("admin");
+        String senderMessage=createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account));
+        if (null==adminUser){
+            senderMessage = createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account)-1);
+        }
+        /** intent=2发送直播间粉丝数量 */
+        transSendMessage(senderMessage,account);
+        /** intent=3代表更新关注列表*/
+        senderMessage = createSenderMessage("", 3,0);
+        transSendMessage(senderMessage,account);
+
+    }
     //将信息遍历发送到直播间
     private void transSendMessage(String str, String name) throws IOException {
         Map<String, WebSocketSession> createMap = sessionMap.get(name);
         Collection<WebSocketSession> values = createMap.values();
+        if (null==values) return;
         for (WebSocketSession session:values){
             session.sendMessage(new TextMessage(str));
         }
+    }
+    /** 创建要发送的信息*/
+    public String createSenderMessage(String content ,int intent, int fansnumber ){
+        LiveChattingMessage fansNumMsg=new LiveChattingMessage();
+        fansNumMsg.setFrom("server");
+        fansNumMsg.setMid(0);
+        fansNumMsg.setTo("terminal");
+        fansNumMsg.setIntent(intent);
+        fansNumMsg.setContent(content);
+        fansNumMsg.setFansnumber(fansnumber);
+        return JSON.toJSONString( fansNumMsg );
     }
 }

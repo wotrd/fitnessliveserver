@@ -240,7 +240,8 @@ function updatePagerIcons(table) {
 $('#showVideoModal').on('hide.bs.modal', function () {
     // 执行一些动作...
     $("#video")[0].pause();
-})
+});
+
 function showVideo(base) {
     var rowData = $(grid_selector).jqGrid('getRowData',$(base).parent().parent().attr("id"));
     $("#videotitle").text(rowData.uv_title);

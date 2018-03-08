@@ -71,7 +71,7 @@ public class CustomerDaoImp implements ICustomerDao {
     public List<Attention> getAttentionUserInfoByIdByAccount(String account) {
         User user = getLiveUserInfoByAccount(account);
         String getAttentionsSql = "SELECT gz_id,gz_account,gz_nickname," +
-                "gz_phonenum,gz_amatar,uid FROM attentions where uid=?;";
+                "gz_phonenum,gz_amatar,uid,account FROM attentions where uid=?;";
         List query = template.query(getAttentionsSql,new Integer[]{user.getUid()},attentionRowMapper);
         return query.size()>0?query:null;
     }

@@ -6,6 +6,8 @@ var pager_selector = "#jqGridPager";
 var rowNum = 10; 			//每页显示记录数
 var loading;
 var player;
+var ws;
+var timeInterval;
 function playVideo(url) {
     player = cyberplayer("playercontainer").setup({
         width: 400,
@@ -22,19 +24,48 @@ function playVideo(url) {
         ak: "e98411fba665450d8ce194dae1d4d733" // 公有云平台注册即可获得accessKey
     });
 };
-
+//关闭直播modal也是取消轮训事件
+$('#watchLiveModal').on('hide.bs.modal', function () {
+    // 执行一些清理动作...
+    $("#chatmessage").text("");
+    clearTimeout(timeInterval);
+    ws.close();
+});
+//发送系统消息
+function sendMsg() {
+    var msg={from:'server',content:$("#sendmsg").val(),intent:1};
+    ws.send(JSON.stringify(msg));
+    $("#sendmsg").val("");
+}
+//websocket连接
 function wbConnect(url) {
-    var ws = new WebSocket(url);
+    ws = new WebSocket(url);
     ws.onopen = function(evt) {
         console.log("Connection open ...");
         ws.send("Hello WebSockets!");
+        timeInterval=setTimeout(function () {
+            ws.send("");
+        },0,2000);
     };
     ws.onmessage = function(evt) {
-        console.log( "Received Message: " + evt.data);
-        ws.close();
+        try {
+            var chatMsg=JSON.parse(evt.data);
+            if (chatMsg.intent==1) {
+                $("#chatmessage").append("<div><span style='background-color: #f1edff;padding-left:10px;padding-right:10px;border-radius:5px;margin: 5px;font-size: 26px'>"+chatMsg.from+ "</span>" +
+                    "<span style='font-size: 26px'>:</span>&nbsp;&nbsp;" +
+                    "<span style='background-color: #e1ddee;padding-left:5px;padding-right:5px;border-radius:5px;font-size: 22px'>"+chatMsg.content+ "</span></div>"
+                );
+                var content = document.getElementById('chatmessage');
+                content.scrollTop = content.scrollHeight;
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
     };
     ws.onclose = function(evt) {
         console.log("Connection closed.");
+        clearTimeout(timeInterval);
     };
 }
 //显示直播，弹出展示窗口
@@ -42,7 +73,7 @@ function showLiveVideo(base) {
     var rowData = $(grid_selector).jqGrid('getRowData',$(base).parent().parent().attr("id"));
     var url="rtmp://119.29.154.229:1935/live/"+rowData.account;
     playVideo(url);
-    wbConnect("ws://192.168.191.1/websocket/"+rowData.account+"/admin/watchlive");
+    wbConnect("ws://localhost/websocket/"+rowData.account+"/admin/watchlive");
     $("#watchLiveModal").modal({
         keyboard : false,
         show : true,
