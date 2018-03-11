@@ -66,6 +66,7 @@ public class SysMessageService {
         msg.setTitle(title);
         msg.setContent(content);
         msg.setTo(to);
+        msg.setOwner(to);
         msg.setFrom(loginUser.getAccount());
         msg.setTime(format.format(new Date()));
         msg.setUid(loginUser.getUid());
