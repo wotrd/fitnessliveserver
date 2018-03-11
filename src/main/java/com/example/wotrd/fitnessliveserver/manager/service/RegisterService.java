@@ -262,7 +262,7 @@ public class RegisterService {
         JSONObject result = new JSONObject();
         //修改操作
         UUID uuid = UUID.randomUUID();
-        String amatarUrl=env.getProperty("fitnesslive_img_save_url")+"/img/amatar/"+uid+uuid.toString()+".jpg";
+        String amatarUrl=env.getProperty("fitnesslive_file_save_url")+"/img/amatar/"+uid+uuid.toString()+".jpg";
         if (amatarPart.getSize()>0){
             //头像上传
             if (uploadPicByPart(amatarPart, amatarUrl)){
@@ -338,7 +338,7 @@ public class RegisterService {
         user.setBorndata(borndate);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
         user.setCreatetime(format.format(new Date()));
-        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+uid+uuid.toString()+".jpg";
+        String getImageUrl=env.getProperty("fitnesslive_get_file_url")+"/img/amatar/"+uid+uuid.toString()+".jpg";
         user.setAmatar(getImageUrl);
         if(userDao.updateUserByUid(user)){
             result.put("message","用户修改成功!");

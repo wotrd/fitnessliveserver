@@ -114,13 +114,13 @@ public class UserDaoImp implements IUserDao {
 
     @Override
     public boolean addUser(User user) {
-        String sql="insert into users (account,name,password,gender,nickname,email,idcard,phonenum,role,createtime) " +
-                "values(?,?,?,?,?,?,?,?,?,?)";
+        String sql="insert into users (account,name,password,gender,nickname,email,idcard,phonenum,role,borndata,createtime) " +
+                "values(?,?,?,?,?,?,?,?,?,?,?)";
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
         int updateRows = jdbcTemplate.update(sql,
                 user.getAccount(), user.getName(), user.getPassword(), user.getGender()
                         , user.getNickname(), user.getEmail(), user.getIdcard(), user.getPhonenum(),
-                user.getRole(),dateFormat.format(new Date()));
+                user.getRole(),user.getBorndata(),dateFormat.format(new Date()));
         return (updateRows>0)?true:false;
     }
 

@@ -282,10 +282,10 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public boolean registerWeiboUser(User loginUser) {
-        String sql="insert into users (account,name,gender,nickname,phonenum,amatar,createtime) values(?,?,?,?,?,?,?)";
+        String sql="insert into users (account,name,gender,nickname,phonenum,borndata,amatar,createtime) values(?,?,?,?,?,?,?,?)";
         template.update(sql, loginUser.getName(), loginUser.getName(),
                 loginUser.getGender(),
-                loginUser.getNickname(), loginUser.getPhonenum(),loginUser.getAmatar(),setDbTime());
+                loginUser.getNickname(), loginUser.getPhonenum(),loginUser.getBorndata(),loginUser.getAmatar(),setDbTime());
         String sql1="UPDATE users SET account=? WHERE account=?";
         int updateRows = template.update(sql1,getAccount(),loginUser.getName());
         return (updateRows>0)?true:false;
@@ -335,9 +335,10 @@ public class CustomerDaoImp implements ICustomerDao {
         /* user.setAccount(openid); user.setToken("qq:"+token);user.setNickname
         user.setGender user.setAmatar*/
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
-        String sql="insert into users (account,name,gender,nickname,amatar,createtime) values(?,?,?,?,?,?)";
+        SimpleDateFormat dateFormat1=new SimpleDateFormat("yyyy/MM/dd");
+        String sql="insert into users (account,name,gender,nickname,amatar,borndata,createtime) values(?,?,?,?,?,?,?)";
         template.update(sql, loginUser.getAccount(), loginUser.getAccount(),loginUser.getGender(),
-                loginUser.getNickname(), loginUser.getAmatar(),dateFormat.format(new Date()));
+                loginUser.getNickname(), loginUser.getAmatar(),dateFormat1.format(new Date()),dateFormat.format(new Date()));
         String sql1="UPDATE users SET account=? WHERE account=?";
         int updateRows = template.update(sql1,getAccount(),loginUser.getAccount());
         return (updateRows>0)?true:false;
@@ -366,12 +367,13 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public String registerUser(String mobilenum, String password) {
-        String sql="insert into users (account,password,nickname,phonenum,createtime) " +
-                "values(?,?,?,?,?)";
+        String sql="insert into users (account,password,nickname,phonenum,borndata,createtime) " +
+                "values(?,?,?,?,?,?)";
         String sql1="UPDATE users SET account=? WHERE account=?";
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
+        SimpleDateFormat dateFormat1=new SimpleDateFormat("yyyy/MM/dd");
         template.update(sql,mobilenum, password,"小灰灰",
-                mobilenum,dateFormat.format(new Date()));
+                mobilenum,dateFormat1.format(new Date()),dateFormat.format(new Date()));
         int updateRows = template.update(sql1,getAccount(),mobilenum);
         return (updateRows>0)?":true":":false";
     }

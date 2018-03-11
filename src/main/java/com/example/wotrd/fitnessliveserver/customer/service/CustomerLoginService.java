@@ -59,6 +59,8 @@ public class CustomerLoginService {
     }
     public String weiboLogin(User loginUser, HttpServletRequest request) {
         if (!customerDao.checkUserByNameExist(loginUser.getAccount())){
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM--dd");
+            loginUser.setBorndata(format.format(new Date()));
             customerDao.registerWeiboUser(loginUser);
         }
         User user = customerDao.getUserInfoByName(loginUser.getName());
@@ -125,10 +127,10 @@ public class CustomerLoginService {
      */
     public String updateUserLiveBigPicByAccount(String account, String content) {
         UUID uuid=UUID.randomUUID();
-        String bigPicUrl=env.getProperty("fitnesslive_img_save_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
+        String bigPicUrl=env.getProperty("fitnesslive_file_save_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
         if (!FileSaveTools.setLocalPicSave( content,bigPicUrl))
             return "updatefailed";
-        String getImageUrl=env.getProperty("get_img_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
+        String getImageUrl=env.getProperty("fitnesslive_get_file_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
         boolean b = customerDao.updateUserLiveBigPicByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
     }
