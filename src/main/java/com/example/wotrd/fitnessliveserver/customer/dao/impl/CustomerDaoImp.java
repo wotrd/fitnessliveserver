@@ -56,10 +56,6 @@ public class CustomerDaoImp implements ICustomerDao {
                 "LIKE ? OR account LIKE ?);";
         List<User> query = template.query(sql, new String[]{'%'+searchText+'%', '%'+searchText+'%'},
                 userRowMapper);
-        for (User user:query)
-        {
-            System.out.println("-----query="+user.getUid());
-        }
         return query;
     }
 
@@ -119,13 +115,10 @@ public class CustomerDaoImp implements ICustomerDao {
             //将用户一关注数量加一，将关注表中的信息。用户而粉丝数加一，粉丝表信息
             String addAttentionSql="update users set attentionnum = attentionnum+1 where uid=?";
             String addFanSql="update users set fansnum =fansnum+1 where uid=?";
-            String insertFanSql="insert into fans(fs_account,fs_nickname," +
-                    "fs_phonenum,fs_amatar,uid,account) VALUE(?,?,?,?,?,?)";
-            String insertAttentionSql="insert into attentions(gz_account, gz_nickname, " +
-                    "gz_phonenum, gz_amatar, uid,account) VALUE(?,?,?,?,?,?)";
+            String insertFanSql="insert into fans(fs_account,fs_nickname,fs_phonenum,fs_amatar,uid,account) VALUE(?,?,?,?,?,?)";
+            String insertAttentionSql="insert into attentions(gz_account, gz_nickname, gz_phonenum, gz_amatar, uid,account) VALUE(?,?,?,?,?,?)";
             String addGrade="update users set grade=grade+5 where account=?";
             int update = template.update(addAttentionSql, attention.getUid());//将用户一的关注数量加一
-            //System.out.println("将用户一的关注数量加一"+attention.getUid()+attention.getGzaccount());
             //通过id获取用户一的信息
             String getUserOne="select * from users where uid=?";
             User user1 = (User)template.query(getUserOne,new Integer[]{attention.getUid()},userRowMapper).get(0);
@@ -134,16 +127,11 @@ public class CustomerDaoImp implements ICustomerDao {
             User user2 = (User)template.query(getUidSql,new String[]{attention.getGzaccount()},userRowMapper).get(0);
             //将用户二的粉丝数量加一
             int update1 = template.update(addFanSql, user2.getUid());
-            //System.out.println("将用户二的粉丝数量加一");
             //插入用户一的关注记录
-            int update3 = template.update(insertAttentionSql, attention.getGzaccount(),attention.getGznickname(),
-                    attention.getGzphonenumber(),attention.getGzamatar(),user1.getUid(),user1.getAccount());
-            //System.out.println("插入用户一的关注记录");
+            int update3 = template.update(insertAttentionSql, attention.getGzaccount(),attention.getGznickname(), attention.getGzphonenumber(),attention.getGzamatar(),user1.getUid(),user1.getAccount());
             //插入用户二的粉丝记录
-            int update2 = template.update(insertFanSql,user1.getAccount() ,user1.getNickname(),
-                    user1.getPhonenum(),user1.getAmatar(),user2.getUid(),user2.getAccount());
+            int update2 = template.update(insertFanSql,user1.getAccount() ,user1.getNickname(), user1.getPhonenum(),user1.getAmatar(),user2.getUid(),user2.getAccount());
             int update4 = template.update(addGrade, user2.getAccount());
-            //System.out.println("插入用户二的粉丝记录");
             return (update>0&&update1>0&&update2>0&&update3>0&&update4>0)?true:false;
         }
     }
@@ -283,7 +271,6 @@ public class CustomerDaoImp implements ICustomerDao {
     public int getFansNumberByAccount(String account) {
         String sql="SELECT * FROM users WHERE account=?";
         List <User> query = wbTemplate.query(sql,new String []{account}, wbUserRowMapper);
-//        System.out.println("--------"+query.get(0).getAccount());
         return (query.size()>0)?query.get(0).getFansnum():0;
     }
 
