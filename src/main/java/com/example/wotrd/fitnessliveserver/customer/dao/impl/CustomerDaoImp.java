@@ -46,13 +46,20 @@ public class CustomerDaoImp implements ICustomerDao {
     }
 
     /**
-     * SELECT uid,account,name,password,gender,nickname,email,idcard,phonenum,role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic,createtime FROM users
+     * SELECT uid,account,name,password,gender,nickname,email,
+     * idcard,phonenum,role,amatar,age,personalsign,islive,grade,
+     * fansnum,attentionnum,livebigpic,createtime FROM users
     */
     @Override
     public List<User> customerSearchUser(String searchText) {
         String sql="SELECT * FROM users WHERE role=0 AND (nickname " +
-                "LIKE ? OR  account LIKE ?);";
-        List<User> query = template.query(sql, new String[]{'%'+searchText+'%', '%'+searchText+'%'}, userRowMapper);
+                "LIKE ? OR account LIKE ?);";
+        List<User> query = template.query(sql, new String[]{'%'+searchText+'%', '%'+searchText+'%'},
+                userRowMapper);
+        for (User user:query)
+        {
+            System.out.println("-----query="+user.getUid());
+        }
         return query;
     }
 

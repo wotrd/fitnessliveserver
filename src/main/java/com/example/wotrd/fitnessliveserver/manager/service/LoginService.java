@@ -50,22 +50,22 @@ public class LoginService {
             return loginMap;
         }else{
             loginUser=userDao.queryUserByAccountAndPassword(loginUser.getAccount(),loginUser.getPassword());
-            if (null!=loginUser){
-                Map<User,HttpSession> userMap= (Map<User, HttpSession>) request.
-                        getServletContext().getAttribute("userMap");
-                if (userMap.containsKey(loginUser)){
-                    HttpSession httpSession = userMap.get(loginUser);
-                    if (null!=httpSession.getAttribute("loginUser"))
-                    {
-                        httpSession.invalidate();
-                    }
-                }
-                request.getSession().setAttribute("loginUser",loginUser);
-                userMap.put(loginUser,request.getSession());
-                loginMap.put("result","1");
-            }else {
+            if (null==loginUser || null==loginUser.getRole() || loginUser.getRole()!=1) {
                 loginMap.put("result",2);//输入不正确
+                return loginMap;
             }
+            Map<User,HttpSession> userMap = (Map<User, HttpSession>) request.
+                    getServletContext().getAttribute("userMap");
+            if (userMap.containsKey(loginUser)){
+                HttpSession httpSession = userMap.get(loginUser);
+                if (null!=httpSession.getAttribute("loginUser"))
+                {
+                    httpSession.invalidate();
+                }
+            }
+            request.getSession().setAttribute("loginUser",loginUser);
+            userMap.put(loginUser,request.getSession());
+            loginMap.put("result","1");
             return loginMap;
         }
     }
