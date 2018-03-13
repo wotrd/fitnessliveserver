@@ -62,18 +62,7 @@ public class FansAndAttentionService {
         String useraccount= request.getParameter("useraccount");
         String attentionaccount= request.getParameter("attentionaccount");
         JSONObject result=new JSONObject();
-        if(null==fansAndAttentionDao.queryUserByAccount(useraccount)){
-            result.put("message","用户账户不存在!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        if(useraccount.equals(attentionaccount)){
-            result.put("message","用户不能关注自己!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
+        if (verifyAttentions(response, useraccount, attentionaccount, result)) return;
         if(null==fansAndAttentionDao.queryUserByAccount(attentionaccount)){
             result.put("message","关注账户不存在!");
             result.put("flag",false);
@@ -103,18 +92,7 @@ public class FansAndAttentionService {
         String useraccount= request.getParameter("useraccount");
         String fansaccount= request.getParameter("fansaccount");
         JSONObject result=new JSONObject();
-        if(null==fansAndAttentionDao.queryUserByAccount(useraccount)){
-            result.put("message","用户账户不存在!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
-        if(useraccount.equals(fansaccount)){
-            result.put("message","用户不能关注自己!");
-            result.put("flag",false);
-            ServletUtil.createSuccessResponse(200, result, response);
-            return;
-        }
+        if (verifyAttentions(response, useraccount, fansaccount, result)) return;
         if(null==fansAndAttentionDao.queryUserByAccount(fansaccount)){
             result.put("message","粉丝账户不存在!");
             result.put("flag",false);
@@ -137,6 +115,23 @@ public class FansAndAttentionService {
         result.put("flag",false);
         ServletUtil.createSuccessResponse(200, result, response);
     }
+
+    private boolean verifyAttentions(HttpServletResponse response, String useraccount, String fansaccount, JSONObject result) {
+        if(null==fansAndAttentionDao.queryUserByAccount(useraccount)){
+            result.put("message","用户账户不存在!");
+            result.put("flag",false);
+            ServletUtil.createSuccessResponse(200, result, response);
+            return true;
+        }
+        if(useraccount.equals(fansaccount)){
+            result.put("message","用户不能关注自己!");
+            result.put("flag",false);
+            ServletUtil.createSuccessResponse(200, result, response);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 获取关注列表
      */
