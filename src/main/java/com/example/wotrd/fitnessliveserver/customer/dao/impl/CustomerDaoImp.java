@@ -3,6 +3,10 @@ package com.example.wotrd.fitnessliveserver.customer.dao.impl;
 import com.example.wotrd.fitnessliveserver.customer.dao.ICustomerDao;
 import com.example.wotrd.fitnessliveserver.manager.domain.*;
 import com.example.wotrd.fitnessliveserver.tools.*;
+import com.mysql.jdbc.log.LogUtils;
+import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,9 +33,8 @@ public class CustomerDaoImp implements ICustomerDao {
     private UploadVideoMapper uploadVideoMapper;
     @Autowired
     private AttentionRowMapper attentionRowMapper;
-    @Autowired
-    private SysMessageRowMapper sysMessageRowMapper;
 
+    private Category logger = Logger.getInstance("CustomerDaoImp");
     private JdbcTemplate wbTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
     private FansRowMapper fansRowMapper=new FansRowMapper();
     private UserRowMapper wbUserRowMapper=new UserRowMapper();
@@ -51,10 +54,10 @@ public class CustomerDaoImp implements ICustomerDao {
      * fansnum,attentionnum,livebigpic,createtime FROM users
     */
     @Override
-    public List<User> customerSearchUser(String searchText) {
-        String sql="SELECT * FROM users WHERE role=0 AND (nickname " +
-                "LIKE ? OR account LIKE ?);";
-        List<User> query = template.query(sql, new String[]{'%'+searchText+'%', '%'+searchText+'%'},
+    public List<User> customerSearchUser(String searchText,String account) {
+
+        String sql1="SELECT * FROM users WHERE role=0 AND (nickname LIKE ? OR account LIKE ?) AND account != ?;";
+        List<User> query = template.query(sql1, new String[]{'%'+searchText+'%', '%'+searchText+'%',account},
                 userRowMapper);
         return query;
     }

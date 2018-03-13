@@ -4,49 +4,49 @@ USE `fitnesslive.db`;
 
 DROP TABLE IF EXISTS `users`;
 -- auto-generated definition
-CREATE TABLE  `users`
+create table users
 (
-  uid          BIGINT AUTO_INCREMENT
-  COMMENT 'UID'
-    PRIMARY KEY,
-  account      VARCHAR(200)            NOT NULL
-  COMMENT '账户',
-  name         VARCHAR(200)            NULL
-  COMMENT '姓名',
-  password     VARCHAR(200)            NULL
-  COMMENT '密码',
-  gender       VARCHAR(20) DEFAULT '男' NULL
-  COMMENT '性别',
-  nickname     VARCHAR(200)            NULL
-  COMMENT '昵称',
-  email        VARCHAR(200)            NULL
-  COMMENT '邮箱',
-  idcard       VARCHAR(200)            NULL
-  COMMENT '身份证',
-  phonenum     VARCHAR(200)            NULL
-  COMMENT '手机号',
-  role         BIGINT                  NULL
-  COMMENT '角色',
-  amatar       VARCHAR(200)            NULL
-  COMMENT '头像',
-  borndata     DATE                    NULL,
-  personalsign VARCHAR(200) DEFAULT '' NULL
-  COMMENT '个性签名',
-  islive       TINYINT DEFAULT '0'     NULL
-  COMMENT '是否直播',
-  grade        BIGINT(200) DEFAULT '0' NULL
-  COMMENT '积分',
-  fansnum      BIGINT(200) DEFAULT '0' NULL
-  COMMENT '粉丝数',
-  attentionnum BIGINT(200) DEFAULT '0' NULL
-  COMMENT '关注数',
-  livebigpic   VARCHAR(200)            NULL
-  COMMENT '直播大图',
-  createtime   DATETIME                NULL
-  COMMENT '注册时间'
+  uid          bigint auto_increment
+  comment 'UID'
+    primary key,
+  account      varchar(200)            not null
+  comment '账户',
+  name         varchar(200)            null
+  comment '姓名',
+  password     varchar(200)            null
+  comment '密码',
+  gender       varchar(20) default '男' null
+  comment '性别',
+  nickname     varchar(200)            null
+  comment '昵称',
+  email        varchar(200)            null
+  comment '邮箱',
+  idcard       varchar(200)            null
+  comment '身份证',
+  phonenum     varchar(200)            null
+  comment '手机号',
+  role         bigint default '0'      null
+  comment '角色',
+  amatar       varchar(200)            null
+  comment '头像',
+  borndata     date                    null,
+  personalsign varchar(200) default '' null
+  comment '个性签名',
+  islive       tinyint default '0'     null
+  comment '是否直播',
+  grade        bigint(200) default '0' null
+  comment '积分',
+  fansnum      bigint(200) default '0' null
+  comment '粉丝数',
+  attentionnum bigint(200) default '0' null
+  comment '关注数',
+  livebigpic   varchar(200)            null
+  comment '直播大图',
+  createtime   datetime                null
+  comment '注册时间'
 )
-  ENGINE = MyISAM
-  CHARSET = utf8;
+  engine = MyISAM
+  charset = utf8;
 DROP TABLE IF EXISTS `fans`;
 
 -- auto-generated definition

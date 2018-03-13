@@ -175,9 +175,9 @@ public class CustomerLoginController {
 
     @ResponseBody
     @RequestMapping(value = "/customerSearchUser")
-    public String customerSearchUser(@RequestParam(value = "searchtext",defaultValue = "")
-                                       String searchText){
-        if (TextUtils.isEmpty(searchText)) return "";
-        return customerLoginService.customerUserSearch(searchText);
+    public String customerSearchUser(@RequestParam(value = "searchtext",defaultValue = "") String searchText,
+                                     @RequestParam(value = "account",defaultValue = "") String account){
+        if (TextUtils.isEmpty(searchText) || TextUtils.isEmpty(account)) return "";
+        return customerLoginService.customerUserSearch(searchText,account);
     }
 }

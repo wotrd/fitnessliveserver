@@ -225,8 +225,8 @@ public class CustomerLoginService {
     /**
      * @param searchText
      */
-    public String customerUserSearch(String searchText) {
-        List<User> users = customerDao.customerSearchUser(searchText);
+    public String customerUserSearch(String searchText,String account) {
+        List<User> users = customerDao.customerSearchUser(searchText,account);
         if (null ==users)
         {
             return "";

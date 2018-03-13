@@ -73,7 +73,7 @@ public interface ICustomerDao {
 
     boolean addSysMessage(SysMessage message);
 
-    List<User> customerSearchUser(String searchText);
+    List<User> customerSearchUser(String searchText,String account);
 
     List<UploadVideo> getSysVideos();
 }
