@@ -68,6 +68,12 @@ public class FansAndAttentionService {
             ServletUtil.createSuccessResponse(200, result, response);
             return;
         }
+        if(useraccount.equals(attentionaccount)){
+            result.put("message","用户不能关注自己!");
+            result.put("flag",false);
+            ServletUtil.createSuccessResponse(200, result, response);
+            return;
+        }
         if(null==fansAndAttentionDao.queryUserByAccount(attentionaccount)){
             result.put("message","关注账户不存在!");
             result.put("flag",false);
@@ -99,6 +105,12 @@ public class FansAndAttentionService {
         JSONObject result=new JSONObject();
         if(null==fansAndAttentionDao.queryUserByAccount(useraccount)){
             result.put("message","用户账户不存在!");
+            result.put("flag",false);
+            ServletUtil.createSuccessResponse(200, result, response);
+            return;
+        }
+        if(useraccount.equals(fansaccount)){
+            result.put("message","用户不能关注自己!");
             result.put("flag",false);
             ServletUtil.createSuccessResponse(200, result, response);
             return;
