@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
 import javax.sql.DataSource;
 
 /**
@@ -31,6 +30,7 @@ public class DataSourceConf {
         dataSource.setTestOnBorrow(false);//申请连接时执行validationQuery检测连接是否有效
         dataSource.setTestWhileIdle(true);//建议配置true，不影响性能，并且保证安全性
         dataSource.setPoolPreparedStatements(false);//是否缓存preparedStatement，也就是PSCache
+        System.out.println("--------------datasource created---------------");
         return dataSource;
     }
 
