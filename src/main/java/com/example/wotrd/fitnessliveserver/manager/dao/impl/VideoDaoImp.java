@@ -9,6 +9,7 @@ import com.example.wotrd.fitnessliveserver.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class VideoDaoImp implements VideoDao {
     @Autowired
     UploadVideoMapper uploadVideoMapper;
 
+    @Transactional
     @Override
     public boolean uploadSysVideo(String title,String videoUrl,String picUrl,String uploadTime,int type,int uid) {
         String sql="INSERT INTO sysvideos(uv_title, uv_videourl," +
@@ -45,6 +47,7 @@ public class VideoDaoImp implements VideoDao {
      * 通过id删除视频
      * @param ids
      */
+    @Transactional
     @Override
     public int deleteByIds(String ids) {
         return jdbcTemplate.update("delete from sysvideos where sysvideos.uv_id in("+ids+")");

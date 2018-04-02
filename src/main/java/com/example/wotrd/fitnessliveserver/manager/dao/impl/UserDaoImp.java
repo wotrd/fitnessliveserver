@@ -10,6 +10,7 @@ import com.example.wotrd.fitnessliveserver.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -81,7 +82,7 @@ public class UserDaoImp implements IUserDao {
         User user = (User) query.get(0);
         return (user.getUid()==uid)?null:user;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateUserByUid(User user) {
         String sql="UPDATE users SET account=?,name=?,nickname=?,borndata=?,gender=?,role=?,grade=?,personalsign=?," +
@@ -92,7 +93,7 @@ public class UserDaoImp implements IUserDao {
         System.out.println(updateRows);
         return (updateRows>0)?true:false;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int deleteByIds(String ids){
         return jdbcTemplate.update("delete from users where uid in("+ids+")");
@@ -111,7 +112,7 @@ public class UserDaoImp implements IUserDao {
             Page page = new Page(sql.toString(), Integer.parseInt(params.get("page").toString()), Integer.parseInt(params.get("rows").toString()), jdbcTemplate);
             return page;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean addUser(User user) {
         String sql="insert into users (account,name,password,gender,nickname,email,idcard,phonenum,role,borndata,createtime) " +
@@ -170,7 +171,7 @@ public class UserDaoImp implements IUserDao {
         List queryList = jdbcTemplate.query(sql, new String[]{account}, userRowMapper);
         return (queryList.size()>0)?(User)queryList.get(0):null;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteUserByAccount(String account) {
         String sql="delete from users where account=?";
@@ -193,6 +194,7 @@ public class UserDaoImp implements IUserDao {
         List<User> users = jdbcTemplate.queryForList(sql, User.class);
         return users;
     }
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveUser(User user) {
         String sql="insert into users (account,name,password,gender,nickname,borndata,email,idcard,phonenum,role) " +
@@ -203,14 +205,14 @@ public class UserDaoImp implements IUserDao {
                 new int[]{3});
         return (updateRows>0)?true:false;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteUserById(int id) {
         String sql="DELETE FROM USERS WHERE uid=?";
         int deleteRows = jdbcTemplate.update(sql, id);
         return (deleteRows>0)?true:false;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateUser(User user) {
         String sql="update users set account=?,name=?,password=?,gender=?," +
@@ -221,7 +223,7 @@ public class UserDaoImp implements IUserDao {
                 user.getBorndata(), user.getUid());
         return (updateRows>0)?true:false;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteUser() {
         int deleteRows = jdbcTemplate.update("delete * from users");

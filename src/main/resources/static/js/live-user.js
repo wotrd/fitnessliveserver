@@ -51,9 +51,14 @@ function wbConnect(url) {
         try {
             var chatMsg=JSON.parse(evt.data);
             if (chatMsg.intent==1) {
-                $("#chatmessage").append("<div><span style='background-color: #f1edff;padding-left:10px;padding-right:10px;border-radius:5px;margin: 5px;font-size: 26px'>"+chatMsg.from+ "</span>" +
-                    "<span style='font-size: 26px'>:</span>&nbsp;&nbsp;" +
-                    "<span style='background-color: #e1ddee;padding-left:5px;padding-right:5px;border-radius:5px;font-size: 22px'>"+chatMsg.content+ "</span></div>"
+
+                $("#chatmessage").append(
+                    "<div><span style='width:60px;height:60px;border-radius:50%;font-size:24px;background-color: rgb(57, 187, 176);" +
+                    "display:inline-block;text-align:center;float:left;line-height:60px'>"+chatMsg.from.substring(0,1)+"</span>"+
+                    "<div><span style='padding-left:10px;font-size: 18px;font-weight:bold'>"+chatMsg.from+"</span><br/>" +
+                    "<span style='padding-left:10px;font-size: 18px'>"+
+                    chatMsg.content+ "</span></div>" +
+                    "</div><hr/>"
                 );
                 var content = document.getElementById('chatmessage');
                 content.scrollTop = content.scrollHeight;

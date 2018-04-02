@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import javax.sql.DataSource;
-
 /**
  * Created by wkj_pc on 2017/6/5.
  */
@@ -15,8 +13,8 @@ public class DataSourceConf {
     @Autowired
     private Environment env;
 
-    @Bean
-    public DataSource getDataSource(){
+    @Bean(destroyMethod = "close")  //destroyMethod代表当连接不适用的时候放入连接池
+    public DruidDataSource getDataSource(){
         DruidDataSource dataSource=new DruidDataSource();
         dataSource.setUsername(env.getProperty("spring.datasource.username"));
         dataSource.setUrl(env.getProperty("spring.datasource.url"));

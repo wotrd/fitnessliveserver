@@ -9,6 +9,7 @@ import com.example.wotrd.fitnessliveserver.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class SysMsgDaoImp implements SysMsgDao {
         }
         return true;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean add(SysMessage msg) {
         String sql="insert into sysmessage (sm_title,sm_content,sm_from,sm_to,intent,owner,time,result,uid) " +
@@ -38,7 +39,7 @@ public class SysMsgDaoImp implements SysMsgDao {
                 0,msg.getTo(),msg.getTime(),msg.getResult(),msg.getUid());
         return (updateRows>0)?true:false;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateMsgByUid(SysMessage msg) {
         String sql="UPDATE sysmessage SET sm_title=?,sm_content=?,sm_from=?,sm_to=?,owner=?," +
@@ -48,7 +49,7 @@ public class SysMsgDaoImp implements SysMsgDao {
                 ,msg.getResult(), msg.getSmid());
         return (updateRows>0)?true:false;
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int deleteByIds(String ids) {
         return jdbcTemplate.update("delete from sysmessage where sm_id in("+ids+")");

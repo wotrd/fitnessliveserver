@@ -6,6 +6,7 @@ import com.example.wotrd.fitnessliveserver.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class FansAndAttentionDaoImp implements FansAndAttentionDao {
     /**
      * 取消关注
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean cancelAttention(String useraccount, String attentionsaccount) {
         //用户1的关注删掉
@@ -48,6 +50,7 @@ public class FansAndAttentionDaoImp implements FansAndAttentionDao {
     /**
      * 删除粉丝
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteFans(String useraccount, String fansAccount) {
         //用户1的粉丝删掉
@@ -71,6 +74,7 @@ public class FansAndAttentionDaoImp implements FansAndAttentionDao {
     /**
      * 添加用户的关注
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean attention(String useraccount, String attentionaccount) {
         String user1Sql="select * from users where account=?";
@@ -104,6 +108,7 @@ public class FansAndAttentionDaoImp implements FansAndAttentionDao {
     /**
      * 添加用户的粉丝
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean addFans(String useraccount, String fansaccount) {
         String user1Sql="select * from users where account=?";
