@@ -33,7 +33,7 @@ public interface IUserDao {
 
     Page queryUserList(Map<String, Object> params);
 
-    int deleteByIds(String ids);
+    boolean deleteByIds(String ids);
 
     User queryUserByAccountExceptUid(String account, int uid);
 

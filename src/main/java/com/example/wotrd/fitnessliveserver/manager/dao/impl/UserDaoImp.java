@@ -1,12 +1,11 @@
 package com.example.wotrd.fitnessliveserver.manager.dao.impl;
 
 import com.example.wotrd.fitnessliveserver.manager.dao.IUserDao;
+import com.example.wotrd.fitnessliveserver.manager.domain.Attention;
+import com.example.wotrd.fitnessliveserver.manager.domain.Fans;
 import com.example.wotrd.fitnessliveserver.manager.domain.UploadVideo;
 import com.example.wotrd.fitnessliveserver.manager.domain.User;
-import com.example.wotrd.fitnessliveserver.tools.Page;
-import com.example.wotrd.fitnessliveserver.tools.StringUtil;
-import com.example.wotrd.fitnessliveserver.tools.UploadVideoMapper;
-import com.example.wotrd.fitnessliveserver.tools.UserRowMapper;
+import com.example.wotrd.fitnessliveserver.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,7 +26,10 @@ public class UserDaoImp implements IUserDao {
     private JdbcTemplate jdbcTemplate;
     @Resource
     private UserRowMapper userRowMapper;
-
+    @Resource
+    private AttentionRowMapper attentionRowMapper;
+    @Resource
+    private FansRowMapper fansRowMapper;
     @Autowired
     private UploadVideoMapper uploadVideoMapper;
 
@@ -95,8 +97,58 @@ public class UserDaoImp implements IUserDao {
     }
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int deleteByIds(String ids){
-        return jdbcTemplate.update("delete from users where uid in("+ids+")");
+    public boolean deleteByIds(String ids){
+        try{
+            //将用户的直播主题删除
+            jdbcTemplate.update("delete from livethemes where uid in("+ids+")");
+            //获取自己的用户信息
+            List<User> users = jdbcTemplate.query("select * from users where uid in("+ids+")",userRowMapper);
+            for (int i=0;i<users.size();i++){
+                User user=users.get(i);
+                //获取自己关注的用户
+                List<Attention> attentions = jdbcTemplate.query("SELECT * from attentions where uid =" + user.getUid() + ";", attentionRowMapper);
+                //获取自己的粉丝用户
+                List<Fans> fans = jdbcTemplate.query("SELECT * from fans where uid =" + user.getUid() + ";", fansRowMapper);
+                //删除用户的粉丝
+                jdbcTemplate.update("delete from fans where fs_account='"+user.getAccount()+"';");
+                if (null!=fans && fans.size()>0){
+                    //更新关住数量。将自己的关注删除
+                    for (int f=0;f<fans.size();f++){
+                        Fans fans1 = fans.get(f);
+                        //将别人对自己的关注删掉
+                        System.out.println(fans1.getFaccount()+"-----------"+fans1.getAccount());
+                        jdbcTemplate.update("delete from attentions WHERE account='"+fans1.getFaccount()+"' AND gz_account='"+fans1.getAccount()+"';");
+                        //更新别人的关注数量
+                        System.out.println("-----------"+fans1.getFaccount());
+                        String sql="update users set attentionnum=attentionnum-1 WHERE account='"+fans1.getFaccount()+"';";
+                        jdbcTemplate.update(sql);
+                        System.out.println("execute close"+sql);
+                    }
+                }
+                System.out.println("delete user fans closed");
+                //删除用户的关注
+                jdbcTemplate.update("delete from attentions where attentions.gz_account ='"+user.getAccount()+"';");
+                if (null!=attentions && attentions.size()>0){
+                    for (int a=0;a<attentions.size();a++){
+                        Attention attention=attentions.get(a);
+                        //删除别人的粉丝
+                        System.out.println(attention.getGzaccount()+"-----------"+attention.getAccount());
+                        String sql="delete from fans WHERE account='"+attention.getGzaccount()+"' AND fs_account='"+attention.getAccount()+"';";
+                        System.out.println("-----------"+sql);
+                        jdbcTemplate.update(sql);
+                        //更新别人的粉丝数量和grade
+                        jdbcTemplate.update("UPDATE users SET fansnum = fansnum-1,grade=grade-5 WHERE account='"+attention.getGzaccount()+"';");
+                    }
+                }
+            }
+            //删除用户
+            System.out.println("start delete user");
+            jdbcTemplate.update("delete from users where uid in("+ids+")");
+            return true;
+        }catch (Exception e){
+            throw e;
+        }
+
     }
     @Override
     public Page queryUserList(Map<String, Object> params) {

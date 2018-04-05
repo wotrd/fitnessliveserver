@@ -45,30 +45,31 @@ create table users
   createtime   datetime                null
   comment '注册时间'
 )
-  engine = MyISAM
+  engine = InnoDB
   charset = utf8;
 DROP TABLE IF EXISTS `fans`;
 
 -- auto-generated definition
-CREATE TABLE fans
-(
-  fs_id       BIGINT AUTO_INCREMENT
-  COMMENT 'FID'
-    PRIMARY KEY,
-  fs_account  VARCHAR(200) NOT NULL
-  COMMENT '账户',
-  fs_nickname VARCHAR(200) NULL
-  COMMENT '昵称',
-  fs_phonenum VARCHAR(200) NULL
-  COMMENT '手机号',
-  fs_amatar   VARCHAR(200) NULL
-  COMMENT '头像',
-  uid         BIGINT       NOT NULL
-  COMMENT 'userid',
-  account     VARCHAR(200) NOT NULL
-)
-  ENGINE = MyISAM
-  CHARSET = utf8;
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (69, '100039', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 39, '100039');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (57, '100000', '小灰灰', '17862901468', 'http://192.168.191.1:8080/fitnesslive/img/amatar/100000460b8686-abf7-4c7e-b297-f5a83cf362e4.jpg', 28, '17862901383');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (58, '100000', '小灰灰', '17862901468', 'http://192.168.191.1:8080/fitnesslive/img/amatar/100000460b8686-abf7-4c7e-b297-f5a83cf362e4.jpg', 5, '100005');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (55, '100003', '执念', '17862901489', 'http://192.168.191.1:8080/fitnesslive/img/amatar/1000035b7052e3-d3b1-4b2a-a2a8-d35164ac1222.jpg', 5, '100005');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (52, '100004', 'sir', null, 'http://192.168.191.1:8080/fitnesslive/img/amatar/100004cee39c9c-99a2-4334-8458-7509a0d359e6.jpg', 5, '100005');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (53, '100004', 'sir', null, 'http://192.168.191.1:8080/fitnesslive/img/amatar/100004cee39c9c-99a2-4334-8458-7509a0d359e6.jpg', 3, '100003');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (54, '100003', '执念', '17862901489', 'http://192.168.191.1:8080/fitnesslive/img/amatar/1000035b7052e3-d3b1-4b2a-a2a8-d35164ac1222.jpg', 3, '100003');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (62, '100000', '小灰灰', '17862901468', 'http://192.168.191.1:8080/fitnesslive/img/amatar/100000460b8686-abf7-4c7e-b297-f5a83cf362e4.jpg', 34, 'test2');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (64, '100036', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 29, 'hanyi');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (65, '100036', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 27, 'diaolizhao');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (66, '100036', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 26, 'machunhua');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (67, '100036', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 25, 'dexiang');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (68, '100036', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 2, '100000');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (71, '17862901383', '小奈', '17862901383', 'http://192.168.191.1:8080/fitnesslive/img/amatar/283a6658d4-e44d-4adb-b8dd-b79f4db46d54.jpg', 2, '100000');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (72, '17862901383', '小奈', '17862901383', 'http://192.168.191.1:8080/fitnesslive/img/amatar/283a6658d4-e44d-4adb-b8dd-b79f4db46d54.jpg', 40, '100040');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (73, '17862901368', 'test11', '17862901368', 'http://192.168.191.1:8080/fitnesslive/img/amatar/33c7fe0601-e23f-447e-abd5-046ab7075d32.jpg', 2, '100000');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (74, '17862901268', '小赵', '17862901268', 'http://192.168.191.1:8080/fitnesslive/img/amatar/178629012688550dd83-a5fd-411e-a51b-423e4eae3631.jpg', 2, '100000');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (155, '100040', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 4, '100004');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (162, '100040', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 28, '17862901383');
+INSERT INTO `fitnesslive.db`.fans (fs_id, fs_account, fs_nickname, fs_phonenum, fs_amatar, uid, account) VALUES (160, '100040', '执念', null, 'http://thirdqq.qlogo.cn/qqapp/1106140497/09A6B15F49530FC17C40B23B50624A88/40', 37, '100037');
 
 DROP TABLE IF EXISTS `attentions`;
 
@@ -90,7 +91,7 @@ CREATE TABLE attentions
   COMMENT 'userid',
   account     VARCHAR(200) NULL
 )
-  ENGINE = MyISAM
+  ENGINE = InnoDB
   CHARSET = utf8;
 
 DROP TABLE IF EXISTS `livethemes`;
@@ -108,7 +109,7 @@ CREATE TABLE livethemes
   uid       BIGINT              NOT NULL
   COMMENT 'userid'
 )
-  ENGINE = MyISAM
+  ENGINE = InnoDB
   CHARSET = utf8;
 
 DROP TABLE IF EXISTS `sysvideos`;

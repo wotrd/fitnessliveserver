@@ -231,8 +231,13 @@ public class RegisterService {
         System.out.println("ids="+ids);
         JSONObject result = new JSONObject();
         //删除操作
-        int index = userDao.deleteByIds(ids);
-        if(index>0){
+        boolean deleteResult=false;
+        try{
+            deleteResult= userDao.deleteByIds(ids);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        if(deleteResult){
             result.put("message","用户信息删除成功!");
             result.put("flag",true);
         }else{

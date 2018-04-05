@@ -94,6 +94,7 @@ public class CustomerLiveChattingService {
         Attention att=null;
         try{
             att = JSON.parseObject(attention, Attention.class);
+//            System.out.println("-------"+att.getUid()+"--"+att.getGzaccount()+"---"+att.getGzid()+"---"+att.getAccount());
         }catch (Exception e){
             e.printStackTrace();
         }
