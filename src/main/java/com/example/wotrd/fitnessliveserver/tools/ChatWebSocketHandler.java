@@ -126,7 +126,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         User adminUser = stringUserMap.get("admin");
         String senderMessage=createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account));
         if (null==adminUser){
-            senderMessage = createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account)-1);
+            senderMessage = createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account));
         }
         /** intent=2发送直播间粉丝数量 */
         transSendMessage(senderMessage,account);

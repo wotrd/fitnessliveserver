@@ -7,23 +7,16 @@
 <body>
 <script src="../static/js/jquery-2.0.3.min.js" ></script>
 <script type="text/javascript">
-    function add() {
-        alert($("#t").val());
-      /*  $("#test").append("<div><span style='background-color: #f1edff;padding-left:10px;padding-right:10px;border-radius:5px;margin: 5px;font-size: 26px'>tom</span>" +
-            "<span style='font-size: 26px'>:</span>&nbsp;&nbsp;" +
-            "<span style='background-color: #e1ddee;padding-left:5px;padding-right:5px;border-radius:5px;font-size: 22px'>ff</span></div>"
-        );
-        var content = document.getElementById('test');
-        content.scrollTop = content.scrollHeight;*/
-    }
+
 </script>
     <div id="test" style="width:350px;height:100px;overflow: auto;">
-        <!--<span style="background-color: #f1edff;padding-left:10px;padding-right:10px;border-radius:5px;margin: 5px;font-size: 26px">hah</span>
-        <span style="font-size: 26px">:</span>&nbsp;&nbsp;
-        <span style="background-color: #e1ddee;padding-left:5px;padding-right:5px;border-radius:5px;font-size: 22px">chat message</span>
-    -->
+        <video controls="controls" autoplay="autoplay">
+            <source src="/i/movie.ogg" type="video/ogg" />
+            <source src="/i/movie.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+
     </div>
-    <input id="t" type="text" value="gggg">
-    <button onclick="add();">btn</button>
+
 </body>
 </html>
