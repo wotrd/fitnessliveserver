@@ -115,7 +115,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 //解析获取到的直播信息
                 // LiveChattingMessage chattingMessage = JSON.parseObject(str,LiveChattingMessage.class);
             }else{  //该用户为观看者,将收到的信息转发到直播间
-                transSendMessage(str, split[2]);
+                transSendMessage(str,   split[2]);
             }
         }
     }

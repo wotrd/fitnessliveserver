@@ -56,10 +56,9 @@ public class LoginController {
         return loginService.doLogin(request, loginUser);
 
     }
-
     /**
- *  验证输入的验证码是否正确
- */
+     *  验证输入的验证码是否正确
+     */
    @ResponseBody
    @RequestMapping("/toVerifyCode")
    public Map<String, Object> toVerifyCode(HttpServletRequest request,HttpServletResponse response){
