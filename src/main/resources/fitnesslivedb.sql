@@ -1,6 +1,4 @@
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`fitnesslive.db` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `fitnesslive.db`;
 
 DROP TABLE IF EXISTS `users`;
 -- auto-generated definition

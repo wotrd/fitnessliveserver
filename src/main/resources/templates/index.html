@@ -105,22 +105,18 @@
             /*<![CDATA[*/
             var user = /*[[${session.loginUser}]]*/ null;
             /*]]>*/
-            if (user.amatar.length>0){
-                $("#avatar").attr('src',user.amatar);
-            }
-            $("#fansnum").text(user.fansnum);
-            $("#attentionsnum").text(user.attentionnum);
+            // if (user.amatar.length>0){
+            //     $("#avatar").attr('src',user.amatar);
+            // }
+
             $("#showaccount").text(user.account);
             $("#showname").text(user.name);
-            $("#shownickname").text(user.nickname);
-            $("#showborndata").text(user.borndata);
+            $("#shownickname").text(user.nickName);
             $("#showsex").text(user.gender);
             $("#showemail").text(user.email);
             $("#showidcard").text(user.idcard);
-            $("#showmobilenum").text(user.phonenum);
-            $("#showpersonalsign").text(user.personalsign);
-            $("#showgrade").text(user.grade);
-            $("#showcreatetime").text(user.createtime);
+            $("#showmobilenum").text(user.mobileNum);
+            $("#showcreatetime").text(user.createTime);
             $("#showarole").text(user.role);
             $("#personUserInfoModal").modal({
                 keyboard : false,
@@ -141,7 +137,7 @@
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand" style="height: 45px;">
                 <small>
-                    <img class="logo"  th:src="@{/images/logo.png}" /> Fitnesslive健身直播后台
+                    <img class="logo"  th:src="@{/images/logo.png}" /> AinimalSales动漫系统后台
                 </small>
             </a>
         </div>
@@ -353,30 +349,6 @@
             <ul id="menus" class="nav nav-list">
                 <li>
                     <a href="#" class="dropdown-toggle">
-                        <i class="icon-desktop"></i>
-                        <span class="menu-text">直播管理</span>
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-                    <ul class="submenu">
-                        <li>
-                            <a id="liveuser" value="/manager/livemanager/liveuser" class="changeUrl">
-                                <i class="icon-double-angle-right"></i>直播用户
-                            </a>
-                        </li>
-                        <li>
-                            <a id="attentionmanager" value="/manager/livemanager/attentionmanager" class="changeUrl">
-                                <i class="icon-double-angle-right"></i>用户关注
-                            </a>
-                        </li>
-                        <li>
-                            <a id="fansmanager" value="/manager/livemanager/fansmanager"
-                               class="changeUrl"><i class="icon-double-angle-right"></i>用户粉丝
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle">
                         <i class="icon-cogs"></i>
                         <span class="menu-text">系统管理</span>
                         <b class="arrow icon-angle-down"></b>
@@ -388,47 +360,30 @@
                                 全部用户
                             </a>
                         </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-desktop"></i>
+                        <span class="menu-text">订单管理</span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
                         <li>
-                            <a id="sysmessage" value="/mamager/sysmessage" class="changeUrl">
-                                <i class="icon-double-angle-right"></i>
-                                系统消息
+                            <a id="businessmanager" value="/manager/businessmanager/business-manager" class="changeUrl">
+                                <i class="icon-double-angle-right"></i>商品管理
+                            </a>
+                        </li>
+                        <li>
+                            <a id="ordermanager" value="/manager/ordermanager/ordermanager"
+                               class="changeUrl"><i class="icon-double-angle-right"></i>订单明细
                             </a>
                         </li>
                     </ul>
-                </li>
-                 <li>
-                     <a href="#" class="dropdown-toggle">
-                         <i class="icon-list"></i>
-                         <span class="menu-text">视频管理</span>
-                         <b class="arrow icon-angle-down"></b>
-                     </a>
-                     <ul class="submenu">
-                         <li>
-                             <a id="sysvideo" value="/manager/videomanager/sysvideo" class="changeUrl">
-                                 <i class="icon-double-angle-right"></i>
-                                 视频管理
-                             </a>
-                         </li>
-                     </ul>
-                 </li>
-                <!--
-                 <li>
-                     <a href="#" class="dropdown-toggle">
-                         <i class="icon-cloud"></i>
-                         <span class="menu-text">资源管理</span>
 
-                         <b class="arrow icon-angle-down"></b>
-                     </a>
-                     <ul class="submenu">
-                         <li>
-                             <a href="tables.html">
-                                 <i class="icon-double-angle-right"></i>
-                                 课程资源管理
-                             </a>
-                         </li>
-                     </ul>
-                 </li>
-                 -->
+                </li>
+
             </ul>
             <div class="sidebar-collapse" id="sidebar-collapse">
                 <i class="icon-double-angle-left"
@@ -536,18 +491,18 @@
                                 </div>
                                 <div class="hr hr12 dotted"></div>
                                 <!--粉丝和关注数量-->
-                                <div class="clearfix">
-                                    <div class="grid2">
-                                        <span class="bigger-175 blue" id="fansnum">0</span>
-                                        <br/>
-                                        粉丝数
-                                    </div>
-                                    <div class="grid2">
-                                        <span class="bigger-175 blue" id="attentionsnum">0</span>
-                                        <br/>
-                                        关注数
-                                    </div>
-                                </div>
+<!--                                <div class="clearfix">-->
+<!--                                    <div class="grid2">-->
+<!--                                        <span class="bigger-175 blue" id="fansnum">0</span>-->
+<!--                                        <br/>-->
+<!--                                        粉丝数-->
+<!--                                    </div>-->
+<!--                                    <div class="grid2">-->
+<!--                                        <span class="bigger-175 blue" id="attentionsnum">0</span>-->
+<!--                                        <br/>-->
+<!--                                        关注数-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="hr hr16 dotted"></div>
                             </div>
 
@@ -572,12 +527,12 @@
                                             <span class="editable" id="shownickname">Tom</span>
                                         </div>
                                     </div>
-                                    <div class="profile-info-row" style="height: 30px;">
-                                        <div class="profile-info-name"> 出生日期</div>
-                                        <div class="profile-info-value">
-                                            <span class="editable" id="showborndata"></span>
-                                        </div>
-                                    </div>
+<!--                                    <div class="profile-info-row" style="height: 30px;">-->
+<!--                                        <div class="profile-info-name"> 出生日期</div>-->
+<!--                                        <div class="profile-info-value">-->
+<!--                                            <span class="editable" id="showborndata"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="profile-info-row" style="height: 30px;">
                                         <div class="profile-info-name"> 性别</div>
                                         <div class="profile-info-value">
@@ -602,18 +557,18 @@
                                             <span class="editable" id="showmobilenum">17862901468</span>
                                         </div>
                                     </div>
-                                    <div class="profile-info-row" style="height: 30px;">
-                                        <div class="profile-info-name"> 个性签名</div>
-                                        <div class="profile-info-value">
-                                            <span class="editable" id="showpersonalsign">too young too simple!</span>
-                                        </div>
-                                    </div>
-                                    <div class="profile-info-row" style="height: 30px;">
-                                        <div class="profile-info-name"> 积分</div>
-                                        <div class="profile-info-value">
-                                            <span class="editable" id="showgrade">0</span>
-                                        </div>
-                                    </div>
+<!--                                    <div class="profile-info-row" style="height: 30px;">-->
+<!--                                        <div class="profile-info-name"> 个性签名</div>-->
+<!--                                        <div class="profile-info-value">-->
+<!--                                            <span class="editable" id="showpersonalsign">too young too simple!</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="profile-info-row" style="height: 30px;">-->
+<!--                                        <div class="profile-info-name"> 积分</div>-->
+<!--                                        <div class="profile-info-value">-->
+<!--                                            <span class="editable" id="showgrade">0</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="profile-info-row" style="height: 30px;">
                                         <div class="profile-info-name" >加入时间</div>
 
