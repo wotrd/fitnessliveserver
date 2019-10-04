@@ -1,8 +1,10 @@
-package com.example.animalsalesserver.manager.domain;
+package com.example.animalsalesserver.manager.po;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 商品表(Businesses)实体类
@@ -10,8 +12,9 @@ import java.io.Serializable;
  * @author wotrd
  * @since 2019-10-04 14:47:10
  */
+@Builder
 @Data
-public class Business implements Serializable {
+public class BusinessPo implements Serializable {
     private static final long serialVersionUID = -44098401377051761L;
     /**
      * 主键ID
@@ -24,11 +27,11 @@ public class Business implements Serializable {
     /**
      * 商品类型
      */
-    private Integer type;
+    private String type;
     /**
      * 商品单价
      */
-    private Double price;
+    private BigDecimal price;
     /**
      * 商品图片
      */

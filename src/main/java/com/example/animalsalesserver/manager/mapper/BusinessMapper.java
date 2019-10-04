@@ -1,7 +1,8 @@
 package com.example.animalsalesserver.manager.mapper;
 
-import com.example.animalsalesserver.manager.domain.Business;
+import com.example.animalsalesserver.manager.po.BusinessPo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface BusinessMapper {
      * @param id 主键
      * @return 实例对象
      */
-    Business queryById(Long id);
+    BusinessPo queryById(Long id);
 
     /**
      * 通过 name 作为筛选条件查询
@@ -30,8 +31,14 @@ public interface BusinessMapper {
      * @param name 查询起始位置
      * @return 对象列表
      */
-    List<Business> queryLikeName(String name);
-
+    List<BusinessPo> queryLikeName(String name);
+    /**
+     * 通过 name 作为筛选条件查询
+     *
+     * @param name 查询起始位置
+     * @return 对象列表
+     */
+    BusinessPo queryByName(String name);
 
     /**
      * 通过实体作为筛选条件查询
@@ -39,7 +46,7 @@ public interface BusinessMapper {
      * @param businesses 实例对象
      * @return 对象列表
      */
-    List<Business> queryAll(Business businesses);
+    List<BusinessPo> queryAll(BusinessPo businesses);
 
     /**
      * 新增数据
@@ -47,7 +54,7 @@ public interface BusinessMapper {
      * @param businesses 实例对象
      * @return 影响行数
      */
-    int insert(Business businesses);
+    int insert(BusinessPo businesses);
 
     /**
      * 修改数据
@@ -55,7 +62,7 @@ public interface BusinessMapper {
      * @param businesses 实例对象
      * @return 影响行数
      */
-    int update(Business businesses);
+    int update(BusinessPo businesses);
 
     /**
      * 通过主键删除数据
@@ -65,4 +72,5 @@ public interface BusinessMapper {
      */
     int deleteById(Long id);
 
+    int deleteByIds(@Param("ids") String[] ids);
 }

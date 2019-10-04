@@ -299,7 +299,6 @@ public class ServletUtil {
 				if(null!=filter){					
 					jsonString = JSONObject.toJSONString(map,filter,serializerFeature);
 				}else{
-//					jsonString = JSONObject.toJSONString(map,config,serializerFeature);
 					jsonString = JSONObject.toJSONStringWithDateFormat(map,"yyyy-MM-dd");
 				
 				}

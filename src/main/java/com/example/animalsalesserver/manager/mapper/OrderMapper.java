@@ -1,6 +1,6 @@
 package com.example.animalsalesserver.manager.mapper;
 
-import com.example.animalsalesserver.manager.domain.Order;
+import com.example.animalsalesserver.manager.po.OrderPo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,17 +23,17 @@ public interface OrderMapper {
      * @param id 主键
      * @return 实例对象
      */
-    Order queryById(Long id);
+    OrderPo queryById(Long id);
 
     /**
      * 查询指定行数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param bName
+     * @param buyerName
+     * @param sellName
      * @return 对象列表
      */
-    List<Order> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
-
+    List<OrderPo> queryLikeNameAndBuyerAndSell(@Param("bName") String bName, @Param("buyerName") String buyerName, @Param("sellName") String sellName);
 
     /**
      * 通过实体作为筛选条件查询
@@ -41,7 +41,7 @@ public interface OrderMapper {
      * @param orders 实例对象
      * @return 对象列表
      */
-    List<Order> queryAll(Order orders);
+    List<OrderPo> queryAll(OrderPo orders);
 
     /**
      * 新增数据
@@ -49,7 +49,7 @@ public interface OrderMapper {
      * @param orders 实例对象
      * @return 影响行数
      */
-    int insert(Order orders);
+    int insert(OrderPo orders);
 
     /**
      * 修改数据
@@ -57,7 +57,7 @@ public interface OrderMapper {
      * @param orders 实例对象
      * @return 影响行数
      */
-    int update(Order orders);
+    int update(OrderPo orders);
 
     /**
      * 通过主键删除数据
@@ -66,5 +66,13 @@ public interface OrderMapper {
      * @return 影响行数
      */
     int deleteById(Long id);
+
+    /**
+     * 通过主键数组删除数据
+     *
+     * @param ids 主键
+     * @return 影响行数
+     */
+    int deleteByIds(@Param("ids") String[] ids);
 
 }

@@ -32,7 +32,29 @@ public class BusinessController {
     @ResponseBody
     public void queryBusinessList(HttpServletRequest request ,HttpServletResponse response){
         businessService.queryBusinessList(request, response);
+    }
+
+    @RequestMapping(value = "/addBusiness",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public void addBusiness(HttpServletRequest request , HttpServletResponse response){
+        businessService.addBusiness(request, response);
 
     }
+
+    @RequestMapping(value = "/update",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public void update(HttpServletRequest request , HttpServletResponse response){
+        businessService.updateBusiness(request, response);
+
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public void delete(HttpServletRequest request , HttpServletResponse response){
+        businessService.delete(request, response);
+
+    }
+
+
 
 }

@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="../static/css/ace-rtl.min.css" th:href="@{/css/ace-rtl.min.css}"/>
     <link rel="stylesheet" href="../static/css/ace-skins.min.css" th:href="@{/css/ace-skins.min.css}"/>
     <script src="../static/js/jquery-2.0.3.min.js" th:src="@{/js/jquery-2.0.3.min.js}"></script>
+    <script src="../static/js/jquery.form.js" th:src="@{/js/jquery.form.js}"></script>
+
     <title>Spring Boot管理后台</title>
 </head>
 <body >
@@ -35,16 +37,13 @@
                                             <form class="form-horizontal" role="form" onsubmit="return false;">
 
                                                 <div class="form-group" style="margin-bottom: 0;">
-                                                    <label class="col-sm-1 control-label">ID：</label>
+
+                                                    <label class="col-sm-1 control-label">名字：</label>
                                                     <div class="col-sm-3" style="width: 200px;">
-                                                        <input id="qryId" data-original-title="Tooltip for name" class="form-control radius" placeholder="用户ID" type="text"  />
-                                                    </div>
-                                                    <label class="col-sm-1 control-label">用户账户：</label>
-                                                    <div class="col-sm-3" style="width: 200px;">
-                                                        <input id="qryAccount"  data-original-title="Tooltip for name" class="form-control radius" placeholder="用户账户" type="text" />
+                                                        <input id="qryName"  data-original-title="Tooltip for name" class="form-control radius" placeholder="商品名字" type="text" />
                                                     </div>
                                                     <div class="col-sm-1">
-                                                        <button id="queryAttentionsBtn" class="btn btn-info btn-sm btn-label-left radius">
+                                                        <button id="queryBusinessBtn" class="btn btn-info btn-sm btn-label-left radius">
                                                             <i class="fa fa-search"></i>查询
                                                         </button>
                                                     </div>
@@ -55,15 +54,15 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div style="margin-bottom: 10px;">
-                                        <button  class="btn btn-success btn-sm radius" id="addAttentionBtn">
-                                            <i class="fa  fa-plus"></i> 添加关注
+                                        <button  class="btn btn-success btn-sm radius" id="addBusinessBtn">
+                                            <i class="fa  fa-plus"></i> 添加商品
                                         </button>
-                                        <!--<button  class="btn btn-primary btn-sm radius" id="modifyLearnBtn">
+                                        <button  class="btn btn-primary btn-sm radius" id="modifyBusinessBtn">
                                             <i class="fa fa-pencil-square-o"></i> 修改
-                                        </button>-->
-                                        <!--<button  class="btn btn-danger btn-sm radius" id="deleteLearnBtn">
+                                        </button>
+                                        <button  class="btn btn-danger btn-sm radius" id="deleteBusinessBtn">
                                             <i class="fa fa-trash-o fa-lg"></i> 删除
-                                        </button>-->
+                                        </button>
                                     </div>
                                     <table id="jqGrid"></table>
                                     <div id="jqGridPager"></div>
@@ -77,41 +76,105 @@
     </div>
 </div>
 
-<!--新增关注用户-->
-<div id="addAttentionModal" class="bootbox modal fade" tabindex="-1" role="dialog">
+<!--新增商品-->
+<div id="addBusinessModal" class="bootbox modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">新增关注</h4>
+                <h4 class="modal-title" id="myModalLabel">新增商品</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form" onsubmit="return false;">
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">用户账户</label>
+                        <label class="col-sm-2 control-label">商品名字</label>
                         <div class="col-sm-8">
-                            <input id="useraccount" type="text" class="form-control" placeholder="输入用户账户" />
+                            <input id="name" type="text" class="form-control" placeholder="输入商品名字" />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">关注账户</label>
+                        <label class="col-sm-2 control-label">商品类型</label>
                         <div class="col-sm-8">
-                            <input id="attentionaccount" type="text" class="form-control" placeholder="输入关注者账户" />
+                            <input id="type" type="text" class="form-control" placeholder="输入商品类型" />
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格</label>
+                        <div class="col-sm-8">
+                            <input id="price" type="text" class="form-control" placeholder="输入商品价格" />
+                        </div>
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">商品价格</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input id="attentionaccount" type="text" class="form-control" placeholder="输入商品价格" />-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </form>
             </div>
             <div class="modal-footer">
-                <button data-bb-handler="confirm" type="button" id="saveAttentionBtn" class="btn btn-success radius">
+                <button data-bb-handler="confirm" type="button" id="saveBusinessBtn" class="btn btn-success radius">
                     <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
                 </button>
-                <button data-bb-handler="cancel" type="button" id="cancelAttentionBtn" class="btn btn-danger radius">取消</button>
+                <button data-bb-handler="cancel" type="button" id="cancelBusinessBtn" class="btn btn-danger radius">取消</button>
             </div>
         </div>
     </div>
 </div>
+
+<!--新增商品-->
+<div id="upBusinessModal" class="bootbox modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalLabel">修改商品</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="upBusinessForm" onsubmit="return false;">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品名字</label>
+                        <div class="col-sm-8">
+                            <input id="id" name="id" type="text" class="form-control" hidden="hidden" />
+                            <input id="upname" name="upname" type="text" class="form-control" placeholder="输入商品名字" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品类型</label>
+                        <div class="col-sm-8">
+                            <input id="uptype" name="uptype" type="text" class="form-control" placeholder="输入商品类型" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格</label>
+                        <div class="col-sm-8">
+                            <input id="upprice" name="upprice" type="text" class="form-control" placeholder="输入商品价格" />
+                        </div>
+                    </div>
+                    <!--                    <div class="form-group">-->
+                    <!--                        <label class="col-sm-2 control-label">商品价格</label>-->
+                    <!--                        <div class="col-sm-8">-->
+                    <!--                            <input id="attentionaccount" type="text" class="form-control" placeholder="输入商品价格" />-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" id="upBussnessBtn" class="btn btn-success radius">
+                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
+                </button>
+                <button data-bb-handler="cancel" type="button" id="cancelUpBusinessBtn" class="btn btn-danger radius">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script src="../static/js/ace-extra.min.js" th:src="@{/js/ace-extra.min.js}"></script>
 <!--[if lt IE 9]>
 

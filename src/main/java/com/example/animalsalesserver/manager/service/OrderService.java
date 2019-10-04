@@ -1,177 +1,156 @@
 package com.example.animalsalesserver.manager.service;
 
+
 import com.alibaba.fastjson.JSONObject;
+import com.example.animalsalesserver.manager.mapper.OrderMapper;
+import com.example.animalsalesserver.manager.po.BusinessPo;
+import com.example.animalsalesserver.manager.po.OrderPo;
 import com.example.animalsalesserver.tools.ServletUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
+
+/**
+ * @author wangkaijin
+ */
 @Service
 public class OrderService {
-//    @Autowired
-//    FansAndAttentionDao fansAndAttentionDao;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
     /**
-     * 取消关注
+     * 获取订单列表
+     *
      * @param request
      * @param response
+     * @return
      */
-//    public void cancelAttention(HttpServletRequest request, HttpServletResponse response) {
-//        String useraccount = request.getParameter("useraccount");
-//        String attentionsaccount = request.getParameter("attentionsaccount");
-//        JSONObject result=new JSONObject();
-//        if (fansAndAttentionDao.cancelAttention(useraccount,attentionsaccount)){
-//            result.put("message","取消关注成功！");
-//            result.put("flag",true);
-//            ServletUtil.createSuccessResponse(200,result,response);
-//            return;
-//        }
-//        result.put("message","服务器繁忙，请稍后...");
-//        result.put("flag",false);
-//        ServletUtil.createSuccessResponse(200,result,response);
-//        return;
-//    }
+    public void queryOrderList(HttpServletRequest request, HttpServletResponse response) {
+        // 取得当前页数,注意这是jqgrid自身的参数
+        int pageNum = Integer.parseInt(request.getParameter("page"));
+        // 取得每页显示行数，,注意这是jqgrid自身的参数
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+
+        String bName = request.getParameter("bName");
+        String buyerName = request.getParameter("buyerName");
+        String sellName = request.getParameter("sellName");
+
+        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
+        List<OrderPo> orderPos = orderMapper.queryLikeNameAndBuyerAndSell(bName, buyerName, sellName);
+
+        JSONObject jo = new JSONObject();
+        jo.put("rows", orderPos);
+        jo.put("total", page.getPages());
+        jo.put("records", page.getTotal());
+        ServletUtil.createSuccessResponse(200, jo, response);
+
+    }
+
     /**
-     * 删除粉丝
-     */
-//    public void delete(HttpServletRequest request, HttpServletResponse response) {
-//        String useraccount = request.getParameter("useraccount");
-//        String fansaccount = request.getParameter("fansaccount");
-//        JSONObject result=new JSONObject();
-//        if (fansAndAttentionDao.deleteFans(useraccount,fansaccount)){
-//            result.put("message","删除粉丝成功!");
-//            result.put("flag",true);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        result.put("message","服务器异常，请稍后...");
-//        result.put("flag",false);
-//        ServletUtil.createSuccessResponse(200,result,response);
-//    }
-    /**
-     * 关注
-     * @param response
+     * 添加订单
+     *
      * @param request
+     * @param response
+     * @return
      */
-//    public void attention(HttpServletRequest request, HttpServletResponse response) {
-//        String useraccount= request.getParameter("useraccount");
-//        String attentionaccount= request.getParameter("attentionaccount");
-//        JSONObject result=new JSONObject();
-//        if (verifyAttentions(response, useraccount, attentionaccount, result)) return;
-//        if(null==fansAndAttentionDao.queryUserByAccount(attentionaccount)){
-//            result.put("message","关注账户不存在!");
-//            result.put("flag",false);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        if (fansAndAttentionDao.getAttentionsByAccount(useraccount,attentionaccount)){
-//            result.put("message","已关注该粉丝!");
-//            result.put("flag",false);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        if (fansAndAttentionDao.attention(useraccount,attentionaccount)){
-//            result.put("message","关注用户成功!");
-//            result.put("flag",true);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        result.put("message","服务器繁忙，请稍后...");
-//        result.put("flag",false);
-//        ServletUtil.createSuccessResponse(200, result, response);
-//    }
+    public void addOrder(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String bName = request.getParameter("bName");
+        String bCount = request.getParameter("bCount");
+        String bPrice = request.getParameter("bPrice");
+        String buyerName = request.getParameter("buyerName");
+        String sellName = request.getParameter("sellName");
+        int count = Integer.parseInt(bCount);
+        BigDecimal price = new BigDecimal(bPrice);
+        BigDecimal totalPrice = price.multiply(new BigDecimal(count));
+        OrderPo orderPo = OrderPo.builder().bName(bName).bCount(count)
+                .bPrice(price)
+                .buyerName(buyerName).sellName(sellName)
+                .totalPrice(totalPrice)
+                .build();
+
+        int insert = orderMapper.insert(orderPo);
+
+        if (insert > 0) {
+            result.put("message", "订单添加成功!");
+            result.put("flag", true);
+        } else {
+            result.put("message", "订单添加失败!");
+            result.put("flag", false);
+        }
+        ServletUtil.createSuccessResponse(200, result, response);
+
+    }
+
     /**
-     * 添加粉丝
+     * 修改订单
+     *
+     * @param request
+     * @param response
+     * @return
      */
-//    public void add(HttpServletRequest request, HttpServletResponse response) {
-//        String useraccount= request.getParameter("useraccount");
-//        String fansaccount= request.getParameter("fansaccount");
-//        JSONObject result=new JSONObject();
-//        if (verifyAttentions(response, useraccount, fansaccount, result)) return;
-//        if(null==fansAndAttentionDao.queryUserByAccount(fansaccount)){
-//            result.put("message","粉丝账户不存在!");
-//            result.put("flag",false);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        if (fansAndAttentionDao.getFansByAccount(useraccount,fansaccount)){
-//            result.put("message","该粉丝已经存在!");
-//            result.put("flag",false);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        if (fansAndAttentionDao.addFans(useraccount,fansaccount)){
-//            result.put("message","粉丝账户添加成功!");
-//            result.put("flag",true);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return;
-//        }
-//        result.put("message","服务器繁忙，请稍后...");
-//        result.put("flag",false);
-//        ServletUtil.createSuccessResponse(200, result, response);
-//    }
-//
-//    private boolean verifyAttentions(HttpServletResponse response, String useraccount, String fansaccount, JSONObject result) {
-//        if(null==fansAndAttentionDao.queryUserByAccount(useraccount)){
-//            result.put("message","用户账户不存在!");
-//            result.put("flag",false);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return true;
-//        }
-//        if(useraccount.equals(fansaccount)){
-//            result.put("message","用户不能关注自己!");
-//            result.put("flag",false);
-//            ServletUtil.createSuccessResponse(200, result, response);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    /**
-//     * 获取关注列表
-//     */
-//    public void queryAttentionsList(HttpServletRequest request, HttpServletResponse response) {
-//
-//        String page = request.getParameter("page"); // 取得当前页数,注意这是jqgrid自身的参数
-//        String rows = request.getParameter("rows"); // 取得每页显示行数，,注意这是jqgrid自身的参数
-//        String account = request.getParameter("account");
-//        String uid = request.getParameter("uid");
-//        Map<String,Object> params = new HashMap<String,Object>();
-//        params.put("page", page);
-//        params.put("rows", rows);
-//        params.put("account", account);
-//        params.put("uid", uid);
-//        Page pageObj= fansAndAttentionDao.queryAttentionList(params);
-//        List<Map<String, Object>> msgList=pageObj.getResultList();
-//        JSONObject jo=new JSONObject();
-//        jo.put("rows", msgList);
-//        jo.put("total", pageObj.getTotalPages());
-//        jo.put("records", pageObj.getTotalRows());
-//        ServletUtil.createSuccessResponse(200, jo, response);
-//    }
-//    /**
-//     * 获取粉丝列表
-//     */
-//    public void queryFansList(HttpServletRequest request, HttpServletResponse response) {
-//
-//        String page = request.getParameter("page"); // 取得当前页数,注意这是jqgrid自身的参数
-//        String rows = request.getParameter("rows"); // 取得每页显示行数，,注意这是jqgrid自身的参数
-//        String account = request.getParameter("account");
-//        String uid = request.getParameter("uid");
-//        Map<String,Object> params = new HashMap<String,Object>();
-//        params.put("page", page);
-//        params.put("rows", rows);
-//        params.put("account", account);
-//        params.put("uid", uid);
-//        Page pageObj= fansAndAttentionDao.queryFansList(params);
-//        List<Map<String, Object>> msgList=pageObj.getResultList();
-//        JSONObject jo=new JSONObject();
-//        jo.put("rows", msgList);
-//        jo.put("total", pageObj.getTotalPages());
-//        jo.put("records", pageObj.getTotalRows());
-//        ServletUtil.createSuccessResponse(200, jo, response);
-//    }
+    public void updateOrder(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String id = request.getParameter("id");
+        String bName = request.getParameter("upBname");
+        String bCount = request.getParameter("upBcount");
+        String upBprice = request.getParameter("upBprice");
+        String buyerName = request.getParameter("upBuyerName");
+        String sellName = request.getParameter("upSellName");
+
+        int count = Integer.parseInt(bCount);
+        BigDecimal price = new BigDecimal(upBprice);
+        BigDecimal totalPrice = price.multiply(new BigDecimal(count));
+
+        OrderPo orderPo = OrderPo.builder().id(Long.parseLong(id)).bName(bName).bCount(count)
+                .bPrice(price)
+                .buyerName(buyerName).sellName(sellName)
+                .totalPrice(totalPrice)
+                .build();
+
+        int upCount = orderMapper.update(orderPo);
+
+        if (upCount > 0) {
+            result.put("message", "订单修改成功!");
+            result.put("flag", true);
+        } else {
+            result.put("message", "订单修改失败!");
+            result.put("flag", false);
+        }
+        ServletUtil.createSuccessResponse(200, result, response);
+
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    public void delete(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String ids = request.getParameter("ids");
+
+        int count = orderMapper.deleteByIds(ids.split(","));
+
+        if (count > 0) {
+            result.put("message", "订单删除成功!");
+            result.put("flag", true);
+        } else {
+            result.put("message", "订单删除失败!");
+            result.put("flag", false);
+        }
+        ServletUtil.createSuccessResponse(200, result, response);
+
+    }
+
 }

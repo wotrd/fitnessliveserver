@@ -1,5 +1,6 @@
-package com.example.animalsalesserver.manager.domain;
+package com.example.animalsalesserver.manager.po;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -12,8 +13,9 @@ import java.io.Serializable;
  * @author wotrd
  * @since 2019-10-04 15:54:33
  */
+@Builder
 @Data
-public class Order implements Serializable {
+public class OrderPo implements Serializable {
     private static final long serialVersionUID = -93344554150012791L;
     /**
      * 主键ID

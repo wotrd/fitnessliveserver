@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../static/css/ace-rtl.min.css" th:href="@{/css/ace-rtl.min.css}"/>
     <link rel="stylesheet" href="../static/css/ace-skins.min.css" th:href="@{/css/ace-skins.min.css}"/>
     <script src="../static/js/jquery-2.0.3.min.js" th:src="@{/js/jquery-2.0.3.min.js}"></script>
+    <script src="../static/js/jquery.form.js" th:src="@{/js/jquery.form.js}"></script>
 
     <title>Spring Boot管理后台</title>
 </head>
@@ -35,18 +36,23 @@
                                             <form class="form-horizontal" role="form" onsubmit="return false;">
 
                                                 <div class="form-group" style="margin-bottom: 0;">
-                                                    <label class="col-sm-1 control-label">ID：</label>
+                                                    <label class="col-sm-1 control-label">商品名字：</label>
                                                     <div class="col-sm-3" style="width: 200px;">
-                                                        <input id="qryId" data-original-title="Tooltip for name"
-                                                               class="form-control radius" placeholder="用户ID" type="text"  />
+                                                        <input id="qryBusinessName" data-original-title="Tooltip for name"
+                                                               class="form-control radius" placeholder="商品名字" type="text"  />
                                                     </div>
-                                                    <label class="col-sm-1 control-label">用户账户：</label>
+                                                    <label class="col-sm-1 control-label">买家账户：</label>
                                                     <div class="col-sm-3" style="width: 200px;">
-                                                        <input id="qryAccount" data-original-title="Tooltip for name"
-                                                               class="form-control radius" placeholder="用户账户" type="text" />
+                                                        <input id="qryBuyerName" data-original-title="Tooltip for name"
+                                                               class="form-control radius" placeholder="买家账户" type="text"  />
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">卖家账户：</label>
+                                                    <div class="col-sm-3" style="width: 200px;">
+                                                        <input id="qrySellName" data-original-title="Tooltip for name"
+                                                               class="form-control radius" placeholder="卖家账户" type="text" />
                                                     </div>
                                                     <div class="col-sm-1">
-                                                        <button id="queryFansBtn" class="btn btn-info btn-sm btn-label-left radius">
+                                                        <button id="queryOrderBtn" class="btn btn-info btn-sm btn-label-left radius">
                                                             <i class="fa fa-search"></i>查询
                                                         </button>
                                                     </div>
@@ -57,15 +63,15 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div style="margin-bottom: 10px;">
-                                        <button  class="btn btn-success btn-sm radius" id="addFansBtn">
-                                            <i class="fa  fa-plus"></i> 添加粉丝
-                                        </button><!--
-                                        <button  class="btn btn-primary btn-sm radius" id="modifyLearnBtn">
+                                        <button class="btn btn-success btn-sm radius" id="addOrderBtn">
+                                            <i class="fa  fa-plus"></i> 添加订单
+                                        </button>
+                                        <button class="btn btn-primary btn-sm radius" id="modifyOrderBtn">
                                             <i class="fa fa-pencil-square-o"></i> 修改
-                                        </button>--><!--
-                                        <button  class="btn btn-danger btn-sm radius" id="deleteLearnBtn">
+                                        </button>
+                                        <button class="btn btn-danger btn-sm radius" id="deleteOrderBtn">
                                             <i class="fa fa-trash-o fa-lg"></i> 删除
-                                        </button>-->
+                                        </button>
                                     </div>
                                     <table id="jqGrid"></table>
                                     <div id="jqGridPager"></div>
@@ -79,39 +85,112 @@
     </div>
 </div>
 
-<!--新增粉丝窗口-->
-<div id="addFansModal" class="bootbox modal fade" tabindex="-1" role="dialog">
+<!--新增订单窗口-->
+<div id="addOrderModal" class="bootbox modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">添加粉丝</h4>
+                <h4 class="modal-title" id="myModalLabel">添加订单</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form" onsubmit="return false;">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">用户账户</label>
+                        <label class="col-sm-2 control-label">商品名字</label>
                         <div class="col-sm-8">
-                            <input id="useraccount" type="text" class="form-control" placeholder="输入用户账户" />
+                            <input id="bName" type="text" class="form-control" placeholder="输入商品名字" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">粉丝账户</label>
+                        <label class="col-sm-2 control-label">商品数量</label>
                         <div class="col-sm-8">
-                            <input id="fansaccount" type="text" class="form-control" placeholder="输入粉丝账户" />
+                            <input id="bCount" type="text" class="form-control" placeholder="输入商品数量" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格</label>
+                        <div class="col-sm-8">
+                            <input id="bPrice" type="text" class="form-control" placeholder="输入商品价格" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">买家姓名</label>
+                        <div class="col-sm-8">
+                            <input id="buyerName" type="text" class="form-control" placeholder="输入买家姓名" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">卖家姓名</label>
+                        <div class="col-sm-8">
+                            <input id="sellName" type="text" class="form-control" placeholder="输入卖家姓名" />
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button data-bb-handler="confirm" type="button" id="saveFansBtn" class="btn btn-success radius">
-                    <span><i class="icon-ok"></i></span> &nbsp;添&nbsp;&nbsp;加
+                <button data-bb-handler="confirm" type="button" id="saveOrderBtn" class="btn btn-success radius">
+                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
                 </button>
-                <button data-bb-handler="cancel" type="button" id="candelSaveFansBtn" class="btn btn-danger radius">取消</button>
+                <button data-bb-handler="cancel" type="button" id="candelSaveOrderBtn" class="btn btn-danger radius">取消</button>
             </div>
         </div>
     </div>
 </div>
+
+<!--新增订单窗口-->
+<div id="upOrderModal" class="bootbox modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="upmyModalLabel">修改订单</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="upOrderForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品名字</label>
+                        <div class="col-sm-8">
+                            <input id="id" type="text" class="form-control" hidden="hidden" />
+                            <input id="upBname" name="upBname" type="text" class="form-control" placeholder="输入商品名字" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品数量</label>
+                        <div class="col-sm-8">
+                            <input id="upBcount" name="upBcount" type="text" class="form-control" placeholder="输入商品数量" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格</label>
+                        <div class="col-sm-8">
+                            <input id="upBprice" name="upBprice" type="text" class="form-control" placeholder="输入商品价格" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">买家姓名</label>
+                        <div class="col-sm-8">
+                            <input id="upBuyerName" name="upBuyerName" type="text" class="form-control" placeholder="输入买家姓名" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">卖家姓名</label>
+                        <div class="col-sm-8">
+                            <input id="upSellName" name="upSellName" type="text" class="form-control" placeholder="输入卖家姓名" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" id="upOrderBtn" class="btn btn-success radius">
+                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
+                </button>
+                <button data-bb-handler="cancel" type="button" id="candelUpOrderBtn" class="btn btn-danger radius">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--[if lt IE 9]>
 <script src="../static/js/html5shiv.js" th:src="@{/js/html5shiv.js}"></script>
 <script src="../static/js/respond.min.js" th:src="@{/js/respond.min.js}"></script>
@@ -130,7 +209,7 @@
 <script src="../static/js/jquery.messager.js" th:src="@{/js/jquery.messager.js}"></script>
 <script src="../static/js/layer/layer.js" th:src="@{/js/layer/layer.js}"></script>
 <script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
-<script th:src="@{/js/user-fans.js}"></script>
+<script th:src="@{/js/ordermanager.js}"></script>
 
 </body>
 </html>

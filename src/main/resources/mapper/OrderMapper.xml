@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.animalsalesserver.manager.mapper.OrderMapper">
 
-    <resultMap type="com.example.animalsalesserver.manager.domain.Order" id="OrdersMap">
+    <resultMap type="com.example.animalsalesserver.manager.po.OrderPo" id="OrdersMap">
         <result property="id" column="id" jdbcType="BIGINT"/>
         <result property="bName" column="b_name" jdbcType="VARCHAR"/>
         <result property="bCount" column="b_count" jdbcType="INTEGER"/>
@@ -24,11 +24,21 @@
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="OrdersMap">
+    <select id="queryLikeNameAndBuyerAndSell" resultMap="OrdersMap">
         select
           id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time
         from animalsales.orders
-        limit #{offset}, #{limit}
+        <where>
+            <if test="bName!=null and bName!=''">
+                and b_name like concat('%', #{bName}, '%')
+            </if>
+            <if test="buyerName!=null and buyerName!=''">
+                and buyer_name like concat('%', #{buyerName}, '%')
+            </if>
+            <if test="sellName!=null and sellName!=''">
+                and sell_name like concat('%', #{sellName}, '%')
+            </if>
+        </where>
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -73,7 +83,7 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into animalsales.orders(b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time)
-        values (#{bName}, #{bCount}, #{bPrice}, #{totalPrice}, #{buyerId}, #{sellId}, #{buyerName}, #{sellName}, #{createTime})
+        values (#{bName}, #{bCount}, #{bPrice}, #{totalPrice}, #{buyerId}, #{sellId}, #{buyerName}, #{sellName}, now())
     </insert>
 
     <!--通过主键修改数据-->
@@ -114,6 +124,13 @@
     <!--通过主键删除-->
     <delete id="deleteById">
         delete from animalsales.orders where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from animalsales.orders
+        where id in
+        <foreach collection="ids" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
     </delete>
 
 </mapper>
