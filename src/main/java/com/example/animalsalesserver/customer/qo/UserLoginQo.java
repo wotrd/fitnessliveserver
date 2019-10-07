@@ -1,7 +1,9 @@
 package com.example.animalsalesserver.customer.qo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户登陆查询类
@@ -10,6 +12,8 @@ import lombok.Data;
  */
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserLoginQo {
 
     /**

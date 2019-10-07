@@ -6,7 +6,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * Created by wkj_pc on 2017/5/20.
+ *
+ * @author wkj_pc
+ * @date 2017/5/20
  */
 @Configuration
 public class LoginIntercepterConf extends WebMvcConfigurerAdapter {
@@ -17,8 +19,8 @@ public class LoginIntercepterConf extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginIntercepter()).addPathPatterns("/**").
-                excludePathPatterns("/customer/login/*")
-                .excludePathPatterns("/customer/live/*")
+                excludePathPatterns("/login/*")
+                .excludePathPatterns("/user/*")
                 .excludePathPatterns("/manager/login/*")
                 .excludePathPatterns("/manager/register/*");
         super.addInterceptors(registry);

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
  * @author wkj_pc
  * @date 2017/6/10
  */
@@ -38,6 +37,20 @@ public class LoginController {
     }
 
     /**
+     * 执行修改密码操作
+     *
+     * @param userLoginQo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public RespVo update(@RequestBody UserLoginQo userLoginQo) {
+
+        return loginService.update(userLoginQo);
+
+    }
+
+    /**
      * 退出登录
      *
      * @param userLoginQo
@@ -49,15 +62,6 @@ public class LoginController {
         log.info("你开始退出了！");
         return loginService.quitLogin(userLoginQo, request);
 
-    }
-
-    /**
-     * 返回客户端请求的验证码
-     */
-    @RequestMapping(value = "getVerifycode")
-    @ResponseBody
-    public RespVo getVerifycode() {
-        return RespVo.builder().code("200").msg("success").data("1234").build();
     }
 
     /**

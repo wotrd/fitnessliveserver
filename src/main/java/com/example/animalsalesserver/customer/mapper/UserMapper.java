@@ -34,6 +34,13 @@ public interface UserMapper {
     UserPo getByMobileNum(@Param("mobileNum") String mobileNum);
 
     /**
+     *
+     * @param userPo
+     * @return
+     */
+    int updateByAccount(UserPo userPo);
+
+    /**
      * 通过 account 查询单条数据
      *
      * @param account 用户账户

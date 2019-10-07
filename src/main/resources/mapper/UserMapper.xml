@@ -126,6 +126,15 @@
         values (#{account}, #{name}, #{password}, #{gender}, #{nickName}, #{email}, #{idcard}, #{mobileNum}, #{role}, #{amatar}, #{remark}, now())
     </insert>
 
+    <update id="updateByAccount">
+        update animalsales.users
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+        </set>
+        where mobile_num = #{mobileNum}
+    </update>
     <!--通过主键修改数据-->
     <update id="update">
         update animalsales.users

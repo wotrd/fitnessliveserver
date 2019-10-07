@@ -34,15 +34,38 @@ public class LoginService {
 
         UserPo userPo = userMapper.getByMobileNum(userLoginQo.getMobileNum());
         if (null == userPo) {
-
+            return RespVo.builder().code("201").msg("该账户不存在").build();
         } else if (!userPo.getPassword().equals(userLoginQo.getPassword())) {
-            return RespVo.builder().code("201").msg("error").build();
+            return RespVo.builder().code("201").msg("密码输入错误").build();
         }
 
         setLoginUser(userLoginQo, request);
 
         return RespVo.builder().code("200").msg("success").data(userPo).build();
+
     }
+
+    /**
+     * 用户修改密码
+     *
+     * @param userLoginQo
+     * @return
+     */
+    public RespVo update(UserLoginQo userLoginQo) {
+
+        UserPo userPo = userMapper.getByMobileNum(userLoginQo.getMobileNum());
+        if (null == userPo) {
+            return RespVo.builder().code("201").msg("该账户不存在").build();
+        }
+        userPo.setPassword(userLoginQo.getPassword());
+        int count = userMapper.updateByAccount(userPo);
+        if (count<1){
+            return RespVo.builder().code("201").msg("系统开小差了，请稍后再试！").build();
+        }
+        return RespVo.builder().code("200").msg("success").data(userPo).build();
+
+    }
+
 
     /**
      * 推出登陆
