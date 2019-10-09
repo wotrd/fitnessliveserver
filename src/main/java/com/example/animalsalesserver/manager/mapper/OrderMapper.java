@@ -38,10 +38,10 @@ public interface OrderMapper {
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param orders 实例对象
+     * @param buyerId 买家ID
      * @return 对象列表
      */
-    List<OrderPo> queryAll(OrderPo orders);
+    List<OrderPo> queryAll(Long buyerId);
 
     /**
      * 新增数据

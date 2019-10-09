@@ -1,6 +1,6 @@
 package com.example.animalsalesserver.manager.controller;
 
-import com.example.animalsalesserver.manager.service.OrderService;
+import com.example.animalsalesserver.manager.service.OrderManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequestMapping("/manager/ordermanager")
 @Controller
-public class OrderController {
+public class OrderManagerController {
 
     @Autowired
-    private OrderService orderService;
+    private OrderManagerService orderService;
 
     @RequestMapping("ordermanager")
     public String businessManager() {

@@ -20,7 +20,7 @@ import java.util.List;
  * @author wangkaijin
  */
 @Service
-public class OrderService {
+public class OrderManagerService {
 
     @Autowired
     private OrderMapper orderMapper;

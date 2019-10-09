@@ -1,7 +1,9 @@
 package com.example.animalsalesserver.manager.po;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,6 +14,8 @@ import java.math.BigDecimal;
  * @author wotrd
  * @since 2019-10-04 14:47:10
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 public class BusinessPo implements Serializable {

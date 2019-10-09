@@ -46,38 +46,7 @@
         select
           id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time
         from animalsales.orders
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="bName != null and bName != ''">
-                and b_name = #{bName}
-            </if>
-            <if test="bCount != null">
-                and b_count = #{bCount}
-            </if>
-            <if test="bPrice != null">
-                and b_price = #{bPrice}
-            </if>
-            <if test="totalPrice != null">
-                and total_price = #{totalPrice}
-            </if>
-            <if test="buyerId != null">
-                and buyer_id = #{buyerId}
-            </if>
-            <if test="sellId != null">
-                and sell_id = #{sellId}
-            </if>
-            <if test="buyerName != null and buyerName != ''">
-                and buyer_name = #{buyerName}
-            </if>
-            <if test="sellName != null and sellName != ''">
-                and sell_name = #{sellName}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
-            </if>
-        </where>
+        where buyer_id = #{buyerId}
     </select>
 
     <!--新增所有列-->

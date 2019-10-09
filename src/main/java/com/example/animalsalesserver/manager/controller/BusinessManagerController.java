@@ -1,6 +1,6 @@
 package com.example.animalsalesserver.manager.controller;
 
-import com.example.animalsalesserver.manager.service.BusinessService;
+import com.example.animalsalesserver.manager.service.BusinessManagerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Controller
 @RequestMapping("/manager/businessmanager")
-public class BusinessController {
+public class BusinessManagerController {
 
     @Autowired
-    private BusinessService businessService;
+    private BusinessManagerService businessService;
 
     @RequestMapping("business-manager")
     public String businessManager(){
