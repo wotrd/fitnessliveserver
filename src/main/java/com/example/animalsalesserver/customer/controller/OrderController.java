@@ -36,4 +36,10 @@ public class OrderController {
 
     }
 
+    @RequestMapping("updateOrder")
+    public RespVo updateOrder(@RequestBody OrderPo orderPo) {
+        return orderService.updateOrder(orderPo);
+
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.example.animalsalesserver.manager.po;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,6 +15,8 @@ import java.io.Serializable;
  * @author wotrd
  * @since 2019-10-04 15:54:33
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 public class OrderPo implements Serializable {
@@ -57,5 +61,9 @@ public class OrderPo implements Serializable {
      * 订单创建时间
      */
     private Date createTime;
+    /**
+     * 订单状态（1已完成 2未完成 3已取消）
+     */
+    private Integer status;
 
 }

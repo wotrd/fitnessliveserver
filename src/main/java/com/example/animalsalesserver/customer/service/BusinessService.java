@@ -25,4 +25,11 @@ public class BusinessService {
                 .data(null ==businessPos?new ArrayList<>():businessPos)
                 .build();
     }
+
+    public RespVo getBusinessById(Long id) {
+        BusinessPo businessPo = businessMapper.queryById(id);
+        return RespVo.builder().code("200").msg("success")
+                .data(businessPo)
+                .build();
+    }
 }

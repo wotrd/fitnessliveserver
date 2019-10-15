@@ -40,6 +40,14 @@ public class BusinessPo implements Serializable {
      * 商品图片
      */
     private String avatar;
+    /**
+     * 卖家ID
+     */
+    private Long sellerId;
+    /**
+     * 卖家名字
+     */
+    private String sellerName;
 
 
 

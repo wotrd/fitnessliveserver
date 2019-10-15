@@ -21,6 +21,7 @@ $(function () {
             {label: '商品名字', name: 'bName', width: 200},
             {label: '商品类型', name: 'type', width: 200},
             {label: '商品价格', name: 'price', width: 200},
+            {label: '卖家', name: 'sellerName', width: 200},
             // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
             //     return '<a class="btn btn-purple btn-sm" onclick="cancelAttention(this);" target="_blank">' +
             //         '<i class="fa fa-cog fa-spin" aria-hidden="true"></i>取关</a>';

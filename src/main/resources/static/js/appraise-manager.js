@@ -4,7 +4,7 @@
 var grid_selector = "#jqGrid";
 var pager_selector = "#jqGridPager";
 var rowNum = 10; 			//每页显示记录数
-var task = null;			//任务（新增或编辑）
+//任务（新增或编辑）
 var loading;
 $(function () {
     $(window).resize(function () {
@@ -12,34 +12,15 @@ $(function () {
     });
 
     $(grid_selector).jqGrid({
-        url: "/manager/ordermanager/getOrders",
+        url: "/manager/appraisemanager/getAppraises",
         datatype: "json",
         mtype: 'POST',
         height: window.screen.height - 550,
         colModel: [
-            {label: 'id', name: 'id', width: 75},
+            {label: 'id', name: 'id', width: 75,},
             {label: '商品名字', name: 'bName', width: 200},
-            {label: '商品数量', name: 'bCount', width: 200},
-            {label: '商品单价', name: 'bPrice', width: 200},
-            {label: '订单总价', name: 'totalPrice', width: 200},
-            {
-                label: '订单状态', name: 'status', width: 200, formatter: function (cellvalue, options, cell) {
-                    if (cellvalue == 1) {
-                        return '已完成';
-                    } else if(cellvalue == 2){
-                        return '未完成';
-                    }{
-                        return '已取消';
-                    }
-                }
-            },
-            {label: '买家姓名', name: 'buyerName', width: 200},
-            {label: '卖家姓名', name: 'sellName', width: 200},
-            {label: '下单时间', name: 'createTime', width: 200},
-            // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
-            //     return '<a class="btn btn-purple btn-sm" onclick="cancelFans(this);"' +
-            //         'target="_blank">' + '<i class="fa fa-cog  fa-spin" aria-hidden="true"></i>取关</a>';
-            // }},
+            {label: '评价内容', name: 'reason', width: 200},
+            {label: '评价时间', name: 'createTime', width: 200},
             {label: '', name: '', width: 0.1},
         ],
         pager: pager_selector,
@@ -73,7 +54,6 @@ $(function () {
         emptyrecords: '没有记录!',
         loadtext: '正在查询服务器数据...'
     });
-
     //设置分页按钮组
     $(grid_selector).jqGrid('navGrid', pager_selector,
         {
@@ -101,57 +81,18 @@ $(function () {
             alerttext: "请选择需要操作的用户!"
         }
     );
-
     //查询点击事件
-    $("#queryOrderBtn").click(function () {
-        var qryBusinessName = $("#qryBusinessName").val();
-        var qryBuyerName = $("#qryBuyerName").val();
-        var qrySellName = $("#qrySellName").val();
+    $("#queryBusinessBtn").click(function () {
+        var qryName = $("#qryName").val();
         $(grid_selector).jqGrid('setGridParam', {
-            postData:
-                {
-                    bName: qryBusinessName,
-                    buyerName: qryBuyerName,
-                    sellName: qrySellName
-                },
+            postData: {name: qryName},
+            //search: true,
             page: 1
         }).trigger("reloadGrid");
     });
 
-    //新增粉丝，弹出新增窗口
-    $("#addOrderBtn").click(function () {
-        initData();
-        $("#addOrderModal").modal({
-            keyboard: false,
-            show: true,
-            backdrop: "static"
-        });
-
-    });
-
-    //修改用户，弹出修改窗
-    $("#modifyOrderBtn").click(function () {
-        var rows = $(grid_selector).getGridParam('selarrrow');
-        if (rows == 0) {
-            // $.messager.alert("温馨提示","请选择一行记录！");
-            layer.msg('请选择一行记录！', {icon: 7, time: 2000}); //2秒关闭（如果不配置，默认是3秒）
-            return;
-        } else if (rows.length > 1) {
-            // $.messager.alert("温馨提示","不能同时修改多条记录！");
-            layer.msg('不能同时修改多条记录！', {icon: 7, time: 2000}); //2秒关闭（如果不配置，默认是3秒）
-            return;
-        } else {
-            initUpdateData();
-            $("#upOrderModal").modal({
-                keyboard: false,
-                show: true,
-                backdrop: "static"
-            });
-        }
-    });
-
     //删除用户方法 选择多个的话，行id用逗号隔开比如 3,4
-    $("#deleteOrderBtn").click(function () {
+    $("#deleteBusinessBtn").click(function () {
         var rows = $(grid_selector).jqGrid("getGridParam", "selarrrow");
         var uids = new Array(rows.length);
         for (var i = 0; i < rows.length; i++) {
@@ -164,7 +105,7 @@ $(function () {
         if (rows.length > 0) {
             $.messager.confirm("温馨提示", "是否确定删除所选记录？", function () {
                 $.ajax({
-                    url: "/manager/ordermanager/delete",
+                    url: "/manager/appraisemanager/delete",
                     cache: false,
                     type: "post",
                     data: {"ids": uids.join(",")},
@@ -188,116 +129,32 @@ $(function () {
             layer.msg('至少选中一行记录！', {icon: 7, time: 2000}); //2秒关闭（如果不配置，默认是3秒）
         }
     });
+    // $('.date-picker').datepicker({autoclose: true}).next().on(ace.click_event, function () {
+    //     $(this).prev().focus();
+    // });
+    // $('#amatar').ace_file_input({
+    //     style: 'well',
+    //     btn_choose: 'Drop files here or click to choose',
+    //     btn_change: null,
+    //     no_icon: 'icon-cloud-upload',
+    //     droppable: true,
+    //     thumbnail: 'small',
+    //     preview_error: function (filename, error_code) {
+    //     }
+    // }).on('change', function () {
+    // });
 
-    //编辑对话框取消点击事件
-    $('#candelSaveOrderBtn').click(function () {
-        $("#addOrderModal").modal('hide');
-    });
-    //保存教程
-    $('#saveOrderBtn').click(function () {
-        saveOrder();
-    });
-    $('#upOrderBtn').click(function () {
-        updateOrder();
+    //添加关注对话框取消点击事件
+    $('#cancelBusinessBtn').click(function () {
+        $("#addBusinessModal").modal('hide');
     });
 
 });
 
+
 function removeHorizontalScrollBar() {
     $("div.ui-state-default.ui-jqgrid-hdiv.ui-corner-top").css("width", parseInt($("div.ui-state-default.ui-jqgrid-hdiv.ui-corner-top").css("width")) + 1 + "px");
     $(grid_selector).closest(".ui-jqgrid-bdiv").css("width", parseInt($(grid_selector).closest(".ui-jqgrid-bdiv").css("width")) + 1 + "px");
-}
-
-//初始化数据
-function initData() {
-    $('#bName').val("");
-    $('#bCount').val("");
-    $('#bPrice').val("");
-    $('#buyerName').val("");
-    $('#sellName').val("");
-}
-
-
-//初始化修改用户数据
-function initUpdateData() {
-    var rows = $(grid_selector).getGridParam('selarrrow');
-    var data = $(grid_selector).jqGrid('getRowData', rows[0]);
-    $("#id").val(data.id);
-    $('#upBname').val(data.bName);
-    $('#upBcount').val(data.bCount);
-    $("#upBprice").val(data.bPrice);
-    $("#upBuyerName").val(data.buyerName);
-    $("#upSellName").val(data.sellName);
-
-}
-
-/**
- * 保存粉丝
- */
-function saveOrder() {
-    var bName = $('#bName').val();
-    var bCount = $('#bCount').val();
-    var bPrice = $('#bPrice').val();
-    var buyerName = $('#buyerName').val();
-    var sellName = $('#sellName').val();
-
-    $.ajax({
-        url: "/manager/ordermanager/addOrder",
-        cache: false,
-        dataType: 'json',
-        data: {
-            bName: bName,
-            bCount: bCount,
-            bPrice: bPrice,
-            buyerName: buyerName,
-            sellName: sellName,
-        },
-        type: 'post',
-        beforeSend: function () {
-            // 禁用按钮防止重复提交
-            $('#saveOrderBtn').attr({disabled: "disabled"});
-        },
-        success: function (result) {
-            if (result.flag == true) {
-                $.messager.alert('温馨提示', result.message);
-                $("#addOrderModal").modal('hide');
-                refreshData();
-            } else {
-                $.messager.alert('温馨提示', result.message);
-            }
-        },
-        complete: function () {
-            $('#saveOrderBtn').removeAttr("disabled");
-        },
-        error: function (data) {
-            console.info("error: " + data.responseText);
-        }
-    });
-}
-
-/**
- * 修改商品
- */
-function updateOrder() {
-    var submit_option = {
-        url: "/manager/ordermanager/update",//默认是form action
-        method: "POST",
-        success: function (result) {
-            if (result.flag == true) {
-                $.messager.alert('温馨提示', result.message);
-                $("#upOrderModal").modal('hide');
-                refreshData();
-            } else {
-                $.messager.alert('温馨提示', result.message);
-                $("#upOrderModal").modal('hide');
-            }
-
-        }, error: function () {
-            $.messager.alert('服务器繁忙，请稍后再试...');
-            $("#upOrderModal").modal('hide');
-        }
-    }
-    $("#upOrderForm").ajaxSubmit(submit_option);
 }
 
 function refreshData() {
@@ -306,7 +163,6 @@ function refreshData() {
         page: 1
     }).trigger("reloadGrid");
 }
-
 
 //这个是分页图标，必须添加
 function updatePagerIcons(table) {

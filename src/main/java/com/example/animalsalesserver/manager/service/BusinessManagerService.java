@@ -2,6 +2,7 @@ package com.example.animalsalesserver.manager.service;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.animalsalesserver.customer.qo.UserLoginQo;
 import com.example.animalsalesserver.manager.po.BusinessPo;
 import com.example.animalsalesserver.manager.mapper.BusinessMapper;
 import com.example.animalsalesserver.tools.ServletUtil;
@@ -72,7 +73,8 @@ public class BusinessManagerService {
             return;
         }
         businessPo = BusinessPo.builder().bName(name).type(type).price(new BigDecimal(price)).build();
-
+        UserLoginQo userLoginQo = (UserLoginQo) request.getSession().getAttribute("loginUser");
+        businessPo.setSellerName(userLoginQo.getAccount());
         int insert = businessMapper.insert(businessPo);
 
         if (insert > 0) {

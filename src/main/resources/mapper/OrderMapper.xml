@@ -13,12 +13,13 @@
         <result property="buyerName" column="buyer_name" jdbcType="VARCHAR"/>
         <result property="sellName" column="sell_name" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="OrdersMap">
         select
-          id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time
+          id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time, `status`
         from animalsales.orders
         where id = #{id}
     </select>
@@ -26,7 +27,7 @@
     <!--查询指定行数据-->
     <select id="queryLikeNameAndBuyerAndSell" resultMap="OrdersMap">
         select
-          id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time
+          id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, status, create_time
         from animalsales.orders
         <where>
             <if test="bName!=null and bName!=''">
@@ -44,15 +45,17 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="OrdersMap">
         select
-          id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time
+          id, b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time, status
         from animalsales.orders
         where buyer_id = #{buyerId}
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into animalsales.orders(b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name, sell_name, create_time)
-        values (#{bName}, #{bCount}, #{bPrice}, #{totalPrice}, #{buyerId}, #{sellId}, #{buyerName}, #{sellName}, now())
+        insert into animalsales.orders(b_name, b_count, b_price, total_price, buyer_id, sell_id, buyer_name,
+        sell_name, create_time,status)
+        values (#{bName}, #{bCount}, #{bPrice}, #{totalPrice}, #{buyerId}, #{sellId}, #{buyerName}, #{sellName}
+        , now(),#{status})
     </insert>
 
     <!--通过主键修改数据-->
@@ -85,6 +88,9 @@
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
             </if>
         </set>
         where id = #{id}
