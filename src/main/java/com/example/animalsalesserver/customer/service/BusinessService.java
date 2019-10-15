@@ -6,6 +6,9 @@ import com.example.animalsalesserver.manager.po.BusinessPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author wangkaijin
  */
@@ -17,6 +20,9 @@ public class BusinessService {
     private BusinessMapper businessMapper;
 
     public RespVo getBusiness(BusinessPo businessPo) {
-        return RespVo.builder().code("200").msg("success").data(businessMapper.queryAll(businessPo)).build();
+        List<BusinessPo> businessPos = businessMapper.queryAll(businessPo);
+        return RespVo.builder().code("200").msg("success")
+                .data(null ==businessPos?new ArrayList<>():businessPos)
+                .build();
     }
 }
