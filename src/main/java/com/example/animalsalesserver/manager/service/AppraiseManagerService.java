@@ -2,11 +2,8 @@ package com.example.animalsalesserver.manager.service;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.animalsalesserver.customer.qo.UserLoginQo;
 import com.example.animalsalesserver.manager.mapper.AppraiseMapper;
-import com.example.animalsalesserver.manager.mapper.BusinessMapper;
-import com.example.animalsalesserver.manager.po.Appraise;
-import com.example.animalsalesserver.manager.po.BusinessPo;
+import com.example.animalsalesserver.manager.po.AppraisePo;
 import com.example.animalsalesserver.tools.ServletUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -44,7 +40,7 @@ public class AppraiseManagerService {
         String name = request.getParameter("name");
 
         Page<Object> page = PageHelper.startPage(pageNum, pageSize);
-        List<Appraise> appraises = appraiseMapper.queryLikeName(name);
+        List<AppraisePo> appraises = appraiseMapper.queryLikeName(name);
 
         JSONObject jo = new JSONObject();
         jo.put("rows", appraises);

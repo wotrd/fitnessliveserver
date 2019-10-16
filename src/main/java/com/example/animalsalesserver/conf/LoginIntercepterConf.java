@@ -21,6 +21,7 @@ public class LoginIntercepterConf extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new LoginIntercepter()).addPathPatterns("/**").
                 excludePathPatterns("/login/*")
                 .excludePathPatterns("/user/*")
+                .excludePathPatterns("/appraise/*")
                 .excludePathPatterns("/business/*")
                 .excludePathPatterns("/order/*")
                 .excludePathPatterns("/manager/login/*")

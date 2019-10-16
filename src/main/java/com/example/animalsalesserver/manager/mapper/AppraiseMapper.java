@@ -1,6 +1,6 @@
 package com.example.animalsalesserver.manager.mapper;
 
-import com.example.animalsalesserver.manager.po.Appraise;
+import com.example.animalsalesserver.manager.po.AppraisePo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public interface AppraiseMapper {
      * @param id 主键
      * @return 实例对象
      */
-    Appraise queryById(Long id);
+    AppraisePo queryById(Long id);
 
     /**
      * 查询指定行数据
@@ -32,7 +32,7 @@ public interface AppraiseMapper {
      * @param limit  查询条数
      * @return 对象列表
      */
-    List<Appraise> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<AppraisePo> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
 
     /**
@@ -41,7 +41,7 @@ public interface AppraiseMapper {
      * @param appraise 实例对象
      * @return 对象列表
      */
-    List<Appraise> queryAll(Appraise appraise);
+    List<AppraisePo> queryAll(AppraisePo appraise);
 
     /**
      * 新增数据
@@ -49,7 +49,7 @@ public interface AppraiseMapper {
      * @param appraise 实例对象
      * @return 影响行数
      */
-    int insert(Appraise appraise);
+    int insert(AppraisePo appraise);
 
     /**
      * 修改数据
@@ -57,7 +57,7 @@ public interface AppraiseMapper {
      * @param appraise 实例对象
      * @return 影响行数
      */
-    int update(Appraise appraise);
+    int update(AppraisePo appraise);
 
     /**
      * 通过主键删除数据
@@ -81,5 +81,7 @@ public interface AppraiseMapper {
      * @param name
      * @return
      */
-    List<Appraise> queryLikeName(String name);
+    List<AppraisePo> queryLikeName(String name);
+
+    List<AppraisePo> queryByName(String bName);
 }

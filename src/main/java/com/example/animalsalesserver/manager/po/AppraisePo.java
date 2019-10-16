@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Appraise implements Serializable {
+public class AppraisePo implements Serializable {
     private static final long serialVersionUID = 311453241655905716L;
     
     private Long id;
