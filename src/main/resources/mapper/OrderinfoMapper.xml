@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.OrderinfoMapper">
+
+    <resultMap type="com.example.hospital.domain.Orderinfo" id="OrderinfoMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="patientId" column="patient_id" jdbcType="BIGINT"/>
+        <result property="patientName" column="patient_name" jdbcType="VARCHAR"/>
+        <result property="departName" column="depart_name" jdbcType="VARCHAR"/>
+        <result property="doctorName" column="doctor_name" jdbcType="VARCHAR"/>
+        <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrderinfoMap">
+        select
+          id, patient_id, patient_name, depart_name, order_time, create_time
+        from hospital.orderinfo
+        where id = #{id}
+    </select>
+    <!--查询单个-->
+    <select id="queryByAccount" resultMap="OrderinfoMap">
+        select
+          id, patient_id, patient_name, depart_name, doctor_name, order_time, create_time
+        from hospital.orderinfo
+        where patient_name = #{account}
+        order by id desc
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="OrderinfoMap">
+        select
+          id, patient_id, patient_name, depart_name, order_time, create_time
+        from hospital.orderinfo
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="OrderinfoMap">
+        select
+          id, patient_id, patient_name, depart_name, order_time, create_time
+        from hospital.orderinfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="patientId != null">
+                and patient_id = #{patientId}
+            </if>
+            <if test="patientName != null and patientName != ''">
+                and patient_name = #{patientName}
+            </if>
+            <if test="departName != null">
+                and depart_name = #{departName}
+            </if>
+            <if test="orderTime != null">
+                and order_time = #{orderTime}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hospital.orderinfo(patient_id, patient_name, depart_name, doctor_name, order_time, create_time)
+        values (#{patientId}, #{patientName}, #{departName}, #{doctorName},#{orderTime}, now())
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hospital.orderinfo
+        <set>
+            <if test="patientId != null">
+                patient_id = #{patientId},
+            </if>
+            <if test="patientName != null and patientName != ''">
+                patient_name = #{patientName},
+            </if>
+            <if test="departName != null">
+                depart_name = #{departName},
+            </if>
+            <if test="orderTime != null">
+                order_time = #{orderTime},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hospital.orderinfo where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.PatientMapper">
+
+    <resultMap type="com.example.hospital.domain.Patient" id="PatientMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="INTEGER"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="sId" column="s_id" jdbcType="BIGINT"/>
+        <result property="isLogin" column="is_login" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="PatientMap">
+        select
+          id, account, password, name, gender, age, s_id, is_login,create_time
+        from hospital.patient
+        where id = #{id}
+    </select>
+    <!--查询单个-->
+    <select id="queryByAccount" resultMap="PatientMap">
+        select
+          id, account, password, name, gender, age, s_id, is_login,create_time
+        from hospital.patient
+        where account = #{account}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="PatientMap">
+        select
+          id, account, password, name, gender, age, s_id, create_time
+        from hospital.patient
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="PatientMap">
+        select
+          id, account, password, name, gender, age, s_id, is_login, create_time
+        from hospital.patient
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="sId != null">
+                and s_id = #{sId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hospital.patient(account, password, name, gender, age, create_time)
+        values (#{account}, #{password}, #{name}, #{gender}, #{age}, now())
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hospital.patient
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="sId != null">
+                s_id = #{sId},
+            </if>
+            <if test="isLogin != null">
+                is_login = #{isLogin},
+            </if>
+        </set>
+        where account = #{account}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hospital.patient where id = #{id}
+    </delete>
+
+</mapper>
