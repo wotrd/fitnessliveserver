@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 商品表(Businesses)实体类
+ * 图书表(Businesses)实体类
  *
  * @author wotrd
  * @since 2019-10-04 14:47:10
@@ -25,19 +25,19 @@ public class BookPo implements Serializable {
      */
     private Long id;
     /**
-     * 商品名字
+     * 图书名字
      */
     private String name;
     /**
-     * 商品类型
+     * 图书类型
      */
     private String type;
     /**
-     * 商品单价
+     * 图书单价
      */
     private BigDecimal price;
     /**
-     * 商品图片
+     * 图书图片
      */
     private String avatar;
     /**

@@ -38,7 +38,9 @@ public class AppraiseManagerService {
         int pageSize = Integer.parseInt(request.getParameter("rows"));
 
         String name = request.getParameter("name");
-
+        if (null == name) {
+            name = "";
+        }
         Page<Object> page = PageHelper.startPage(pageNum, pageSize);
         List<AppraisePo> appraises = appraiseMapper.queryLikeName(name);
 
@@ -74,7 +76,6 @@ public class AppraiseManagerService {
         ServletUtil.createSuccessResponse(200, result, response);
 
     }
-
 
 
 }

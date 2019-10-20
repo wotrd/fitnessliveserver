@@ -23,11 +23,11 @@ public class AppraisePo implements Serializable {
     
     private Long id;
     /**
-     * 商品名字
+     * 图书名字
      */
     private String bName;
     /**
-     * 商品评价
+     * 图书评价
      */
     private String reason;
     /**

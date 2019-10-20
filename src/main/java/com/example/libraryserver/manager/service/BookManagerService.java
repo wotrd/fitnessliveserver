@@ -27,7 +27,7 @@ public class BookManagerService {
     private BookMapper bookMapper;
 
     /**
-     * 获取商品列表
+     * 获取图书列表
      *
      * @param request
      * @param response

@@ -13,23 +13,23 @@ import java.util.List;
  * @author wangkaijin
  */
 @Service
-public class BusinessService {
+public class BookService {
 
 
     @Autowired
-    private BookMapper businessMapper;
+    private BookMapper bookMapper;
 
-    public RespVo getBusiness(BookPo businessPo) {
-        List<BookPo> businessPos = businessMapper.queryAll(businessPo);
+    public RespVo getBook(BookPo bookPo) {
+        List<BookPo> bookPos = bookMapper.queryAll(bookPo);
         return RespVo.builder().code("200").msg("success")
-                .data(null ==businessPos?new ArrayList<>():businessPos)
+                .data(null ==bookPos?new ArrayList<>():bookPos)
                 .build();
     }
 
-    public RespVo getBusinessById(Long id) {
-        BookPo businessPo = businessMapper.queryById(id);
+    public RespVo getBookById(Long id) {
+        BookPo bookPo = bookMapper.queryById(id);
         return RespVo.builder().code("200").msg("success")
-                .data(businessPo)
+                .data(bookPo)
                 .build();
     }
 }

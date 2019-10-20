@@ -18,9 +18,9 @@ $(function () {
         height: window.screen.height - 550,
         colModel: [
             {label: 'id', name: 'id', width: 75},
-            {label: '商品名字', name: 'bName', width: 200},
-            {label: '商品数量', name: 'bCount', width: 200},
-            {label: '商品单价', name: 'bPrice', width: 200},
+            {label: '图书名字', name: 'bName', width: 200},
+            {label: '图书数量', name: 'bCount', width: 200},
+            {label: '图书单价', name: 'bPrice', width: 200},
             {label: '订单总价', name: 'totalPrice', width: 200},
             {
                 label: '订单状态', name: 'status', width: 200, formatter: function (cellvalue, options, cell) {
@@ -276,7 +276,7 @@ function saveOrder() {
 }
 
 /**
- * 修改商品
+ * 修改图书
  */
 function updateOrder() {
     var submit_option = {

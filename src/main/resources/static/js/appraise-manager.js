@@ -18,7 +18,7 @@ $(function () {
         height: window.screen.height - 550,
         colModel: [
             {label: 'id', name: 'id', width: 75,},
-            {label: '商品名字', name: 'bName', width: 200},
+            {label: '图书名字', name: 'bName', width: 200},
             {label: '评价内容', name: 'reason', width: 200},
             {label: '评价时间', name: 'createTime', width: 200},
             {label: '', name: '', width: 0.1},

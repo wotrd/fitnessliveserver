@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 商品表(Businesses)表数据库访问层
+ * 图书表(Businesses)表数据库访问层
  *
  * @author wotrd
  * @since 2019-10-04 14:47:10

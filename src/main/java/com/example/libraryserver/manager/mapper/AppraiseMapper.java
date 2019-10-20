@@ -76,7 +76,7 @@ public interface AppraiseMapper {
     int deleteByIds(@Param("ids") String[] split);
 
     /**
-     * 根据商品名字查找
+     * 根据图书名字查找
      *
      * @param name
      * @return

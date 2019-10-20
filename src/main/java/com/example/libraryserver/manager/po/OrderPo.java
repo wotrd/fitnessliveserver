@@ -26,19 +26,19 @@ public class OrderPo implements Serializable {
      */
     private Long id;
     /**
-     * 商品名字
+     * 图书名字
      */
     private String bName;
     /**
-     * 商品数量
+     * 图书数量
      */
     private Integer bCount;
     /**
-     * 商品单价
+     * 图书单价
      */
     private BigDecimal bPrice;
     /**
-     * 商品订单总价
+     * 图书订单总价
      */
     private BigDecimal totalPrice;
     /**
