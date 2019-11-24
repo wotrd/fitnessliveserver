@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.libraryserver.manager.mapper.CollectMapper">
+
+    <resultMap type="com.example.libraryserver.manager.po.CollectPo" id="CollectMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CollectMap">
+        select
+          id, name, type, price, user_id, create_time
+        from library.collect
+        where id = #{id}
+    </select>
+    <select id="queryLikeName" resultMap="CollectMap">
+        select
+            id, name, type, price, user_id, create_time
+        from library.collect
+        where name like concat('%', #{name}, '%')
+        order by id desc
+    </select>
+    <select id="queryByName" resultMap="CollectMap">
+        select
+           id, name, type, price, user_id, create_time
+        from library.collect
+        where name = #{name}
+        order by id desc
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CollectMap">
+        select
+         id, name, type, price, user_id, create_time
+        from library.collect
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CollectMap">
+        select
+        id, name, type, price, user_id, create_time
+        from library.collect
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into library.collect(name, type, price,user_id, create_time)
+        values (#{name}, #{type},#{price},#{userId}, now())
+    </insert>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from library.collect where id = #{id}
+    </delete>
+    <delete id="deleteByIds">
+        delete from library.collect
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

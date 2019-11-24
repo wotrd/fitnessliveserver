@@ -22,6 +22,7 @@ public class LoginIntercepterConf extends WebMvcConfigurerAdapter {
                 excludePathPatterns("/login/*")
                 .excludePathPatterns("/user/*")
                 .excludePathPatterns("/appraise/*")
+                .excludePathPatterns("/collect/*")
                 .excludePathPatterns("/book/*")
                 .excludePathPatterns("/order/*")
                 .excludePathPatterns("/manager/login/*")
