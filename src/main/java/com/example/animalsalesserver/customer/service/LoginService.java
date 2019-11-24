@@ -5,6 +5,7 @@ import com.example.animalsalesserver.conf.RespVo;
 import com.example.animalsalesserver.customer.po.UserPo;
 import com.example.animalsalesserver.customer.qo.UserLoginQo;
 import com.example.animalsalesserver.customer.qo.UserRegisterQo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author wkj_pc
  * @date 2017/6/16
  */
+@Slf4j
 @Service
 public class LoginService {
 
@@ -113,12 +115,17 @@ public class LoginService {
         //现将之前的登录销毁
         Map<UserLoginQo, HttpSession> userMap = (Map<UserLoginQo, HttpSession>) request.
                 getServletContext().getAttribute("userLoginQo");
-        if (userMap.containsKey(loginUser)) {
-            HttpSession httpSession = userMap.get(loginUser);
-            if (null != httpSession) {
-                httpSession.invalidate();
+        try {
+            if (userMap.containsKey(loginUser)) {
+                HttpSession httpSession = userMap.get(loginUser);
+                if (null != httpSession) {
+                    httpSession.invalidate();
+                }
             }
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
         }
+
         request.getSession().setAttribute("loginUser", loginUser);
         userMap.put(loginUser, request.getSession());
     }
