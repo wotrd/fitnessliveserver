@@ -22,6 +22,7 @@ $(function () {
             {label: '图书类型', name: 'type', width: 200},
             {label: '图书价格', name: 'price', width: 200},
             {label: '卖家', name: 'sellerName', width: 200},
+            {label: '简介', name: 'remark', width: 200},
             // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
             //     return '<a class="btn btn-purple btn-sm" onclick="cancelAttention(this);" target="_blank">' +
             //         '<i class="fa fa-cog fa-spin" aria-hidden="true"></i>取关</a>';
@@ -203,6 +204,7 @@ function initData() {
     $('#name').val("");
     $('#type').val("");
     $('#price').val("");
+    $('#remark').val("");
 }
 
 //初始化修改用户数据
@@ -213,6 +215,7 @@ function initUpdateData() {
     $('#upname').val(data.name);
     $('#upprice').val(data.price);
     $("#uptype").val(data.type);
+    $("#upremark").val(data.remark);
 
     //$('#amatar').val(data.amatar);
 }
@@ -224,7 +227,7 @@ function saveBusiness() {
     var name = $('#name').val();
     var type = $('#type').val();
     var price = $('#price').val();
-
+    var remark = $('#remark').val();
     $.ajax({
         url: "/manager/bookmanager/addBook",
         cache: false,
@@ -232,7 +235,8 @@ function saveBusiness() {
         data: {
             name: name,
             type: type,
-            price: price
+            price: price,
+            remark: remark
         },
         type: 'post',
         beforeSend: function () {

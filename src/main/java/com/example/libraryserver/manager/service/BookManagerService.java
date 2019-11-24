@@ -64,6 +64,7 @@ public class BookManagerService {
         String name = request.getParameter("name");
         String type = request.getParameter("type");
         String price = request.getParameter("price");
+        String remark = request.getParameter("remark");
         BookPo businessPo = bookMapper.queryByName(name);
 
         if (null != businessPo) {
@@ -75,6 +76,7 @@ public class BookManagerService {
         businessPo = BookPo.builder().name(name).type(type).price(new BigDecimal(price)).build();
         UserLoginQo userLoginQo = (UserLoginQo) request.getSession().getAttribute("loginUser");
         businessPo.setSellerName(userLoginQo.getAccount());
+        businessPo.setRemark(remark);
         int insert = bookMapper.insert(businessPo);
 
         if (insert > 0) {
@@ -101,10 +103,12 @@ public class BookManagerService {
         String name = request.getParameter("upname");
         String type = request.getParameter("uptype");
         String price = request.getParameter("upprice");
+        String remark = request.getParameter("upremark");
 
         BookPo businessPo = BookPo.builder().id(Long.parseLong(id))
                 .name(name).type(type)
                 .price(new BigDecimal(price))
+                .remark(remark)
                 .build();
 
         int insert = bookMapper.update(businessPo);

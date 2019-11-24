@@ -49,6 +49,9 @@ public class BookPo implements Serializable {
      */
     private String sellerName;
 
-
+    /**
+     * 图书描述
+     */
+    private String remark;
 
 }

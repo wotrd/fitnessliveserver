@@ -8,6 +8,7 @@
         <result property="type" column="type" jdbcType="VARCHAR"/>
         <result property="price" column="price" jdbcType="NUMERIC"/>
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
         <result property="sellerName" column="seller_name" jdbcType="VARCHAR"/>
         <result property="sellerId" column="seller_id" jdbcType="INTEGER"/>
     </resultMap>
@@ -15,7 +16,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="bookMap">
         select
-          id, name, type, price, avatar,seller_id,seller_name
+          id, name, type, price, avatar,seller_id,seller_name, remark
         from library.books
         where id = #{id}
     </select>
@@ -23,7 +24,7 @@
     <!--查询指定行数据-->
     <select id="queryLikeName" resultMap="bookMap">
         select
-        id, name, type, price, avatar,seller_id,seller_name
+        id, name, type, price, avatar,seller_id,seller_name, remark
         from library.books
         <where>
             <if test="name != null and name != ''">
@@ -36,7 +37,7 @@
     <!--查询指定行数据-->
     <select id="queryByName" resultMap="bookMap">
         select
-        id, name, type, price, avatar,seller_id,seller_name
+        id, name, type, price, avatar,seller_id,seller_name, remark
         from library.books
         <where>
             <if test="name != null and name != ''">
@@ -49,32 +50,21 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="bookMap">
         select
-        id, name, type, price, avatar,seller_id,seller_name
+        id, name, type, price, avatar,seller_id,seller_name, remark
         from library.books
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="name != null and name != ''">
-                and name = #{name}
-            </if>
-            <if test="type != null">
-                and type = #{type}
-            </if>
-            <if test="price != null">
-                and price = #{price}
-            </if>
-            <if test="avatar != null and avatar != ''">
-                and avatar = #{avatar}
-            </if>
-        </where>
+        where 1=1
+        <if test="name != null and name != ''">
+            and (name like concat('%', #{name}, '%') or type like concat('%', #{name}, '%')
+            or price like concat('%', #{name}, '%'))
+        </if>
+
         order by id desc;
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into library.books(name, type, price, avatar,,seller_id,seller_name)
-        values (#{name}, #{type}, #{price}, #{avatar},#{sellerId},#{sellerName})
+        insert into library.books(name, type, price, avatar,seller_id,seller_name, remark)
+        values (#{name}, #{type}, #{price}, #{avatar},#{sellerId},#{sellerName},#{remark})
     </insert>
 
     <!--通过主键修改数据-->
@@ -92,6 +82,9 @@
             </if>
             <if test="avatar != null and avatar != ''">
                 avatar = #{avatar},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
             </if>
         </set>
         where id = #{id}
