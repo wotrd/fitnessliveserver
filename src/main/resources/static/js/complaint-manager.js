@@ -12,21 +12,15 @@ $(function () {
     });
 
     $(grid_selector).jqGrid({
-        url: "/manager/businessmanager/getBusinesses",
+        url: "/manager/complaintmanager/getComplaint",
         datatype: "json",
         mtype: 'POST',
         height: window.screen.height - 550,
         colModel: [
             {label: 'id', name: 'id', width: 75,},
-            {label: '商品名字', name: 'bName', width: 200},
-            {label: '商品类型', name: 'type', width: 200},
-            {label: '商品价格', name: 'price', width: 200},
-            {label: '卖家', name: 'sellerName', width: 200},
-            {label: '封面', name: 'avatar', width: 200},
-            // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
-            //     return '<a class="btn btn-purple btn-sm" onclick="cancelAttention(this);" target="_blank">' +
-            //         '<i class="fa fa-cog fa-spin" aria-hidden="true"></i>取关</a>';
-            // }},
+            {label: '商品名字', name: 'name', width: 200},
+            {label: '举报原因', name: 'reason', width: 200},
+            {label: '举报时间', name: 'createTime', width: 200},
             {label: '', name: '', width: 0.1},
         ],
         pager: pager_selector,
@@ -96,36 +90,6 @@ $(function () {
             page: 1
         }).trigger("reloadGrid");
     });
-    //新增商品，弹出新增窗口
-    $("#addBusinessBtn").click(function () {
-        initData();
-        $("#addBusinessModal").modal({
-            keyboard: false,
-            show: true,
-            backdrop: "static"
-        });
-    });
-
-    //修改用户，弹出修改窗
-    $("#modifyBusinessBtn").click(function () {
-        var rows = $(grid_selector).getGridParam('selarrrow');
-        if (rows == 0) {
-            // $.messager.alert("温馨提示","请选择一行记录！");
-            layer.msg('请选择一行记录！', {icon: 7, time: 2000}); //2秒关闭（如果不配置，默认是3秒）
-            return;
-        } else if (rows.length > 1) {
-            // $.messager.alert("温馨提示","不能同时修改多条记录！");
-            layer.msg('不能同时修改多条记录！', {icon: 7, time: 2000}); //2秒关闭（如果不配置，默认是3秒）
-            return;
-        } else {
-            initUpdateData();
-            $("#upBusinessModal").modal({
-                keyboard: false,
-                show: true,
-                backdrop: "static"
-            });
-        }
-    });
 
     //删除用户方法 选择多个的话，行id用逗号隔开比如 3,4
     $("#deleteBusinessBtn").click(function () {
@@ -141,7 +105,7 @@ $(function () {
         if (rows.length > 0) {
             $.messager.confirm("温馨提示", "是否确定删除所选记录？", function () {
                 $.ajax({
-                    url: "/manager/businessmanager/delete",
+                    url: "/manager/complaintmanager/delete",
                     cache: false,
                     type: "post",
                     data: {"ids": uids.join(",")},
@@ -184,106 +148,13 @@ $(function () {
     $('#cancelBusinessBtn').click(function () {
         $("#addBusinessModal").modal('hide');
     });
-    //添加关注按钮点击事件
-    $('#saveBusinessBtn').click(function () {
-        saveBusiness();
-    });
-    $('#upBussnessBtn').click(function () {
-        saveUpdateBusiness();
-    });
+
 });
 
 
 function removeHorizontalScrollBar() {
     $("div.ui-state-default.ui-jqgrid-hdiv.ui-corner-top").css("width", parseInt($("div.ui-state-default.ui-jqgrid-hdiv.ui-corner-top").css("width")) + 1 + "px");
     $(grid_selector).closest(".ui-jqgrid-bdiv").css("width", parseInt($(grid_selector).closest(".ui-jqgrid-bdiv").css("width")) + 1 + "px");
-}
-
-//初始化数据
-function initData() {
-    $('#name').val("");
-    $('#type').val("");
-    $('#price').val("");
-    $('#avatar').val("");
-}
-
-//初始化修改用户数据
-function initUpdateData() {
-    var rows = $(grid_selector).getGridParam('selarrrow');
-    var data = $(grid_selector).jqGrid('getRowData', rows[0]);
-    $("#id").val(data.id);
-    $('#upname').val(data.bName);
-    $('#upprice').val(data.price);
-    $("#uptype").val(data.type);
-    $("#uppic").attr("src", data.avatar); //将图片路径存入src中，显示出图片
-
-    //$('#amatar').val(data.amatar);
-}
-
-/**
- * 保存新增商品
- */
-function saveBusiness() {
-    var name = $('#name').val();
-    var type = $('#type').val();
-    var price = $('#price').val();
-    var avatar = $('#avatar').val();
-    $.ajax({
-        url: "/manager/businessmanager/addBusiness",
-        cache: false,
-        dataType: 'json',
-        data: {
-            name: name,
-            type: type,
-            price: price,
-            avatar: avatar
-        },
-        type: 'post',
-        beforeSend: function () {
-            // 禁用按钮防止重复提交
-            $('#saveBusinessBtn').attr({disabled: "disabled"});
-        },
-        success: function (result) {
-            if (result.flag == true) {
-                $.messager.alert('温馨提示', result.message);
-                $("#addBusinessModal").modal('hide');
-                refreshData();
-            } else {
-                $.messager.alert('温馨提示', result.message);
-            }
-        },
-        complete: function () {
-            $('#saveBusinessBtn').removeAttr("disabled");
-        },
-        error: function (data) {
-            console.info("error: " + data.responseText);
-        }
-    });
-}
-
-/**
- * 修改商品
- */
-function saveUpdateBusiness() {
-    var submit_option = {
-        url: "/manager/businessmanager/update",//默认是form action
-        method: "POST",
-        success: function (result) {
-            if (result.flag == true) {
-                $.messager.alert('温馨提示', result.message);
-                $("#upBusinessModal").modal('hide');
-                refreshData();
-            } else {
-                $.messager.alert('温馨提示', result.message);
-                $("#upBusinessModal").modal('hide');
-            }
-
-        }, error: function () {
-            $.messager.alert('服务器繁忙，请稍后再试...');
-            $("#upBusinessModal").modal('hide');
-        }
-    }
-    $("#upBusinessForm").ajaxSubmit(submit_option);
 }
 
 function refreshData() {

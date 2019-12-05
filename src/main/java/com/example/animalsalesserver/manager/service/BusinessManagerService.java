@@ -64,6 +64,7 @@ public class BusinessManagerService {
         String name = request.getParameter("name");
         String type = request.getParameter("type");
         String price = request.getParameter("price");
+        String avatar = request.getParameter("avatar");
         BusinessPo businessPo = businessMapper.queryByName(name);
 
         if (null != businessPo) {
@@ -75,6 +76,7 @@ public class BusinessManagerService {
         businessPo = BusinessPo.builder().bName(name).type(type).price(new BigDecimal(price)).build();
         UserLoginQo userLoginQo = (UserLoginQo) request.getSession().getAttribute("loginUser");
         businessPo.setSellerName(userLoginQo.getAccount());
+        businessPo.setAvatar(avatar);
         int insert = businessMapper.insert(businessPo);
 
         if (insert > 0) {
@@ -101,10 +103,11 @@ public class BusinessManagerService {
         String name = request.getParameter("upname");
         String type = request.getParameter("uptype");
         String price = request.getParameter("upprice");
-
+        String avatar = request.getParameter("upavatar");
         BusinessPo businessPo = BusinessPo.builder().id(Long.parseLong(id))
                 .bName(name).type(type)
                 .price(new BigDecimal(price))
+                .avatar(avatar)
                 .build();
 
         int insert = businessMapper.update(businessPo);

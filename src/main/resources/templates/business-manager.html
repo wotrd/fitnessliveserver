@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../static/css/ace-skins.min.css" th:href="@{/css/ace-skins.min.css}"/>
     <script src="../static/js/jquery-2.0.3.min.js" th:src="@{/js/jquery-2.0.3.min.js}"></script>
     <script src="../static/js/jquery.form.js" th:src="@{/js/jquery.form.js}"></script>
+    <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 
     <title>Spring Boot管理后台</title>
 </head>
@@ -106,12 +107,15 @@
                             <input id="price" type="text" class="form-control" placeholder="输入商品价格" />
                         </div>
                     </div>
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-sm-2 control-label">商品价格</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            <input id="attentionaccount" type="text" class="form-control" placeholder="输入商品价格" />-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品封面</label>
+                        <div class="col-sm-8">
+                            <img id="pic" style="width:100px;height:100px;border-radius:50%;" th:src="@{/images/uploadpic.png}"/>
+                            <input id="upload" name="file" accept="image/*" type="file" style="display: none"/>
+                            <input id="avatar" name="avatar" type="hidden" />
+
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -155,12 +159,15 @@
                             <input id="upprice" name="upprice" type="text" class="form-control" placeholder="输入商品价格" />
                         </div>
                     </div>
-                    <!--                    <div class="form-group">-->
-                    <!--                        <label class="col-sm-2 control-label">商品价格</label>-->
-                    <!--                        <div class="col-sm-8">-->
-                    <!--                            <input id="attentionaccount" type="text" class="form-control" placeholder="输入商品价格" />-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品封面</label>
+                        <div class="col-sm-8">
+                            <img id="uppic" style="width:100px;height:100px;border-radius:50%;" th:src="@{/images/uploadpic.png}"/>
+                            <input id="upupload" name="file" accept="image/*" type="file" style="display: none"/>
+                            <input id="upavatar" name="upavatar" type="hidden" />
+
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -195,6 +202,87 @@
 <script src="../static/js/layer/layer.js" th:src="@{/js/layer/layer.js}"></script>
 <script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
 <script th:src="@{/js/business-manager.js}"></script>
+
+
+<script>
+    $(function() {
+        $("#pic").click(function() {
+            $("#upload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+            $("#upload").on("change", function() {
+                var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
+                if (objUrl) {
+                    $("#pic").attr("src", objUrl); //将图片路径存入src中，显示出图片
+                    upimg();
+                }
+            });
+        });
+
+        $("#uppic").click(function() {
+            $("#upupload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+            $("#upupload").on("change", function() {
+                var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
+                if (objUrl) {
+                    $("#uppic").attr("src", objUrl); //将图片路径存入src中，显示出图片
+                    upupimg();
+                }
+            });
+        });
+    });
+
+    //建立一?可存取到?file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+    //上传头像到服务器
+    function upimg() {
+        console.log(344)
+        var pic = $('#upload')[0].files[0];
+        var file = new FormData();
+        file.append('file', pic);
+        $.ajax({
+            url: "/upload/uploadImg",
+            type: "post",
+            data: file,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                // var res = data;
+                console.info("data = "+data);
+                $("#avatar").val(data);
+            }
+        });
+    }
+    function upupimg() {
+        console.log(344)
+        var pic = $('#upupload')[0].files[0];
+        var file = new FormData();
+        file.append('file', pic);
+        $.ajax({
+            url: "/upload/uploadImg",
+            type: "post",
+            data: file,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                // var res = data;
+                console.info("data = "+data);
+                $("#upavatar").val(data);
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
