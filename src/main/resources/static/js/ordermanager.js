@@ -26,9 +26,10 @@ $(function () {
                 label: '订单状态', name: 'status', width: 200, formatter: function (cellvalue, options, cell) {
                     if (cellvalue == 1) {
                         return '已完成';
-                    } else if(cellvalue == 2){
+                    } else if (cellvalue == 2) {
                         return '未完成';
-                    }{
+                    }
+                    {
                         return '已取消';
                     }
                 }
