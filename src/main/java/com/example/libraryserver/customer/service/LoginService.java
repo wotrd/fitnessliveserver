@@ -98,6 +98,7 @@ public class LoginService {
         }
         userPo = UserPo.builder().account(userRegisterQo.getMobileNum()).nickName("tom").role(0).build();
         BeanUtils.copyProperties(userRegisterQo, userPo);
+        userPo.setAmatar("https://blog.ailijie.top/upload/2019/6/WechatIMG93-3631413726214a198d1ffbce54b0866f.jpg");
         userMapper.insert(userPo);
 
         return RespVo.builder().code("200").msg("success").build();

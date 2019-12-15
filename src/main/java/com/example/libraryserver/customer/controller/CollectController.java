@@ -23,9 +23,14 @@ public class CollectController {
         return collectService.addCollect(collectPo);
     }
 
-    @GetMapping("getCollectByName")
-    public RespVo getCollectByName(@RequestParam String name){
-        return collectService.getCollectByName(name);
+    @GetMapping("getCollect")
+    public RespVo getCollectByName(@RequestParam Long userId){
+        return collectService.getCollectByUserId(userId);
+    }
+
+    @GetMapping("delete")
+    public RespVo delete(@RequestParam Long id){
+        return collectService.delete(id);
     }
 
 

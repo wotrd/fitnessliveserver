@@ -52,12 +52,11 @@
         select
         id, name, type, price, avatar,seller_id,seller_name, remark
         from library.books
-        where 1=1
+        where type = #{type}
         <if test="name != null and name != ''">
             and (name like concat('%', #{name}, '%') or type like concat('%', #{name}, '%')
             or price like concat('%', #{name}, '%'))
         </if>
-
         order by id desc;
     </select>
 

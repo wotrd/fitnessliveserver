@@ -65,5 +65,8 @@ public class OrderPo implements Serializable {
      * 订单状态（1已完成 2未完成 3已取消）
      */
     private Integer status;
-
+    /**
+     * 图书图片
+     */
+    private String avatar;
 }

@@ -75,4 +75,13 @@ public interface OrderMapper {
      */
     int deleteByIds(@Param("ids") String[] ids);
 
+    List<OrderPo> queryAllAndStatus(@Param("userId") Long userId, @Param("status") int status);
+
+    /**
+     *
+     * @param userId
+     * @param status
+     * @return
+     */
+    List<OrderPo> queryAllByType(@Param("userId") Long userId, @Param("status") Integer status);
 }

@@ -38,7 +38,7 @@ public interface BookMapper {
      * @param name 查询起始位置
      * @return 对象列表
      */
-    BookPo queryByName(String name);
+    List<BookPo> queryByName(String name);
 
     /**
      * 通过实体作为筛选条件查询

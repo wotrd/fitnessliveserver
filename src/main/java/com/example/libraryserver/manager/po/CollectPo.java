@@ -48,5 +48,8 @@ public class CollectPo implements Serializable {
      * 评价时间
      */
     private Date createTime;
-
+    /**
+     * 评价时间
+     */
+    private String avatar;
 }

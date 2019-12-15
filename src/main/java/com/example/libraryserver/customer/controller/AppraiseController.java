@@ -26,5 +26,12 @@ public class AppraiseController {
         return appraiseService.getAppraisesByName(bName);
     }
 
+    @GetMapping("getAppraiseById")
+    public RespVo getAppraisesByName(@RequestParam Long id){
+        return appraiseService.getAppraisesById(id);
+    }
+
+
+
 
 }

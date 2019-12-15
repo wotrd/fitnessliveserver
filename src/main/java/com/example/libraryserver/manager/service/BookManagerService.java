@@ -66,15 +66,14 @@ public class BookManagerService {
         String price = request.getParameter("price");
         String remark = request.getParameter("remark");
         String avatar = request.getParameter("avatar");
-        BookPo businessPo = bookMapper.queryByName(name);
-
-        if (null != businessPo) {
+        List<BookPo> bookPos = bookMapper.queryByName(name);
+        if (null != bookPos && bookPos.size()>0) {
             result.put("message", "该图书已经存在!");
             result.put("flag", false);
             ServletUtil.createSuccessResponse(200, result, response);
             return;
         }
-        businessPo = BookPo.builder().name(name).type(type).price(new BigDecimal(price)).build();
+        BookPo businessPo = BookPo.builder().name(name).type(type).price(new BigDecimal(price)).build();
         UserLoginQo userLoginQo = (UserLoginQo) request.getSession().getAttribute("loginUser");
         businessPo.setSellerName(userLoginQo.getAccount());
         businessPo.setRemark(remark);

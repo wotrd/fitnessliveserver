@@ -68,9 +68,10 @@ public class ManagerLoginService {
                 loginMap.put("result", 2);
                 return loginMap;
             }
+
             Map<UserLoginQo, HttpSession> userMap = (Map<UserLoginQo, HttpSession>) request
                     .getServletContext().getAttribute("userLoginQo");
-
+            userLoginQo.setName(userPo.getName());
             request.getSession().setAttribute("loginUser", userLoginQo);
             userMap.put(userLoginQo, request.getSession());
 

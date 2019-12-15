@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import static com.sun.org.apache.xerces.internal.impl.xpath.regex.CaseInsensitiveMap.get;
 
 /**
  * @author wangkaijin
@@ -23,7 +26,18 @@ public class OrderService {
     private BookMapper bookMapper;
 
     public RespVo getOrders(Long buyerId) {
-        return RespVo.builder().code("200").msg("success").data(orderMapper.queryAll(buyerId)).build();
+        List<OrderPo> orderPos = orderMapper.queryAll(buyerId);
+        orderPos.forEach(orderPo -> {
+            List<BookPo> bookPos = bookMapper.queryByName(orderPo.getBName());
+
+            if (null == bookPos || bookPos.size() == 0 ||null == bookPos.get(0) || bookPos.get(0).getAvatar() == null) {
+                orderPo.setAvatar("");
+            } else {
+                orderPo.setAvatar(bookPos.get(0).getAvatar());
+            }
+
+        });
+        return RespVo.builder().code("200").msg("success").data(orderPos).build();
     }
 
     public RespVo deleteOrder(Long id) {
@@ -54,10 +68,41 @@ public class OrderService {
 
     public RespVo updateOrder(OrderPo orderPo) {
         int update = orderMapper.update(orderPo);
-        if (update>0){
+        if (update > 0) {
             return RespVo.builder().code("200").msg("success").build();
         }
         return RespVo.builder().code("201").msg("系统开小差了，请稍后再试").build();
 
+    }
+
+    public RespVo getCart(Long id) {
+        List<OrderPo> orderPos = orderMapper.queryAllAndStatus(id, 4);
+        orderPos.forEach(orderPo -> {
+            List<BookPo> bookPos = bookMapper.queryByName(orderPo.getBName());
+
+            if (null == bookPos || bookPos.size() == 0 ||null == bookPos.get(0) || bookPos.get(0).getAvatar() == null) {
+                orderPo.setAvatar("");
+            } else {
+                orderPo.setAvatar(bookPos.get(0).getAvatar());
+            }
+
+        });
+        return RespVo.builder().code("200").msg("success").data(orderPos).build();
+
+    }
+
+    public RespVo getOrdersByType(Long userId, Integer status) {
+        List<OrderPo> orderPos = orderMapper.queryAllByType(userId, status);
+        orderPos.forEach(orderPo -> {
+            List<BookPo> bookPos = bookMapper.queryByName(orderPo.getBName());
+
+            if (null == bookPos || bookPos.size() == 0 ||null == bookPos.get(0) || bookPos.get(0).getAvatar() == null) {
+                orderPo.setAvatar("");
+            } else {
+                orderPo.setAvatar(bookPos.get(0).getAvatar());
+            }
+
+        });
+        return RespVo.builder().code("200").msg("success").data(orderPos).build();
     }
 }

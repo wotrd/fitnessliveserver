@@ -322,7 +322,7 @@
                         <img class="nav-user-photo" th:src="@{/images/dudu.jpg}" />
                         <span class="user-info">
                             <small>欢迎光临,</small>
-                            <span th:text="${session.loginUser.account}">大神</span>
+                            <span th:text="${session.loginUser.name}">大神</span>
 						</span>
                         <i class="icon-caret-down"></i>
                     </a>
@@ -360,12 +360,7 @@
                                 全部用户
                             </a>
                         </li>
-                        <li>
-                            <a id="collectmanager" value="/manager/collectmanager" class="changeUrl">
-                                <i class="icon-double-angle-right"></i>
-                                我的收藏
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
                 <li>
@@ -388,6 +383,12 @@
                         <li>
                             <a id="appraisemanager" value="/manager/appraisemanager/appraise-manager"
                                class="changeUrl"><i class="icon-double-angle-right"></i>留言管理
+                            </a>
+                        </li>
+                        <li>
+                            <a id="collectmanager" value="/manager/collectmanager" class="changeUrl">
+                                <i class="icon-double-angle-right"></i>
+                                图书收藏
                             </a>
                         </li>
                     </ul>
@@ -500,19 +501,7 @@
                                     <div class="space-12"></div>
                                 </div>
                                 <div class="hr hr12 dotted"></div>
-                                <!--粉丝和关注数量-->
-<!--                                <div class="clearfix">-->
-<!--                                    <div class="grid2">-->
-<!--                                        <span class="bigger-175 blue" id="fansnum">0</span>-->
-<!--                                        <br/>-->
-<!--                                        粉丝数-->
-<!--                                    </div>-->
-<!--                                    <div class="grid2">-->
-<!--                                        <span class="bigger-175 blue" id="attentionsnum">0</span>-->
-<!--                                        <br/>-->
-<!--                                        关注数-->
-<!--                                    </div>-->
-<!--                                </div>-->
+
                                 <div class="hr hr16 dotted"></div>
                             </div>
 
@@ -537,12 +526,7 @@
                                             <span class="editable" id="shownickname">Tom</span>
                                         </div>
                                     </div>
-<!--                                    <div class="profile-info-row" style="height: 30px;">-->
-<!--                                        <div class="profile-info-name"> 出生日期</div>-->
-<!--                                        <div class="profile-info-value">-->
-<!--                                            <span class="editable" id="showborndata"></span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
+
                                     <div class="profile-info-row" style="height: 30px;">
                                         <div class="profile-info-name"> 性别</div>
                                         <div class="profile-info-value">
@@ -567,18 +551,7 @@
                                             <span class="editable" id="showmobilenum">17862901468</span>
                                         </div>
                                     </div>
-<!--                                    <div class="profile-info-row" style="height: 30px;">-->
-<!--                                        <div class="profile-info-name"> 个性签名</div>-->
-<!--                                        <div class="profile-info-value">-->
-<!--                                            <span class="editable" id="showpersonalsign">too young too simple!</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="profile-info-row" style="height: 30px;">-->
-<!--                                        <div class="profile-info-name"> 积分</div>-->
-<!--                                        <div class="profile-info-value">-->
-<!--                                            <span class="editable" id="showgrade">0</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
+
                                     <div class="profile-info-row" style="height: 30px;">
                                         <div class="profile-info-name" >加入时间</div>
 

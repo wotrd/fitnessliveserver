@@ -34,11 +34,11 @@
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="CollectMap">
+    <select id="queryByUserId" resultMap="CollectMap">
         select
          id, name, type, price, user_id, create_time
         from library.collect
-        limit #{offset}, #{limit}
+        where user_id = #{userId}
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -61,7 +61,7 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into library.collect(name, type, price,user_id, create_time)
+        insert into library.collect(name, type, price, user_id, create_time)
         values (#{name}, #{type},#{price},#{userId}, now())
     </insert>
 

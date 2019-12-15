@@ -4,10 +4,7 @@ import com.example.libraryserver.conf.RespVo;
 import com.example.libraryserver.customer.service.OrderService;
 import com.example.libraryserver.manager.po.OrderPo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wangkaijin
@@ -23,6 +20,17 @@ public class OrderController {
     public RespVo getOrders(@RequestParam("userId") Long userId) {
         return orderService.getOrders(userId);
     }
+
+    @RequestMapping("getOrdersByStatus")
+    public RespVo getOrders(@RequestParam("userId") Long userId, @RequestParam("status") Integer status) {
+        return orderService.getOrdersByType(userId, status);
+    }
+
+    @GetMapping("getCart")
+    public RespVo getCart(@RequestParam Long id){
+        return orderService.getCart(id);
+    }
+
 
     @RequestMapping("deleteOrder")
     public RespVo deleteOrder(@RequestBody Long id) {

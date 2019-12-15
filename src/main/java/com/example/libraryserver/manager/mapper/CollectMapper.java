@@ -25,23 +25,14 @@ public interface CollectMapper {
      */
     CollectPo queryById(Long id);
 
-    /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
-    List<CollectPo> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
-
+    List<CollectPo> queryByUserId(Long userId);
 
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param collectPo 实例对象
      * @return 对象列表
      */
-    List<CollectPo> queryAll(CollectPo collectPo);
+    List<CollectPo> queryAll();
 
     /**
      * 新增数据
@@ -77,4 +68,6 @@ public interface CollectMapper {
     List<CollectPo> queryLikeName(String name);
 
     List<CollectPo> queryByName(String name);
+
+
 }

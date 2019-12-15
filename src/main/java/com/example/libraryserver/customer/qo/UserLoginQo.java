@@ -25,6 +25,11 @@ public class UserLoginQo {
      * 手机号
      */
     private String mobileNum;
+
+    /**
+     * 名字
+     */
+    private String name;
     /**
      * 密码
      */

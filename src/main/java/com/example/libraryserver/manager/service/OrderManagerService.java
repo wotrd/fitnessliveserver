@@ -2,7 +2,9 @@ package com.example.libraryserver.manager.service;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.libraryserver.manager.mapper.BookMapper;
 import com.example.libraryserver.manager.mapper.OrderMapper;
+import com.example.libraryserver.manager.po.BookPo;
 import com.example.libraryserver.manager.po.OrderPo;
 import com.example.libraryserver.tools.ServletUtil;
 import com.github.pagehelper.Page;
@@ -25,6 +27,8 @@ public class OrderManagerService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private BookMapper bookMapper;
     /**
      * 获取订单列表
      *

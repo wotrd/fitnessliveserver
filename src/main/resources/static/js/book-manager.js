@@ -21,7 +21,7 @@ $(function () {
             {label: '图书名字', name: 'name', width: 200},
             {label: '图书类型', name: 'type', width: 200},
             {label: '图书价格', name: 'price', width: 200},
-            {label: '卖家', name: 'sellerName', width: 200},
+            {label: '买家', name: 'sellerName', width: 200},
             {label: '简介', name: 'remark', width: 200},
             {label: '图片', name: 'avatar', width: 200},
             // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){

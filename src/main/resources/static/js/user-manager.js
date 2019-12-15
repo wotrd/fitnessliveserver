@@ -72,12 +72,6 @@ $(function () {
                 }
             },
             {label: '加入时间', name: 'createTime', width: 100},
-            {
-                label: '查看', name: 'watch', width: 100,
-                formatter: function (cellvalue, options, cell) {
-                    return '<a class="btn btn-purple btn-sm " target="_blank" onclick="showUserProfile(this);"><i class="fa fa-cog  fa-spin" aria-hidden="true"></i>点我</a>';
-                }
-            },
             {label: '', name: '', width: 0.01}
         ],
 

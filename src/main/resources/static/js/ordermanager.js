@@ -22,6 +22,8 @@ $(function () {
             {label: '图书数量', name: 'bCount', width: 200},
             {label: '图书单价', name: 'bPrice', width: 200},
             {label: '订单总价', name: 'totalPrice', width: 200},
+            {label: '买家姓名', name: 'buyerName', width: 200},
+            {label: '下单时间', name: 'createTime', width: 200},
             {
                 label: '订单状态', name: 'status', width: 200, formatter: function (cellvalue, options, cell) {
                     if (cellvalue == 1) {
@@ -34,9 +36,6 @@ $(function () {
                     }
                 }
             },
-            {label: '买家姓名', name: 'buyerName', width: 200},
-            {label: '卖家姓名', name: 'sellName', width: 200},
-            {label: '下单时间', name: 'createTime', width: 200},
             // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
             //     return '<a class="btn btn-purple btn-sm" onclick="cancelFans(this);"' +
             //         'target="_blank">' + '<i class="fa fa-cog  fa-spin" aria-hidden="true"></i>取关</a>';
@@ -107,13 +106,11 @@ $(function () {
     $("#queryOrderBtn").click(function () {
         var qryBusinessName = $("#qryBusinessName").val();
         var qryBuyerName = $("#qryBuyerName").val();
-        var qrySellName = $("#qrySellName").val();
         $(grid_selector).jqGrid('setGridParam', {
             postData:
                 {
                     bName: qryBusinessName,
-                    buyerName: qryBuyerName,
-                    sellName: qrySellName
+                    buyerName: qryBuyerName
                 },
             page: 1
         }).trigger("reloadGrid");
