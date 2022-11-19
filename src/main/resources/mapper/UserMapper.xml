@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.animalsalesserver.customer.mapper.UserMapper">
+<mapper namespace="com.example.sceneserver.customer.mapper.UserMapper">
 
-    <resultMap type="com.example.animalsalesserver.customer.po.UserPo" id="UserMap">
+    <resultMap type="com.example.sceneserver.customer.po.UserDO" id="UserMap">
         <result property="id" column="id" jdbcType="BIGINT"/>
         <result property="account" column="account" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="gender" column="gender" jdbcType="INTEGER"/>
-        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="areaName" column="area_name" jdbcType="VARCHAR"/>
         <result property="email" column="email" jdbcType="VARCHAR"/>
         <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
         <result property="mobileNum" column="mobile_num" jdbcType="VARCHAR"/>
         <result property="role" column="role" jdbcType="INTEGER"/>
         <result property="amatar" column="amatar" jdbcType="VARCHAR"/>
-        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="sign" column="sign" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="UserMap">
         select
-          id, account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time
-        from animalsales.users
+          id, account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time
+        from users
         where id = #{id}
     </select>
     <!--查询单个-->
     <select id="getByMobileNum" resultMap="UserMap">
         select
-          id, account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time
-        from animalsales.users
+          id, account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time
+        from users
         where mobile_num = #{mobileNum}
     </select>
 
     <!--查询指定行数据-->
     <select id="getUserByAccount" resultMap="UserMap">
          select
-          id, account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time
-        from animalsales.users
+          id, account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time
+        from users
         where account = #{account}
     </select>
 
     <!--查询指定行数据-->
     <select id="getUserLikeAccount" resultMap="UserMap">
          select
-          id, account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time
-        from animalsales.users
-        where role=0 AND (nickname LIKE concat('%', #{searchText}, '%') OR account LIKE concat('%', #{searchText}, '%'))
+          id, account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time
+        from users
+        where role=0 AND (areaName LIKE concat('%', #{searchText}, '%') OR account LIKE concat('%', #{searchText}, '%'))
     </select>
 
-    <select id="getUserLikeAccountOrNickName" resultMap="UserMap">
+    <select id="getUserLikeAccountOrAreaName" resultMap="UserMap">
         select
-        id, account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time
-        from animalsales.users
+        id, account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time
+        from users
         <where>
-            <if test="nickname != null and nickname != ''">
-                and nick_name LIKE concat('%', #{nickname}, '%')
+            <if test="areaName != null and areaName != ''">
+                and area_name LIKE concat('%', #{areaName}, '%')
             </if>
             <if test="useraccount != null and useraccount != ''">
                 and account LIKE concat('%', #{useraccount}, '%')
@@ -65,7 +65,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteByIds">
-        delete from animalsales.users
+        delete from users
         where id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
@@ -75,8 +75,8 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="UserMap">
         select
-        id, account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time
-        from animalsales.users
+        id, account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time
+        from users
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -93,8 +93,8 @@
             <if test="gender != null">
                 and gender = #{gender}
             </if>
-            <if test="nickName != null and nickName != ''">
-                and nick_name = #{nickName}
+            <if test="areaName != null and areaName != ''">
+                and area_name = #{areaName}
             </if>
             <if test="email != null and email != ''">
                 and email = #{email}
@@ -111,8 +111,8 @@
             <if test="amatar != null and amatar != ''">
                 and amatar = #{amatar}
             </if>
-            <if test="remark != null and remark != ''">
-                and remark = #{remark}
+            <if test="sign != null and sign != ''">
+                and sign = #{sign}
             </if>
             <if test="createTime != null">
                 and create_time = #{createTime}
@@ -122,12 +122,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into animalsales.users(account, name, password, gender, nick_name, email, idcard, mobile_num, role, amatar, remark, create_time)
-        values (#{account}, #{name}, #{password}, #{gender}, #{nickName}, #{email}, #{idcard}, #{mobileNum}, #{role}, #{amatar}, #{remark}, now())
+        insert into users(account, name, password, gender, area_name, email, idcard, mobile_num, role, amatar, sign, create_time)
+        values (#{account}, #{name}, #{password}, #{gender}, #{areaName}, #{email}, #{idcard}, #{mobileNum}, #{role}, #{amatar}, #{sign}, now())
     </insert>
 
     <update id="updateByAccount">
-        update animalsales.users
+        update users
         <set>
             <if test="password != null and password != ''">
                 password = #{password},
@@ -137,7 +137,7 @@
     </update>
     <!--通过主键修改数据-->
     <update id="update">
-        update animalsales.users
+        update users
         <set>
             <if test="account != null and account != ''">
                 account = #{account},
@@ -151,8 +151,8 @@
             <if test="gender != null">
                 gender = #{gender},
             </if>
-            <if test="nickName != null and nickName != ''">
-                nick_name = #{nickName},
+            <if test="areaName != null and areaName != ''">
+                area_name = #{areaName},
             </if>
             <if test="email != null and email != ''">
                 email = #{email},
@@ -169,8 +169,8 @@
             <if test="amatar != null and amatar != ''">
                 amatar = #{amatar},
             </if>
-            <if test="remark != null and remark != ''">
-                remark = #{remark},
+            <if test="sign != null and sign != ''">
+                sign = #{sign},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},

@@ -16,7 +16,7 @@ function showUserProfile(base) {
     // }
     $("#showaccount").text(rowData.account);
     $("#showname").text(rowData.name);
-    $("#shownickname").text(rowData.nickName);
+    $("#showId").text(rowData.id);
     $("#showsex").text(rowData.gender);
     $("#showemail").text(rowData.email);
     $("#showidcard").text(rowData.idcard);
@@ -41,11 +41,10 @@ $(function () {
         mtype: 'POST',
         height: window.screen.height - 550,
         colModel: [
-            {label: 'id', name: 'id', width: 75, hidden: true},
+            {label: '用户编号', name: 'id', width: 75},
             // { label: 'amatar', name: 'amatar', width: 75,hidden:true},
             {label: 'password', name: 'password', width: 75, hidden: true},
             {label: 'borndata', name: 'borndata', width: 75, hidden: true},
-            {label: 'borndata', name: 'borandata', width: 75, hidden: true},
             {label: 'createtime', name: 'createtime', width: 75, hidden: true},
             {label: '账户', name: 'account', width: 100},
             {label: '姓名', name: 'name', width: 100},
@@ -58,10 +57,10 @@ $(function () {
                     }
                 }
             },
-            {label: '昵称', name: 'nickName', width: 120},
+            {label: '地区', name: 'areaName', width: 120},
             {label: '邮箱', name: 'email', width: 130},
-            {label: '身份证', name: 'idcard', width: 150},
-            {label: '手机号', name: 'mobileNum', width: 120},
+            {label: '个性签名', name: 'sign', width: 150},
+            // {label: '手机号', name: 'mobileNum', width: 120},
             {
                 label: '角色', name: 'role', width: 100, formatter: function (cellvalue, options, cell) {
                     if (cellvalue == 1) {
@@ -144,9 +143,9 @@ $(function () {
     //查询点击事件
     $("#queryUserBtn").click(function () {
         var qryAccount = $("#useraccount").val();
-        var qryNickname = $("#usernickname").val();
+        var qryAreaname = $("#userareaname").val();
         $(grid_selector).jqGrid('setGridParam', {
-            postData: {useraccount: qryAccount, usernickname: qryNickname},
+            postData: {useraccount: qryAccount, areaname: qryAreaname},
             //search: true,
             page: 1
         }).trigger("reloadGrid");
@@ -268,12 +267,12 @@ function initUpdateData() {
     var rows = $(grid_selector).getGridParam('selarrrow');
     var data = $(grid_selector).jqGrid('getRowData', rows[0]);
     $("#uid").val(data.id);
-    // $('#updateaccount').val(data.account);
+    $('#updatesign').val(data.sign);
     $('#updatename').val(data.name);
-    $('#updatenickname').val(data.nickName);
+    $('#updateareaname').val(data.areaName);
     $("#updateidcard").val(data.idcard);
     $('#updateemail').val(data.email);
-    $('#updatemobilenum').val(data.mobileNum);
+    // $('#updatemobilenum').val(data.mobileNum);
     $('#password').val(data.password);
     if (data.gender == "男") {
         $("input[name='updatesex']").get(0).checked = true;
@@ -292,11 +291,11 @@ function initUpdateData() {
 function initAddData() {
     $('#userid').val("");
     $('#account').val("");
-    $('#mobilenum').val("");
+    $('#sign').val("");
     $('#name').val("");
     $("input[name='sex']").get(0).checked = true;
     $("#sex").attr("checked", "checked");
-    $('#nickname').val("");
+    $('#areaName').val("");
     $('#email').val("");
     $("#role option:first").attr("selected", true);
     $('#idcard').val("");
@@ -332,10 +331,10 @@ function saveUpdateUser() {
  */
 function saveAddUser() {
     var id = $('#userid').val();
-    var mobilenum = $('#mobilenum').val();
+    var sign = $('#sign').val();
     var name = $('#name').val();
     var sex = $('#sex').is(":checked");
-    var nickname = $('#nickname').val();
+    var areaName = $('#areaName').val();
     var email = $('#email').val();
     var role = $('#role').val();
     var idcard = $('#idcard').val();
@@ -344,13 +343,13 @@ function saveAddUser() {
         cache: false,
         data: {
             "id": id,
-            "mobilenum": mobilenum,
+            "sign": sign,
             "name": name,
-            "nickname": nickname,
+            "areaName": areaName,
             "sex": sex,
             "email": email,
-            "role": role,
-            "idcard": idcard
+            "role": role
+            // "idcard": idcard
         },
         type: 'post',
         beforeSend: function () {
