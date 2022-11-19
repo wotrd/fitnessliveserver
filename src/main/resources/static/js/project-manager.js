@@ -12,18 +12,21 @@ $(function () {
     });
 
     $(grid_selector).jqGrid({
-        url: "/manager/businessmanager/getBusinesses",
+        url: "/manager/projectmanager/getProjectes",
         datatype: "json",
         mtype: 'POST',
         height: window.screen.height - 550,
         colModel: [
-            {label: 'id', name: 'id', width: 75,},
-            {label: '商品名字', name: 'bName', width: 200},
-            {label: '商品类型', name: 'type', width: 200},
-            {label: '商品价格', name: 'price', width: 200},
-            {label: '卖家', name: 'sellerName', width: 200},
-            {label: '封面', name: 'avatar', width: 200},
-            // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
+            {label: '项目编号', name: 'id', width: 75,},
+            {label: '项目名字', name: 'projectName', width: 200},
+            {label: '项目类型', name: 'type', width: 200},
+            {label: '项目类别', name: 'category', width: 200},
+            {label: '保护单位', name: 'protectUnit', width: 200},
+            {label: '申请单位', name: 'applyUnit', width: 200},
+            {label: '项目简介', name: 'remark', width: 200},
+            {label: '项目时间', name: 'createTime', width: 200},
+
+    // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
             //     return '<a class="btn btn-purple btn-sm" onclick="cancelAttention(this);" target="_blank">' +
             //         '<i class="fa fa-cog fa-spin" aria-hidden="true"></i>取关</a>';
             // }},
@@ -141,7 +144,7 @@ $(function () {
         if (rows.length > 0) {
             $.messager.confirm("温馨提示", "是否确定删除所选记录？", function () {
                 $.ajax({
-                    url: "/manager/businessmanager/delete",
+                    url: "/manager/projectmanager/delete",
                     cache: false,
                     type: "post",
                     data: {"ids": uids.join(",")},
@@ -201,10 +204,14 @@ function removeHorizontalScrollBar() {
 
 //初始化数据
 function initData() {
-    $('#name').val("");
+    $('#projectName').val("");
     $('#type').val("");
-    $('#price').val("");
-    $('#avatar').val("");
+    $('#applyUnit').val("");
+    $('#category').val("");
+    $('#protectUnit').val("");
+    $('#remark').val("");
+    $('#areaName').val("");
+
 }
 
 //初始化修改用户数据
@@ -224,19 +231,27 @@ function initUpdateData() {
  * 保存新增商品
  */
 function saveBusiness() {
-    var name = $('#name').val();
+    var projectName = $('#projectName').val();
     var type = $('#type').val();
-    var price = $('#price').val();
-    var avatar = $('#avatar').val();
+    var protectUnit = $('#protectUnit').val();
+    var applyUnit = $('#applyUnit').val();
+    var remark = $('#remark').val();
+    var category = $('#category').val();
+    var areaName = $('#areaName').val();
+
     $.ajax({
-        url: "/manager/businessmanager/addBusiness",
+        url: "/manager/projectmanager/add",
         cache: false,
         dataType: 'json',
         data: {
-            name: name,
+            projectName: projectName,
             type: type,
-            price: price,
-            avatar: avatar
+            applyUnit: applyUnit,
+            remark: remark,
+            category: category,
+            protectUnit: protectUnit,
+            applyUnit: applyUnit,
+            areaName: areaName
         },
         type: 'post',
         beforeSend: function () {

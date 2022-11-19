@@ -47,7 +47,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for businesses
 -- ----------------------------
-DROP TABLE IF EXISTS `businesses`;
+DROP TABLE IF EXISTS project;
 CREATE TABLE `businesses` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `b_name` varchar(64) DEFAULT NULL COMMENT '商品名字',
@@ -63,8 +63,8 @@ CREATE TABLE `businesses` (
 -- Records of businesses
 -- ----------------------------
 BEGIN;
-INSERT INTO `businesses` VALUES (1, '小熊', '卡通', 100.00, 'https://blog.ailijie.top/upload/2019/6/WechatIMG93-3631413726214a198d1ffbce54b0866f.jpg', 2, '小李');
-INSERT INTO `businesses` VALUES (4, '测试', '测试', 13.00, 'https://blog.ailijie.top/upload/2019/6/WechatIMG93-3631413726214a198d1ffbce54b0866f.jpg', 1, '小张');
+INSERT INTO project VALUES (1, '小熊', '卡通', 100.00, 'https://blog.ailijie.top/upload/2019/6/WechatIMG93-3631413726214a198d1ffbce54b0866f.jpg', 2, '小李');
+INSERT INTO project VALUES (4, '测试', '测试', 13.00, 'https://blog.ailijie.top/upload/2019/6/WechatIMG93-3631413726214a198d1ffbce54b0866f.jpg', 1, '小张');
 COMMIT;
 
 -- ----------------------------

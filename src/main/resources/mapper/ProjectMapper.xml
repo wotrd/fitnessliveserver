@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sceneserver.manager.mapper.ProjectMapper">
+  <resultMap id="BaseResultMap" type="com.example.sceneserver.manager.po.ProjectDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="protect_unit" jdbcType="VARCHAR" property="protectUnit" />
+    <result column="apply_unit" jdbcType="VARCHAR" property="applyUnit" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_name, `type`, protect_unit, apply_unit, remark, category, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+
+  <!--查询指定行数据-->
+  <select id="queryLikeName" resultMap="BaseResultMap">
+    select
+    id, project_name, type, protect_unit, apply_unit,remark,category,create_time, area_name
+    from project
+    <where>
+      <if test="name != null and name != ''">
+        and project_name like concat('%', #{name}, '%')
+      </if>
+    </where>
+
+  </select>
+  <select id="queryByName" resultMap="BaseResultMap">
+    select
+    id, project_name, type, protect_unit, apply_unit,remark,category,create_time, area_name
+    from project
+    <where>
+      <if test="name != null and name != ''">
+        and project_name = #{name}
+      </if>
+    </where>
+
+  </select>
+
+  <delete id="deleteByIds">
+    delete from project
+    where id in
+    <foreach collection="ids" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from project
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.sceneserver.manager.po.ProjectDO" useGeneratedKeys="true">
+    insert into project (project_name, `type`, protect_unit, 
+      apply_unit, remark, category, 
+      create_time, area_name)
+    values (#{projectName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{protectUnit,jdbcType=VARCHAR}, 
+      #{applyUnit,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
+      now(), #{areaName})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.sceneserver.manager.po.ProjectDO" useGeneratedKeys="true">
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="protectUnit != null">
+        protect_unit,
+      </if>
+      <if test="applyUnit != null">
+        apply_unit,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="protectUnit != null">
+        #{protectUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="applyUnit != null">
+        #{applyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.sceneserver.manager.po.ProjectDO">
+    update project
+    <set>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="protectUnit != null">
+        protect_unit = #{protectUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="applyUnit != null">
+        apply_unit = #{applyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.sceneserver.manager.po.ProjectDO">
+    update project
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      protect_unit = #{protectUnit,jdbcType=VARCHAR},
+      apply_unit = #{applyUnit,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

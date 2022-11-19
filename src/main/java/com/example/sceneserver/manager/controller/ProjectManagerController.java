@@ -1,6 +1,6 @@
 package com.example.sceneserver.manager.controller;
 
-import com.example.sceneserver.manager.service.OrderManagerService;
+import com.example.sceneserver.manager.service.ProjectManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,42 +13,42 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author wangkaijin
  */
-@RequestMapping("/manager/ordermanager")
+@RequestMapping("/manager/projectmanager")
 @Controller
-public class OrderManagerController {
+public class ProjectManagerController {
 
     @Autowired
-    private OrderManagerService orderService;
+    private ProjectManagerService projectManagerService;
 
-    @RequestMapping("ordermanager")
-    public String businessManager() {
-        return "ordermanager";
+    @RequestMapping("projectmanager")
+    public String projectManager() {
+        return "project-manager";
     }
 
-    @RequestMapping(value = "/getOrders", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/getProjectes", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public void getOrders(HttpServletRequest request, HttpServletResponse response) {
-        orderService.queryOrderList(request, response);
+    public void getProjectes(HttpServletRequest request, HttpServletResponse response) {
+        projectManagerService.queryProjectList(request, response);
     }
 
-    @RequestMapping(value = "/addOrder", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public void addOrder(HttpServletRequest request, HttpServletResponse response) {
-        orderService.addOrder(request, response);
+        projectManagerService.add(request, response);
 
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public void update(HttpServletRequest request, HttpServletResponse response) {
-        orderService.updateOrder(request, response);
+//        projectManagerService.updateOrder(request, response);
 
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public void delete(HttpServletRequest request, HttpServletResponse response) {
-        orderService.delete(request, response);
+        projectManagerService.delete(request, response);
 
     }
 
