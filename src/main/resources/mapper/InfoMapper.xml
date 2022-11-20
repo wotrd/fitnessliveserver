@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sceneserver.manager.mapper.InfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.sceneserver.manager.po.InfoDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, summary, content,title
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--查询指定行数据-->
+  <select id="queryLikeName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from info
+    <where>
+      <if test="name != null and name != ''">
+        and title like concat('%', #{name}, '%')
+      </if>
+    </where>
+
+  </select>
+
+  <select id="queryByName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from info
+    <where>
+      <if test="name != null and name != ''">
+        and title = #{name}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByIds">
+    delete from info
+    where id in
+    <foreach collection="ids" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.sceneserver.manager.po.InfoDO" useGeneratedKeys="true">
+    insert into info (create_time, summary, content,title
+      )
+    values (#{createTime,jdbcType=TIMESTAMP}, #{summary,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{title}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.sceneserver.manager.po.InfoDO" useGeneratedKeys="true">
+    insert into info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.sceneserver.manager.po.InfoDO">
+    update info
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.sceneserver.manager.po.InfoDO">
+    update info
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      summary = #{summary,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

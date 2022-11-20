@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for appraise
 -- ----------------------------
-DROP TABLE IF EXISTS `appraise`;
+DROP TABLE IF EXISTS info;
 CREATE TABLE `appraise` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `b_name` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '商品名字',
@@ -34,14 +34,14 @@ CREATE TABLE `appraise` (
 -- Records of appraise
 -- ----------------------------
 BEGIN;
-INSERT INTO `appraise` VALUES (1, '1', '1', '2007-01-01 00:00:00');
-INSERT INTO `appraise` VALUES (2, '2', '2', '2019-10-15 23:10:15');
-INSERT INTO `appraise` VALUES (3, NULL, 'ss', '2019-10-16 22:22:24');
-INSERT INTO `appraise` VALUES (4, NULL, 'ddd', '2019-10-16 22:29:56');
-INSERT INTO `appraise` VALUES (5, '测试', 'sss', '2019-10-16 22:30:38');
-INSERT INTO `appraise` VALUES (6, '测试', 'ddd', '2019-10-16 22:34:11');
-INSERT INTO `appraise` VALUES (7, '测试', 'abc', '2019-10-16 22:34:20');
-INSERT INTO `appraise` VALUES (8, '小熊', 'hhh', '2019-10-16 22:34:52');
+INSERT INTO info VALUES (1, '1', '1', '2007-01-01 00:00:00');
+INSERT INTO info VALUES (2, '2', '2', '2019-10-15 23:10:15');
+INSERT INTO info VALUES (3, NULL, 'ss', '2019-10-16 22:22:24');
+INSERT INTO info VALUES (4, NULL, 'ddd', '2019-10-16 22:29:56');
+INSERT INTO info VALUES (5, '测试', 'sss', '2019-10-16 22:30:38');
+INSERT INTO info VALUES (6, '测试', 'ddd', '2019-10-16 22:34:11');
+INSERT INTO info VALUES (7, '测试', 'abc', '2019-10-16 22:34:20');
+INSERT INTO info VALUES (8, '小熊', 'hhh', '2019-10-16 22:34:52');
 COMMIT;
 
 -- ----------------------------

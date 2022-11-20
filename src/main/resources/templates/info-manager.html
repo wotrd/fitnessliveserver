@@ -1,0 +1,354 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" href="../static/css/jquery-ui-1.10.3.full.min.css"
+          th:href="@{/css/jquery-ui-1.10.3.full.min.css}"/>
+    <link rel="stylesheet" href="../static/css/datepicker.css" th:href="@{/css/datepicker.css}"/>
+    <link rel="stylesheet" href="../static/css/googleFamily.css" th:href="@{/css/googleFamily.css}"/>
+    <link rel="stylesheet" href="../static/css/ui.jqgrid.css" th:href="@{/css/ui.jqgrid.css}"/>
+    <link rel="stylesheet" href="../static/css/chosen.css" th:href="@{/css/chosen.css}"/>
+    <link rel="stylesheet" href="../static/css/custom.css" th:href="@{/css/custom.css}"/>
+    <link rel="stylesheet" href="../static/css/ace.min.css" th:href="@{/css/ace.min.css}"/>
+    <link rel="stylesheet" href="../static/css/ace-rtl.min.css" th:href="@{/css/ace-rtl.min.css}"/>
+    <link rel="stylesheet" href="../static/css/ace-skins.min.css" th:href="@{/css/ace-skins.min.css}"/>
+    <script src="../static/js/jquery-2.0.3.min.js" th:src="@{/js/jquery-2.0.3.min.js}"></script>
+    <script src="../static/js/jquery.form.js" th:src="@{/js/jquery.form.js}"></script>
+    <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="../static/js/ueditor/ueditor.config.js" th:src="@{/js/ueditor/ueditor.config.js}"></script>
+    <script src="../static/js/ueditor/ueditor.all.js" th:src="@{/js/ueditor/ueditor.all.js}"></script>
+    <script src="../static/js/ueditor/lang/zh-cn/zh-cn.js" th:src="@{/js/ueditor/lang/zh-cn/zh-cn.js}"></script>
+
+    <title>Spring Boot管理后台</title>
+</head>
+<body >
+<div class="row">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-small">
+                <h4>Spring Boot</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-body-inner" style="display: block;">
+                    <div class="widget-main">
+                        <div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default" style="margin-bottom:10px;">
+                                        <div class="panel-body">
+                                            <form class="form-horizontal" role="form" onsubmit="return false;">
+
+                                                <div class="form-group" style="margin-bottom: 0;">
+
+                                                    <label class="col-sm-1 control-label">标题：</label>
+                                                    <div class="col-sm-3" style="width: 200px;">
+                                                        <input id="qryName"  data-original-title="Tooltip for name" class="form-control radius" placeholder="标题" type="text" />
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        <button id="queryBusinessBtn" class="btn btn-info btn-sm btn-label-left radius">
+                                                            <i class="fa fa-search"></i>查询
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div style="margin-bottom: 10px;">
+                                        <button  class="btn btn-success btn-sm radius" id="addBusinessBtn">
+                                            <i class="fa  fa-plus"></i> 添加资讯
+                                        </button>
+<!--                                        <button  class="btn btn-primary btn-sm radius" id="modifyBusinessBtn">-->
+<!--                                            <i class="fa fa-pencil-square-o"></i> 修改-->
+<!--                                        </button>-->
+                                        <button  class="btn btn-danger btn-sm radius" id="deleteBusinessBtn">
+                                            <i class="fa fa-trash-o fa-lg"></i> 删除
+                                        </button>
+                                    </div>
+                                    <table id="jqGrid"></table>
+                                    <div id="jqGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新增商品-->
+<div id="addBusinessModal" class="bootbox modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width:100%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增资讯</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" onsubmit="return false;">
+
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">资讯标题</label>
+                        <div class="col-sm-10">
+                            <input id="title" type="text" class="form-control" placeholder="输入资讯标题" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">资讯简介</label>
+                        <div class="col-sm-10">
+                            <input id="summary" type="text" class="form-control" placeholder="输入资讯简介" />
+                        </div>
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-1 control-label">项目类别</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input id="category" type="text" class="form-control" placeholder="输入项目类别" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-1 control-label">保护单位</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input id="protectUnit" type="text" class="form-control" placeholder="输入保护单位" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-1 control-label">申请单位</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input id="applyUnit" type="text" class="form-control" placeholder="输入申请单位" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-1 control-label">申请区域</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input id="areaName" type="text" class="form-control" placeholder="输入申请区域" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div class="form-group" style="margin-top: 3%">
+                        <label class="col-sm-1 control-label">资讯内容</label>
+<!--                        <div class="col-sm-8">-->
+<!--                            <input id="remark" type="text" class="form-control" placeholder="输入项目简介" />-->
+<!--                        </div>-->
+                        <div class="col-sm-10">
+                            <textarea id="editor" name="editor" style="width:100%; height: 600px;margin-bottom: 20%" placeholder="输入资讯内容"></textarea>
+                        </div>
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">商品封面</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <img id="pic" style="width:100px;height:100px;border-radius:50%;" th:src="@{/images/uploadpic.png}"/>-->
+<!--                            <input id="upload" name="file" accept="image/*" type="file" style="display: none"/>-->
+<!--                            <input id="avatar" name="avatar" type="hidden" />-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" id="saveBusinessBtn" class="btn btn-success radius">
+                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
+                </button>
+                <button data-bb-handler="cancel" type="button" id="cancelBusinessBtn" class="btn btn-danger radius">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新增商品-->
+<!--<div id="upBusinessModal" class="bootbox modal fade" tabindex="-1" role="dialog">-->
+<!--    <div class="modal-dialog ">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--                <h4 class="modal-title" id="ModalLabel">修改商品</h4>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <form class="form-horizontal" role="form" id="upBusinessForm" onsubmit="return false;">-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">商品名字</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input id="id" name="id" type="text" class="form-control" hidden="hidden" />-->
+<!--                            <input id="upname" name="upname" type="text" class="form-control" placeholder="输入商品名字" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">商品类型</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input id="uptype" name="uptype" type="text" class="form-control" placeholder="输入商品类型" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">商品价格</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input id="upprice" name="upprice" type="text" class="form-control" placeholder="输入商品价格" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">商品封面</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <img id="uppic" style="width:100px;height:100px;border-radius:50%;" th:src="@{/images/uploadpic.png}"/>-->
+<!--                            <input id="upupload" name="file" accept="image/*" type="file" style="display: none"/>-->
+<!--                            <input id="upavatar" name="upavatar" type="hidden" />-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button data-bb-handler="confirm" type="button" id="upBussnessBtn" class="btn btn-success radius">-->
+<!--                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存-->
+<!--                </button>-->
+<!--                <button data-bb-handler="cancel" type="button" id="cancelUpBusinessBtn" class="btn btn-danger radius">取消</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+
+<script src="../static/js/ace-extra.min.js" th:src="@{/js/ace-extra.min.js}"></script>
+<!--[if lt IE 9]>
+
+<script src="../static/js/html5shiv.js" th:src="@{/js/html5shiv.js}"></script>
+<script src="../static/js/respond.min.js" th:src="@{/js/respond.min.js}"></script>
+<![endif]-->
+<script src="../static/js/jqGrid/jquery.jqGrid.min.js" th:src="@{/js/jqGrid/jquery.jqGrid.min.js}"></script>
+<script src="../static/js/jqGrid/i18n/grid.locale-en.js" th:src="@{/js/jqGrid/i18n/grid.locale-en.js}"></script>
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery-ui-1.10.3.custom.min.js" th:src="@{/js/jquery-ui-1.10.3.custom.min.js}"></script>
+<script src="../static/js/jquery.slimscroll.min.js" th:src="@{/js/jquery.slimscroll.min.js}"></script>
+<script src="../static/js/chosen.jquery.min.js" th:src="@{/js/chosen.jquery.min.js}"></script>
+<script src="../static/js/ace-elements.min.js" th:src="@{/js/ace-elements.min.js}"></script>
+<script src="../static/js/ace.min.js" th:src="@{/js/ace.min.js}"></script>
+<script src="../static/js/md5.js" th:src="@{/js/md5.js}"></script>
+<script src="../static/js/custom.js" th:src="@{/js/custom.js}"></script>
+<script src="../static/js/jquery.messager.js" th:src="@{/js/jquery.messager.js}"></script>
+<script src="../static/js/layer/layer.js" th:src="@{/js/layer/layer.js}"></script>
+<script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
+<script th:src="@{/js/info-manager.js}"></script>
+
+
+<script>
+    $(function() {
+        $("#pic").click(function() {
+            $("#upload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+            $("#upload").on("change", function() {
+                var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
+                if (objUrl) {
+                    $("#pic").attr("src", objUrl); //将图片路径存入src中，显示出图片
+                    upimg();
+                }
+            });
+        });
+
+        $("#uppic").click(function() {
+            $("#upupload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+            $("#upupload").on("change", function() {
+                var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
+                if (objUrl) {
+                    $("#uppic").attr("src", objUrl); //将图片路径存入src中，显示出图片
+                    upupimg();
+                }
+            });
+        });
+    });
+
+    //建立一?可存取到?file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+    //上传头像到服务器
+    function upimg() {
+        console.log(344)
+        var pic = $('#upload')[0].files[0];
+        var file = new FormData();
+        file.append('file', pic);
+        $.ajax({
+            url: "/upload/uploadImg",
+            type: "post",
+            data: file,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                // var res = data;
+                console.info("data = "+data);
+                $("#avatar").val(data);
+            }
+        });
+    }
+    function upupimg() {
+        console.log(344)
+        var pic = $('#upupload')[0].files[0];
+        var file = new FormData();
+        file.append('file', pic);
+        $.ajax({
+            url: "/upload/uploadImg",
+            type: "post",
+            data: file,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+                // var res = data;
+                console.info("data = "+data);
+                $("#upavatar").val(data);
+            }
+        });
+    }
+</script>
+
+<script>
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+
+    var ue = UE.getEditor('editor');
+    UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+    UE.Editor.prototype.getActionUrl = function (action) {
+        if (action == 'uploadimage' || action == 'uploadfile'|| action == 'uploadvideo') {
+            return 'http://localhost/ueditor/upload';
+        } else {
+            return this._bkGetActionUrl.call(this, action);
+        }
+    };
+</script>
+
+<script type="text/javascript">
+    window.onload=function(){
+        var ueObj = null;	//编辑器实例
+        var ueDom = document.getElementById('editor');
+        //添加事件监听
+        ueDom.addEventListener("focus", function(){
+            if(ueObj) return ;	//如果编辑器已经实例化，直接返回
+            ueObj = UE.getEditor('editor', {focus:true});	//取得ueditor实例
+            ueObj.addListener("blur", function(){	//输入框失去焦点时，如果内容为空，销毁ueditor
+                if(ueObj.getContent().length == 0) {
+                    UE.getEditor('editor').destroy();
+                    ueObj= null;
+                }
+            })
+        })
+    }
+</script>
+
+
+</body>
+</html>
