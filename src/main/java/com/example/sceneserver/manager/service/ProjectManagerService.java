@@ -105,38 +105,44 @@ public class ProjectManagerService {
 
     }
 
-//    /**
-//     * 修改商品
-//     *
-//     * @param request
-//     * @param response
-//     * @return
-//     */
-//    public void updateBusiness(HttpServletRequest request, HttpServletResponse response) {
-//        JSONObject result = new JSONObject();
-//        String id = request.getParameter("id");
-//        String name = request.getParameter("upname");
-//        String type = request.getParameter("uptype");
-//        String price = request.getParameter("upprice");
-//        String avatar = request.getParameter("upavatar");
-//        BusinessPo businessPo = BusinessPo.builder().id(Long.parseLong(id))
-//                .bName(name).type(type)
-//                .price(new BigDecimal(price))
-//                .avatar(avatar)
-//                .build();
-//
-//        int insert = businessMapper.update(businessPo);
-//
-//        if (insert > 0) {
-//            result.put("message", "商品修改成功!");
-//            result.put("flag", true);
-//        } else {
-//            result.put("message", "商品修改失败!");
-//            result.put("flag", false);
-//        }
-//        ServletUtil.createSuccessResponse(200, result, response);
-//
-//    }
+    /**
+     * 修改项目
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    public void update(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String id = request.getParameter("id");
+        String projectName = request.getParameter("upprojectname");
+        String areaName = request.getParameter("upareaname");
+        String type = request.getParameter("uptype");
+        String protectUnit = request.getParameter("upprotectunit");
+        String applyUnit = request.getParameter("upapplyunit");
+        String remark = request.getParameter("upremark");
+        String category = request.getParameter("upcategory");
+        ProjectDO businessPo = ProjectDO.builder().id(Long.parseLong(id))
+                .projectName(projectName).type(type)
+                .areaName(areaName)
+                .protectUnit(protectUnit)
+                .applyUnit(applyUnit)
+                .remark(remark)
+                .category(category)
+                .build();
+
+        int insert = projectMapper.updateByPrimaryKey(businessPo);
+
+        if (insert > 0) {
+            result.put("message", "项目修改成功!");
+            result.put("flag", true);
+        } else {
+            result.put("message", "项目修改失败!");
+            result.put("flag", false);
+        }
+        ServletUtil.createSuccessResponse(200, result, response);
+
+    }
 
     /**
      * 删除项目

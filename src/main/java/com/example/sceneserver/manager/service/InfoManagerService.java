@@ -99,6 +99,30 @@ public class InfoManagerService {
 
     }
 
+    public void update(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String id = request.getParameter("id");
+        String content = request.getParameter("upcontent");
+        String summary = request.getParameter("upsummary");
+        String title = request.getParameter("uptitle");
+        InfoDO infoDO = InfoDO.builder().id(Long.parseLong(id))
+                .content(content)
+                .summary(summary)
+                .title(title)
+                .build();
+
+        int insert = infoMapper.updateByPrimaryKey(infoDO);
+
+        if (insert > 0) {
+            result.put("message", "项目修改成功!");
+            result.put("flag", true);
+        } else {
+            result.put("message", "项目修改失败!");
+            result.put("flag", false);
+        }
+        ServletUtil.createSuccessResponse(200, result, response);
+    }
+
     /**
      * 删除资讯
      *

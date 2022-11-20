@@ -41,7 +41,7 @@ public class ProjectManagerController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public void update(HttpServletRequest request, HttpServletResponse response) {
-//        projectManagerService.updateOrder(request, response);
+        projectManagerService.update(request, response);
 
     }
 

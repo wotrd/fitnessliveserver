@@ -167,20 +167,7 @@ $(function () {
             layer.msg('至少选中一行记录！', {icon: 7, time: 2000}); //2秒关闭（如果不配置，默认是3秒）
         }
     });
-    // $('.date-picker').datepicker({autoclose: true}).next().on(ace.click_event, function () {
-    //     $(this).prev().focus();
-    // });
-    // $('#amatar').ace_file_input({
-    //     style: 'well',
-    //     btn_choose: 'Drop files here or click to choose',
-    //     btn_change: null,
-    //     no_icon: 'icon-cloud-upload',
-    //     droppable: true,
-    //     thumbnail: 'small',
-    //     preview_error: function (filename, error_code) {
-    //     }
-    // }).on('change', function () {
-    // });
+
 
     //添加关注对话框取消点击事件
     $('#cancelBusinessBtn').click(function () {
@@ -218,12 +205,14 @@ function initUpdateData() {
     var rows = $(grid_selector).getGridParam('selarrrow');
     var data = $(grid_selector).jqGrid('getRowData', rows[0]);
     $("#id").val(data.id);
-    $('#upname').val(data.bName);
-    $('#upprice').val(data.price);
-    $("#uptype").val(data.type);
-    $("#uppic").attr("src", data.avatar); //将图片路径存入src中，显示出图片
+    $('#upprojectname').val("");
+    $('#uptype').val("");
+    $('#upapplyunit').val("");
+    $('#upcategory').val("");
+    $('#upprotectunit').val("");
+    $('#upremark').val("");
+    $('#upareaname').val("");
 
-    //$('#amatar').val(data.amatar);
 }
 
 /**
@@ -281,7 +270,7 @@ function saveBusiness() {
  */
 function saveUpdateBusiness() {
     var submit_option = {
-        url: "/manager/businessmanager/update",//默认是form action
+        url: "/manager/peojectmanager/update",//默认是form action
         method: "POST",
         success: function (result) {
             if (result.flag == true) {

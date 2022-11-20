@@ -23,6 +23,11 @@ public class InfoManagerController {
         return "info-manager";
     }
 
+    @RequestMapping("info-add")
+    public String infoAdd(){
+        return "info-manager";
+    }
+
     @RequestMapping(value = "/info/list",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     @ResponseBody
     public void queryBusinessList(HttpServletRequest request , HttpServletResponse response){
@@ -33,6 +38,13 @@ public class InfoManagerController {
     @ResponseBody
     public void addOrder(HttpServletRequest request, HttpServletResponse response) {
         infoManagerService.add(request, response);
+
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public void update(HttpServletRequest request, HttpServletResponse response) {
+        infoManagerService.update(request, response);
 
     }
 

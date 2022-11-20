@@ -132,22 +132,11 @@
 
                     <div class="form-group" style="margin-top: 3%">
                         <label class="col-sm-1 control-label">项目简介</label>
-<!--                        <div class="col-sm-8">-->
-<!--                            <input id="remark" type="text" class="form-control" placeholder="输入项目简介" />-->
-<!--                        </div>-->
                         <div class="col-sm-10">
                             <textarea id="editor" name="editor" style="width:100%; height: 600px;margin-bottom: 20%" placeholder="输入项目简介"></textarea>
                         </div>
                     </div>
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-sm-2 control-label">商品封面</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            <img id="pic" style="width:100px;height:100px;border-radius:50%;" th:src="@{/images/uploadpic.png}"/>-->
-<!--                            <input id="upload" name="file" accept="image/*" type="file" style="display: none"/>-->
-<!--                            <input id="avatar" name="avatar" type="hidden" />-->
 
-<!--                        </div>-->
-<!--                    </div>-->
                 </form>
             </div>
             <div class="modal-footer">
@@ -161,56 +150,73 @@
 </div>
 
 <!--新增商品-->
-<!--<div id="upBusinessModal" class="bootbox modal fade" tabindex="-1" role="dialog">-->
-<!--    <div class="modal-dialog ">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-<!--                <h4 class="modal-title" id="ModalLabel">修改商品</h4>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <form class="form-horizontal" role="form" id="upBusinessForm" onsubmit="return false;">-->
+<div id="upBusinessModal" class="bootbox modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalLabel">修改项目</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="upBusinessForm" onsubmit="return false;">
 
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-sm-2 control-label">商品名字</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            <input id="id" name="id" type="text" class="form-control" hidden="hidden" />-->
-<!--                            <input id="upname" name="upname" type="text" class="form-control" placeholder="输入商品名字" />-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">项目名字</label>
+                        <div class="col-sm-10">
+                            <input id="upprojectname" name="upprojectname" type="text" class="form-control" placeholder="输入项目名字" />
+                        </div>
+                    </div>
 
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-sm-2 control-label">商品类型</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            <input id="uptype" name="uptype" type="text" class="form-control" placeholder="输入商品类型" />-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-sm-2 control-label">商品价格</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            <input id="upprice" name="upprice" type="text" class="form-control" placeholder="输入商品价格" />-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-sm-2 control-label">商品封面</label>-->
-<!--                        <div class="col-sm-8">-->
-<!--                            <img id="uppic" style="width:100px;height:100px;border-radius:50%;" th:src="@{/images/uploadpic.png}"/>-->
-<!--                            <input id="upupload" name="file" accept="image/*" type="file" style="display: none"/>-->
-<!--                            <input id="upavatar" name="upavatar" type="hidden" />-->
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">项目类型</label>
+                        <div class="col-sm-10">
+                            <input id="uptype" name="uptype" type="text" class="form-control" placeholder="输入项目类型" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">项目类别</label>
+                        <div class="col-sm-10">
+                            <input id="upcategory" name="upcategory" type="text" class="form-control" placeholder="输入项目类别" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">保护单位</label>
+                        <div class="col-sm-10">
+                            <input id="upprotectunit" name="upprotectunit" type="text" class="form-control" placeholder="输入保护单位" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">申请单位</label>
+                        <div class="col-sm-10">
+                            <input id="upapplyunit" name="upapplyunit"  type="text" class="form-control" placeholder="输入申请单位" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">申请区域</label>
+                        <div class="col-sm-10">
+                            <input id="upareaname" name="upareaname" type="text" class="form-control" placeholder="输入申请区域" />
+                        </div>
+                    </div>
 
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button data-bb-handler="confirm" type="button" id="upBussnessBtn" class="btn btn-success radius">-->
-<!--                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存-->
-<!--                </button>-->
-<!--                <button data-bb-handler="cancel" type="button" id="cancelUpBusinessBtn" class="btn btn-danger radius">取消</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+                    <div class="form-group" style="margin-top: 3%">
+                        <label class="col-sm-1 control-label">项目简介</label>
+                        <div class="col-sm-10">
+                            <textarea id="upeditor" name="upeditor" style="width:100%; height: 600px;margin-bottom: 20%" placeholder="输入项目简介"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" id="upBussnessBtn" class="btn btn-success radius">
+                    <span><i class="icon-ok"></i></span> &nbsp;保&nbsp;&nbsp;存
+                </button>
+                <button data-bb-handler="cancel" type="button" id="cancelUpBusinessBtn" class="btn btn-danger radius">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
