@@ -24,6 +24,9 @@ $(function () {
             {label: '保护单位', name: 'protectUnit', width: 200},
             {label: '申请单位', name: 'applyUnit', width: 200},
             {label: '项目时间', name: 'createTime', width: 200},
+            {label: '项目区域', name: 'areaName', width: 200,hidden:true},
+            {label: 'remark', name: 'remark', width: 200,hidden:true},
+
 
     // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
             //     return '<a class="btn btn-purple btn-sm" onclick="cancelAttention(this);" target="_blank">' +
@@ -205,13 +208,15 @@ function initUpdateData() {
     var rows = $(grid_selector).getGridParam('selarrrow');
     var data = $(grid_selector).jqGrid('getRowData', rows[0]);
     $("#id").val(data.id);
-    $('#upprojectname').val("");
-    $('#uptype').val("");
-    $('#upapplyunit').val("");
-    $('#upcategory').val("");
-    $('#upprotectunit').val("");
-    $('#upremark').val("");
-    $('#upareaname').val("");
+    $('#upprojectname').val(data.projectName);
+    $('#uptype').val(data.type);
+    $('#upcategory').val(data.category);
+    $('#upprotectunit').val(data.protectUnit);
+    debugger
+    $('#upapplyunit').val(data.applyUnit);
+    $('#upareaname').val(data.areaName);
+    $('#upeditor').val(data.remark);
+
 
 }
 
@@ -219,7 +224,6 @@ function initUpdateData() {
  * 保存新增商品
  */
 function saveBusiness() {
-    debugger
     var projectName = $('#projectName').val();
     var type = $('#type').val();
     var protectUnit = $('#protectUnit').val();

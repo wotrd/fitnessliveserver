@@ -101,7 +101,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.sceneserver.manager.po.InfoDO">
     update info
-    set create_time = #{createTime,jdbcType=TIMESTAMP},
+    set
       summary = #{summary,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

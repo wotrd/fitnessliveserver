@@ -102,7 +102,7 @@ public class InfoManagerService {
     public void update(HttpServletRequest request, HttpServletResponse response) {
         JSONObject result = new JSONObject();
         String id = request.getParameter("id");
-        String content = request.getParameter("upcontent");
+        String content = request.getParameter("upeditor");
         String summary = request.getParameter("upsummary");
         String title = request.getParameter("uptitle");
         InfoDO infoDO = InfoDO.builder().id(Long.parseLong(id))

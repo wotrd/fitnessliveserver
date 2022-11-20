@@ -20,6 +20,7 @@ $(function () {
             {label: '资讯编号', name: 'id', width: 75,},
             {label: '标题', name: 'title', width: 200},
             {label: '简介', name: 'summary', width: 200},
+            {label: '内容', name: 'content', width: 0,hidden:true},
             {label: '项目时间', name: 'createTime', width: 200},
 
     // { label: '取关', name: 'opt', width: 200,formatter: function(cellvalue, options, cell){
