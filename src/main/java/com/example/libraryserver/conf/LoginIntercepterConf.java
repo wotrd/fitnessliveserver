@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author wkj_pc
  * @date 2017/5/20
  */
-//@Configuration
+@Configuration
 public class LoginIntercepterConf extends WebMvcConfigurerAdapter {
 
     /**
